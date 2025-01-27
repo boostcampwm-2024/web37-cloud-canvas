@@ -16,6 +16,7 @@ const eslintConfig = [
             'next/core-web-vitals',
             'next/typescript',
             'plugin:import/recommended',
+            'plugin:tailwindcss/recommended',
         ],
         rules: {
             '@typescript-eslint/consistent-type-imports': [
