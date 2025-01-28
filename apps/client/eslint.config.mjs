@@ -40,10 +40,10 @@ const eslintConfig = [
                     alphabetize: { order: 'asc', caseInsensitive: true },
                     'newlines-between': 'always',
                     pathGroups: [
-                        '@widgets/**',
-                        '@features/**',
-                        '@entities/**',
-                        '@shared/**',
+                        '@/widgets/**',
+                        '@/features/**',
+                        '@/entities/**',
+                        '@/shared/**',
                     ].map((pattern) => ({
                         pattern,
                         group: 'internal',
@@ -111,6 +111,7 @@ const eslintConfig = [
                     ],
                 },
             ],
+            '@typescript-eslint/no-explicit-any': 'off',
         },
     }),
 ];
