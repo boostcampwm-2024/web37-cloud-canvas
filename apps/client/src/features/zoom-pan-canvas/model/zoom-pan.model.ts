@@ -3,13 +3,15 @@ import type { Viewbox } from '@/entities/canvas/model/canvas.types';
 import type { Point } from '@/shared/types/canvas';
 
 export class Zoom {
-    static readonly SCALE_STEP = 0.1;
+    static readonly SCALE_STEP = 0.2;
     static readonly MIN_ZOOM = 0.1;
-    static readonly MAX_ZOOM = 10;
+    static readonly MAX_ZOOM = 8;
 
-    static isValidateZoomFactor(zoomFactor: number): boolean {
-        console.log(zoomFactor);
-        return zoomFactor >= this.MIN_ZOOM && zoomFactor <= this.MAX_ZOOM;
+    static validateZoomFactor(zoomFactor: number): boolean {
+        if (zoomFactor < 1 && zoomFactor <= this.MIN_ZOOM) return false;
+        if (zoomFactor > 1 && zoomFactor >= this.MAX_ZOOM) return false;
+
+        return true;
     }
 
     static calcZoomFactor(currentZoom: number, zoomDelta: number): number {

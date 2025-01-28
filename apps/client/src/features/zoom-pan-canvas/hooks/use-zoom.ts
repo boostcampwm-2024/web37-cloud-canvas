@@ -26,7 +26,8 @@ export const useZoom = () => {
                 zoomStep,
             );
 
-            if (!Zoom.isValidateZoomFactor(newZoomFactor)) return;
+            if (!Zoom.validateZoomFactor(newZoomFactor)) return;
+            curZoomRatioRef.current = newZoomFactor;
 
             const svgPoint = screenToSvgPoint($canvas!, point);
 
@@ -39,8 +40,9 @@ export const useZoom = () => {
 
     const handleWheel = useCallback(
         (event: WheelEvent) => {
-            event.preventDefault();
             const point = { x: event.clientX, y: event.clientY };
+
+            //INFO: deltaY > 0 is zoom in, deltaY < 0 is zoom out
             const zoomStep =
                 event.deltaY > 0 ? 1 - Zoom.SCALE_STEP : 1 + Zoom.SCALE_STEP;
             zoom(point, zoomStep);
