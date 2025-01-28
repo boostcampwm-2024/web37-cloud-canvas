@@ -10,6 +10,7 @@ interface CanvasStates {
 }
 
 interface CanvasActions {
+    updateViewbox: (viewbox: Partial<Viewbox>) => void;
     setViewbox: (viewbox: Viewbox) => void;
     setViewMode: (viewMode: ViewMode) => void;
 }
@@ -26,6 +27,13 @@ const initialState: CanvasStates = {
 
 const store = create<CanvasStates & CanvasActions>((set) => ({
     ...initialState,
+    updateViewbox: (viewbox) =>
+        set((state) => ({
+            viewbox: {
+                ...state.viewbox,
+                ...viewbox,
+            },
+        })),
     setViewbox: (viewbox) => set({ viewbox }),
     setViewMode: (viewMode) => set({ viewMode }),
 }));

@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 
-import { ZoomControls } from '@/features/zoom-pan-canvas/ui/zoom-controls';
+import { ZoomPanHandler } from '@/features/zoom-pan-canvas/ui/zoom-pan-handler';
 
 import { BaseCanvas } from '@/entities/canvas/ui/base-canvas';
 
@@ -15,7 +15,7 @@ export const Canvas = (props: CanvasProps) => {
 
     return (
         <BaseCanvas>
-            <ZoomControls />
+            <ZoomPanHandler />
             {children}
         </BaseCanvas>
     );

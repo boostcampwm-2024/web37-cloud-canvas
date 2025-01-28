@@ -8,6 +8,7 @@ export class Zoom {
     static readonly MAX_ZOOM = 10;
 
     static isValidateZoomFactor(zoomFactor: number): boolean {
+        console.log(zoomFactor);
         return zoomFactor >= this.MIN_ZOOM && zoomFactor <= this.MAX_ZOOM;
     }
 
