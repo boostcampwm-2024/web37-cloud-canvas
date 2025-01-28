@@ -1,4 +1,4 @@
-import { Canvas } from '@/entities/canvas/ui/canvas';
+import { Canvas } from '@/widgets/canvas/canvas/ui/canvas';
 
 export default function Page() {
     return (

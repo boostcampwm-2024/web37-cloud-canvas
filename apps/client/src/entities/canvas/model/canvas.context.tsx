@@ -1,7 +1,13 @@
 'use client';
 
 import type { ReactNode, RefObject } from 'react';
-import { createContext, useContext, useLayoutEffect, useRef } from 'react';
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useLayoutEffect,
+    useRef,
+} from 'react';
 
 import { useCanvasStore } from './canvas.store';
 import type { Viewbox } from './canvas.types';
@@ -11,10 +17,7 @@ interface CanvasContext {
     getCanvasEl: () => SVGSVGElement | null;
 }
 
-const CanvasContext = createContext<CanvasContext>({
-    canvasRef: { current: null },
-    getCanvasEl: () => null,
-});
+const CanvasContext = createContext<CanvasContext | null>(null);
 
 interface CanvasProviderProps {
     children: ReactNode;
@@ -27,24 +30,32 @@ export const CanvasProvider = (props: CanvasProviderProps) => {
     const canvasRef = useRef<SVGSVGElement>(null);
     const setViewbox = useCanvasStore.use.setViewbox();
 
+    const getCanvasEl = useCallback(() => canvasRef.current, []);
+
+    const initializeViewbox = useCallback(
+        ($canvas: SVGSVGElement) => {
+            if (initialViewbox) {
+                setViewbox(initialViewbox);
+                return;
+            }
+
+            const { clientWidth, clientHeight } = $canvas;
+            setViewbox({
+                x: -clientWidth / 2,
+                y: -clientHeight / 2,
+                width: clientWidth,
+                height: clientHeight,
+            });
+        },
+        [initialViewbox, setViewbox],
+    );
+
     useLayoutEffect(() => {
-        if (!canvasRef.current) return;
+        const $canvas = getCanvasEl();
+        if (!$canvas) return;
 
-        if (initialViewbox) {
-            setViewbox(initialViewbox);
-            return;
-        }
-
-        const { clientWidth, clientHeight } = canvasRef.current;
-        setViewbox({
-            x: -clientWidth / 2,
-            y: -clientHeight / 2,
-            width: clientWidth,
-            height: clientHeight,
-        });
-    }, []);
-
-    const getCanvasEl = () => canvasRef.current;
+        initializeViewbox($canvas);
+    }, [getCanvasEl, initializeViewbox]);
 
     return (
         <CanvasContext.Provider
@@ -63,7 +74,7 @@ export const useCanvasContext = () => {
 
     if (!context) {
         throw new Error(
-            'useCanvasContext must be used within a CanvasProvider',
+            'useCanvasContext: CanvasProvider가 제공되지 않았습니다.',
         );
     }
 
