@@ -1,0 +1,57 @@
+import _ from 'lodash';
+import { useCallback, useRef } from 'react';
+
+import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
+import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
+
+import { useEventListener } from '@/shared/hooks/useEventListener';
+import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
+import { applyCursorStyle } from '@/shared/lib/shadcn/utils';
+import type { Point } from '@/shared/types/canvas';
+
+import { Zoom } from '../model/zoom-pan.model';
+
+export const useZoom = () => {
+    const viewbox = useCanvasStore.use.viewbox();
+    const setViewbox = useCanvasStore.use.setViewbox();
+    const { getCanvasEl } = useCanvasContext();
+
+    const curZoomRatioRef = useRef<number>(1);
+    const $canvas = getCanvasEl();
+
+    const zoom = useCallback(
+        (point: Point, zoomStep: number) => {
+            const newZoomFactor = Zoom.calcZoomFactor(
+                curZoomRatioRef.current,
+                zoomStep,
+            );
+
+            if (!Zoom.isValidateZoomFactor(newZoomFactor)) return;
+
+            const svgPoint = screenToSvgPoint($canvas!, point);
+
+            const newViewbox = Zoom.zoom(viewbox, svgPoint, zoomStep);
+
+            setViewbox(newViewbox);
+        },
+        [$canvas, viewbox, setViewbox],
+    );
+
+    const handleWheel = useCallback(
+        (event: WheelEvent) => {
+            event.preventDefault();
+            const point = { x: event.clientX, y: event.clientY };
+            const zoomStep =
+                event.deltaY > 0 ? 1 - Zoom.SCALE_STEP : 1 + Zoom.SCALE_STEP;
+            zoom(point, zoomStep);
+
+            applyCursorStyle('body', event.deltaY > 0 ? 'zoom-in' : 'zoom-out');
+            _.delay(() => {
+                applyCursorStyle('body', 'default');
+            }, 500);
+        },
+        [zoom],
+    );
+
+    useEventListener($canvas, 'wheel', handleWheel, { passive: false });
+};
