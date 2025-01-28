@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
@@ -16,42 +16,54 @@ export const usePan = () => {
     const startSvgPointRef = useRef<Point | null>(null);
     const $canvas = getCanvasEl();
 
-    const startPan = (point: Point) => {
-        startSvgPointRef.current = screenToSvgPoint($canvas!, point);
-    };
+    const startPan = useCallback(
+        (point: Point) => {
+            startSvgPointRef.current = screenToSvgPoint($canvas!, point);
+        },
+        [$canvas],
+    );
 
-    const movePan = (point: Point) => {
-        if (!startSvgPointRef.current) return;
+    const movePan = useCallback(
+        (point: Point) => {
+            if (!startSvgPointRef.current) return;
 
-        const curSvgPoint = screenToSvgPoint($canvas!, point);
+            const curSvgPoint = screenToSvgPoint($canvas!, point);
 
-        const dx = startSvgPointRef.current.x - curSvgPoint.x;
-        const dy = startSvgPointRef.current.y - curSvgPoint.y;
+            const dx = startSvgPointRef.current.x - curSvgPoint.x;
+            const dy = startSvgPointRef.current.y - curSvgPoint.y;
 
-        setViewbox({
-            ...viewbox,
-            x: viewbox.x + dx,
-            y: viewbox.y + dy,
-        });
-    };
+            setViewbox({
+                ...viewbox,
+                x: viewbox.x + dx,
+                y: viewbox.y + dy,
+            });
+        },
+        [$canvas, viewbox, setViewbox],
+    );
 
     const stopPan = () => {
         startSvgPointRef.current = null;
     };
 
-    const handleMouseDown = (e: MouseEvent) => {
-        applyCursorStyle('body', 'grab');
-        startPan({ x: e.clientX, y: e.clientY });
-    };
+    const handleMouseDown = useCallback(
+        (e: MouseEvent) => {
+            applyCursorStyle('body', 'grab');
+            startPan({ x: e.clientX, y: e.clientY });
+        },
+        [startPan],
+    );
 
-    const handleMouseMove = (e: MouseEvent) => {
-        movePan({ x: e.clientX, y: e.clientY });
-    };
+    const handleMouseMove = useCallback(
+        (e: MouseEvent) => {
+            movePan({ x: e.clientX, y: e.clientY });
+        },
+        [movePan],
+    );
 
-    const handleMouseUp = () => {
+    const handleMouseUp = useCallback(() => {
         stopPan();
         applyCursorStyle('body', 'default');
-    };
+    }, []);
 
     useEventListener($canvas, 'mousedown', handleMouseDown);
     useEventListener($canvas, 'mousemove', handleMouseMove);
