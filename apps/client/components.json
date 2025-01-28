@@ -15,8 +15,7 @@
         "utils": "@/shared/lib/shadcn/utils",
         "ui": "@/shared/ui/shadcn",
         "lib": "@/shared/lib/shadcn",
-        "hooks": "@/shared/hooks/shadcn"
+        "hooks": "@/shared/hooks"
     },
     "iconLibrary": "lucide"
 }
-
