@@ -9,7 +9,7 @@ import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
 import { applyCursorStyle } from '@/shared/lib/shadcn/utils';
 import type { Point } from '@/shared/types/canvas';
 
-import { Zoom } from '../model/zoom-pan.model';
+import { Zoom } from '../model/zoom.model';
 
 export const useZoom = () => {
     const viewbox = useCanvasStore.use.viewbox();

@@ -3,7 +3,7 @@ import type { Viewbox } from '@/entities/canvas/model/canvas.types';
 import type { Point } from '@/shared/types/canvas';
 
 export class Zoom {
-    static readonly SCALE_STEP = 0.2;
+    static readonly SCALE_STEP = 0.1;
     static readonly MIN_ZOOM = 0.1;
     static readonly MAX_ZOOM = 8;
 
