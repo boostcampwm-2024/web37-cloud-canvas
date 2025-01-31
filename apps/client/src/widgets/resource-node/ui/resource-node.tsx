@@ -5,7 +5,6 @@ import { GridPoint } from '@/shared/types/canvas';
 import { ResourceType } from '@/shared/types/resource';
 import { useMemo } from 'react';
 import { ResourceNodeComponents } from '../model/resource-node.model';
-import { gridToCoordPoint } from '@/shared/lib/canvas/point';
 
 interface ResourceNodeProps {
     id: string;
@@ -22,7 +21,6 @@ export const ResourceNode = (props: ResourceNodeProps) => {
 
     const handleMouseDown = (event: React.MouseEvent) => {
         event.stopPropagation();
-        console.log(222);
         startDragNode(id, { x: event.clientX, y: event.clientY });
     };
 
@@ -33,10 +31,12 @@ export const ResourceNode = (props: ResourceNodeProps) => {
 
     if (!SVGComponent) return null;
 
-    const coordPoint = gridToCoordPoint(point, viewMode);
-    const transform = `translate(${coordPoint.x}, ${coordPoint.y})`;
     return (
-        <Node transform={transform} onMouseDownCapture={handleMouseDown}>
+        <Node
+            point={point}
+            onMouseDownCapture={handleMouseDown}
+            viewMode={viewMode}
+        >
             <SVGComponent viewMode={viewMode} />
         </Node>
     );
