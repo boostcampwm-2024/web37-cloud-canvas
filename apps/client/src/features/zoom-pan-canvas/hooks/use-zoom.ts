@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useCallback, useRef } from 'react';
+import { useRef } from 'react';
 
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
@@ -7,7 +7,7 @@ import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { useEventListener } from '@/shared/hooks/useEventListener';
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
 import { applyCursorStyle } from '@/shared/lib/shadcn/utils';
-import type { Point } from '@/shared/types/canvas';
+import type { CoordPoint } from '@/shared/types/canvas';
 
 import { Zoom } from '../model/zoom.model';
 
@@ -17,43 +17,39 @@ export const useZoom = () => {
     const { getCanvasEl } = useCanvasContext();
 
     const curZoomRatioRef = useRef<number>(1);
-    const $canvas = getCanvasEl();
 
-    const zoom = useCallback(
-        (point: Point, zoomStep: number) => {
-            const newZoomFactor = Zoom.calcZoomFactor(
-                curZoomRatioRef.current,
-                zoomStep,
-            );
+    const zoom = (point: CoordPoint, zoomStep: number) => {
+        const $canvas = getCanvasEl();
+        if (!$canvas) return;
 
-            if (!Zoom.validateZoomFactor(newZoomFactor)) return;
-            curZoomRatioRef.current = newZoomFactor;
+        const newZoomFactor = Zoom.calcZoomFactor(
+            curZoomRatioRef.current,
+            zoomStep,
+        );
 
-            const svgPoint = screenToSvgPoint($canvas!, point);
+        if (!Zoom.validateZoomFactor(newZoomFactor)) return;
+        curZoomRatioRef.current = newZoomFactor;
 
-            const newViewbox = Zoom.zoom(viewbox, svgPoint, zoomStep);
+        const svgPoint = screenToSvgPoint($canvas!, point);
 
-            setViewbox(newViewbox);
-        },
-        [$canvas, viewbox, setViewbox],
-    );
+        const newViewbox = Zoom.zoom(viewbox, svgPoint, zoomStep);
 
-    const handleWheel = useCallback(
-        (event: WheelEvent) => {
-            const point = { x: event.clientX, y: event.clientY };
+        setViewbox(newViewbox);
+    };
 
-            //INFO: deltaY > 0 is zoom in, deltaY < 0 is zoom out
-            const zoomStep =
-                event.deltaY > 0 ? 1 - Zoom.SCALE_STEP : 1 + Zoom.SCALE_STEP;
-            zoom(point, zoomStep);
+    const handleWheel = (event: WheelEvent) => {
+        const point = { x: event.clientX, y: event.clientY };
 
-            applyCursorStyle('body', event.deltaY > 0 ? 'zoom-in' : 'zoom-out');
-            _.delay(() => {
-                applyCursorStyle('body', 'default');
-            }, 500);
-        },
-        [zoom],
-    );
+        //INFO: deltaY > 0 is zoom in, deltaY < 0 is zoom out
+        const zoomStep =
+            event.deltaY > 0 ? 1 - Zoom.SCALE_STEP : 1 + Zoom.SCALE_STEP;
+        zoom(point, zoomStep);
 
-    useEventListener($canvas, 'wheel', handleWheel, { passive: false });
+        applyCursorStyle('body', event.deltaY > 0 ? 'zoom-in' : 'zoom-out');
+        _.delay(() => {
+            applyCursorStyle('body', 'default');
+        }, 500);
+    };
+
+    useEventListener(getCanvasEl(), 'wheel', handleWheel, { passive: false });
 };

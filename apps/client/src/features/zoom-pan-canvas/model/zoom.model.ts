@@ -1,6 +1,6 @@
 import type { Viewbox } from '@/entities/canvas/model/canvas.types';
 
-import type { Point } from '@/shared/types/canvas';
+import type { CoordPoint } from '@/shared/types/canvas';
 
 export class Zoom {
     static readonly SCALE_STEP = 0.1;
@@ -21,7 +21,7 @@ export class Zoom {
 
     static calcZoomedViewbox(
         viewbox: Viewbox,
-        point: Point,
+        point: CoordPoint,
         zoomDelta: number,
     ): Viewbox {
         return {
@@ -32,7 +32,11 @@ export class Zoom {
         };
     }
 
-    static zoom(viewbox: Viewbox, point: Point, zoomDelta: number): Viewbox {
+    static zoom(
+        viewbox: Viewbox,
+        point: CoordPoint,
+        zoomDelta: number,
+    ): Viewbox {
         return this.calcZoomedViewbox(viewbox, point, zoomDelta);
     }
 }

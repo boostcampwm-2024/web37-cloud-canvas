@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useRef } from 'react';
 
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
@@ -6,66 +6,57 @@ import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { useEventListener } from '@/shared/hooks/useEventListener';
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
 import { applyCursorStyle } from '@/shared/lib/shadcn/utils';
-import type { Point } from '@/shared/types/canvas';
+import type { CoordPoint } from '@/shared/types/canvas';
 
 export const usePan = () => {
     const viewbox = useCanvasStore.use.viewbox();
     const setViewbox = useCanvasStore.use.setViewbox();
     const { getCanvasEl } = useCanvasContext();
 
-    const startSvgPointRef = useRef<Point | null>(null);
-    const $canvas = getCanvasEl();
+    const startSvgPointRef = useRef<CoordPoint | null>(null);
 
-    const startPan = useCallback(
-        (point: Point) => {
-            startSvgPointRef.current = screenToSvgPoint($canvas!, point);
-        },
-        [$canvas],
-    );
+    const startPan = (point: CoordPoint) => {
+        const $canvas = getCanvasEl();
+        if (!$canvas) return;
 
-    const movePan = useCallback(
-        (point: Point) => {
-            if (!startSvgPointRef.current) return;
+        startSvgPointRef.current = screenToSvgPoint($canvas, point);
+    };
 
-            const curSvgPoint = screenToSvgPoint($canvas!, point);
+    const movePan = (point: CoordPoint) => {
+        const $canvas = getCanvasEl();
+        if (!$canvas || !startSvgPointRef.current) return;
 
-            const dx = startSvgPointRef.current.x - curSvgPoint.x;
-            const dy = startSvgPointRef.current.y - curSvgPoint.y;
+        const curSvgPoint = screenToSvgPoint($canvas, point);
 
-            setViewbox({
-                ...viewbox,
-                x: viewbox.x + dx,
-                y: viewbox.y + dy,
-            });
-        },
-        [$canvas, viewbox, setViewbox],
-    );
+        const dx = startSvgPointRef.current.x - curSvgPoint.x;
+        const dy = startSvgPointRef.current.y - curSvgPoint.y;
+
+        setViewbox({
+            ...viewbox,
+            x: viewbox.x + dx,
+            y: viewbox.y + dy,
+        });
+    };
 
     const stopPan = () => {
         startSvgPointRef.current = null;
     };
 
-    const handleMouseDown = useCallback(
-        (e: MouseEvent) => {
-            applyCursorStyle('body', 'grab');
-            startPan({ x: e.clientX, y: e.clientY });
-        },
-        [startPan],
-    );
+    const handleMouseDown = (e: MouseEvent) => {
+        applyCursorStyle('body', 'grab');
+        startPan({ x: e.clientX, y: e.clientY });
+    };
 
-    const handleMouseMove = useCallback(
-        (e: MouseEvent) => {
-            movePan({ x: e.clientX, y: e.clientY });
-        },
-        [movePan],
-    );
+    const handleMouseMove = (e: MouseEvent) => {
+        movePan({ x: e.clientX, y: e.clientY });
+    };
 
-    const handleMouseUp = useCallback(() => {
+    const handleMouseUp = () => {
         stopPan();
         applyCursorStyle('body', 'default');
-    }, []);
+    };
 
-    useEventListener($canvas, 'mousedown', handleMouseDown);
-    useEventListener($canvas, 'mousemove', handleMouseMove);
-    useEventListener($canvas, 'mouseup', handleMouseUp);
+    useEventListener(getCanvasEl(), 'mousedown', handleMouseDown);
+    useEventListener(getCanvasEl(), 'mousemove', handleMouseMove);
+    useEventListener(getCanvasEl(), 'mouseup', handleMouseUp);
 };
