@@ -4,5 +4,3 @@ export interface Viewbox {
     width: number;
     height: number;
 }
-
-export type ViewMode = '2d' | '3d';

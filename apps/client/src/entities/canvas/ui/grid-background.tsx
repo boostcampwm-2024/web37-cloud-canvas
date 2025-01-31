@@ -2,7 +2,7 @@ import {
     GRID_SIZE_2D,
     GRID_HEIGHT_3D,
     GRID_WIDTH_3D,
-} from '@/shared/config/canvas/constants';
+} from '@/shared/config/canvas';
 
 import { useCanvasStore } from '../model/canvas.store';
 

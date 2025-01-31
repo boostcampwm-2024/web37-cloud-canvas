@@ -2,7 +2,8 @@ import { create } from 'zustand';
 
 import { createSelectors } from '@/shared/lib/zustand/selector';
 
-import type { Viewbox, ViewMode } from './canvas.types';
+import type { Viewbox } from './canvas.types';
+import { ViewMode } from '@/shared/types/canvas';
 
 interface CanvasStates {
     viewbox: Viewbox;
