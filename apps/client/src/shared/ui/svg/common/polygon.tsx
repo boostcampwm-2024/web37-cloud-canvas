@@ -1,10 +1,10 @@
-import { Point } from '@/shared/types/canvas';
+import { CoordPoint } from '@/shared/types/canvas';
 import { SVGProps } from 'react';
 
 type DefaultPolygonProps = Omit<SVGProps<SVGPolygonElement>, 'points'>;
 
 interface PolygonProps extends DefaultPolygonProps {
-    points: Array<Point>;
+    points: Array<CoordPoint>;
 }
 
 export const Polygon = (props: PolygonProps) => {

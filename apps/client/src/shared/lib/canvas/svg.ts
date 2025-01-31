@@ -1,6 +1,6 @@
-import type { Point } from '@/shared/types/canvas';
+import type { CoordPoint } from '@/shared/types/canvas';
 
-const createSvgPoint = (svg: SVGSVGElement, point: Point): SVGPoint => {
+const createSvgPoint = (svg: SVGSVGElement, point: CoordPoint): SVGPoint => {
     const svgPoint = svg.createSVGPoint();
     svgPoint.x = point.x;
     svgPoint.y = point.y;
@@ -15,18 +15,24 @@ const getScreenCTM = (svg: SVGSVGElement): DOMMatrix => {
     return screenCTM;
 };
 
-const transformPoint = (point: SVGPoint, matrix: DOMMatrix): Point => ({
+const transformPoint = (point: SVGPoint, matrix: DOMMatrix): CoordPoint => ({
     x: point.matrixTransform(matrix).x,
     y: point.matrixTransform(matrix).y,
 });
 
-export const screenToSvgPoint = (svg: SVGSVGElement, point: Point): Point => {
+export const screenToSvgPoint = (
+    svg: SVGSVGElement,
+    point: CoordPoint,
+): CoordPoint => {
     const svgPoint = createSvgPoint(svg, point);
     const screenCTM = getScreenCTM(svg);
     return transformPoint(svgPoint, screenCTM.inverse());
 };
 
-export const svgToScreenPoint = (svg: SVGSVGElement, point: Point): Point => {
+export const svgToScreenPoint = (
+    svg: SVGSVGElement,
+    point: CoordPoint,
+): CoordPoint => {
     const svgPoint = createSvgPoint(svg, point);
     const screenCTM = getScreenCTM(svg);
     return transformPoint(svgPoint, screenCTM);

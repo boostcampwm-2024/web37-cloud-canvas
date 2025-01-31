@@ -2,23 +2,25 @@
 
 import { Canvas } from '@/widgets/canvas/ui/canvas';
 import { Header } from '@/widgets/header/ui/header';
+import { ResourceNode } from '@/widgets/resource-node/ui/resource-node';
 
-import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
-import { Node } from '@/entities/node/ui/Node';
-
-import { ServerSVG } from '@/shared/ui/svg/server';
+import { useNodeStore } from '@/entities/node/model/node.store';
 
 export default function Page() {
-    const viewMode = useCanvasStore.use.viewMode();
-
+    const nodes = useNodeStore.use.nodes();
     return (
         <div className="h-screen overflow-hidden">
             <div className="h-full">
                 <Header />
                 <Canvas>
-                    <Node>
-                        <ServerSVG viewMode={viewMode} />
-                    </Node>
+                    {Object.values(nodes).map((node) => (
+                        <ResourceNode
+                            key={node.id}
+                            id={node.id}
+                            point={node.point}
+                            resourceType="server"
+                        />
+                    ))}
                 </Canvas>
             </div>
         </div>
