@@ -1,8 +1,10 @@
+import _ from 'lodash';
+
 import { create } from 'zustand';
 
 import { createSelectors } from '@/shared/lib/zustand/selector';
 import { GridPoint } from '@/shared/types/canvas';
-import { nanoid } from 'nanoid';
+import { initialMockNodes } from './mocks';
 import { Node } from './node.types';
 
 interface NodeStates {
@@ -12,29 +14,12 @@ interface NodeStates {
 interface NodeActions {
     addNode: (node: Node) => void;
     moveNode: (id: string, offset: GridPoint) => void;
+    addChildNode: (parentId: string, childId: string) => void;
+    removeChildNode: (parentId: string, childId: string) => void;
 }
 
-const mockNode: Node = {
-    id: `mock-node-${nanoid()}`,
-    point: { col: 0, row: 0 },
-    properties: {
-        type: 'server',
-    },
-};
-
-const mockContainer: Node = {
-    id: `mock-container-${nanoid()}`,
-    point: { col: 4, row: 4 },
-    properties: {
-        type: 'container',
-    },
-};
-
 const initialState: NodeStates = {
-    nodes: {
-        [mockNode.id]: mockNode,
-        [mockContainer.id]: mockContainer,
-    },
+    nodes: initialMockNodes,
 };
 
 const store = create<NodeStates & NodeActions>((set) => ({
@@ -55,6 +40,45 @@ const store = create<NodeStates & NodeActions>((set) => ({
                             col: node.point.col + point.col,
                             row: node.point.row + point.row,
                         },
+                    },
+                },
+            };
+        }),
+    addChildNode: (parentId, childId) =>
+        set((state) => {
+            const parent = state.nodes[parentId];
+            if (!parent) return state;
+
+            console.log('add');
+            return {
+                nodes: {
+                    ...state.nodes,
+                    [parentId]: {
+                        ...parent,
+                        children: [...(parent.children || []), childId],
+                    },
+                    [childId]: {
+                        ...state.nodes[childId],
+                        parent: parentId,
+                    },
+                },
+            };
+        }),
+    removeChildNode: (parentId, childId) =>
+        set((state) => {
+            const parent = state.nodes[parentId];
+            if (!parent) return state;
+
+            return {
+                nodes: {
+                    ...state.nodes,
+                    [parentId]: {
+                        ...parent,
+                        children: _.without(parent.children, childId),
+                    },
+                    [childId]: {
+                        ...state.nodes[childId],
+                        parent: undefined,
                     },
                 },
             };
