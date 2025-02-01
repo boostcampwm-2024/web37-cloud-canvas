@@ -36,6 +36,8 @@ export const ResourceNode = (props: ResourceNodeProps) => {
             point={point}
             onMouseDownCapture={handleMouseDown}
             viewMode={viewMode}
+            data-canvas-type="node"
+            data-resource-type={resourceType}
         >
             <SVGComponent viewMode={viewMode} />
         </Node>

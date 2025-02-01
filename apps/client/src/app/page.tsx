@@ -4,6 +4,8 @@ import { Canvas } from '@/widgets/canvas/ui/canvas';
 import { Header } from '@/widgets/header/ui/header';
 import { ResourceNode } from '@/widgets/resource-node/ui/resource-node';
 
+import { Droppable } from '@/features/drag-node/ui/droppable';
+
 import { useNodeStore } from '@/entities/node/model/node.store';
 
 export default function Page() {
@@ -14,12 +16,14 @@ export default function Page() {
                 <Header />
                 <Canvas>
                     {Object.values(nodes).map((node) => (
-                        <ResourceNode
-                            key={node.id}
-                            id={node.id}
-                            point={node.point}
-                            resourceType={node.properties.type}
-                        />
+                        <Droppable key={node.id}>
+                            <ResourceNode
+                                key={node.id}
+                                id={node.id}
+                                point={node.point}
+                                resourceType={node.properties.type}
+                            />
+                        </Droppable>
                     ))}
                 </Canvas>
             </div>

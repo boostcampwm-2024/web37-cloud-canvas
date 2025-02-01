@@ -14,9 +14,11 @@ import { useDragNodeStore } from '../model/drag-node.store';
 export const useDragNode = (id: string) => {
     const { getCanvasEl } = useCanvasContext();
 
-    const { draggedId, setDraggedId } = useDragNodeStore();
+    const { draggedId, hoverDropZoneId, setHoverDropZoneId, setDraggedId } =
+        useDragNodeStore();
     const viewMode = useCanvasStore.use.viewMode();
     const moveNode = useNodeStore.use.moveNode();
+    const addChildNode = useNodeStore.use.addChildNode();
 
     const startPointRef = useRef<CoordPoint | null>(null);
 
@@ -50,6 +52,9 @@ export const useDragNode = (id: string) => {
     };
 
     const stopDragNode = () => {
+        if (hoverDropZoneId && draggedId) {
+            addChildNode(hoverDropZoneId, draggedId);
+        }
         setDraggedId(null);
         startPointRef.current = null;
     };
