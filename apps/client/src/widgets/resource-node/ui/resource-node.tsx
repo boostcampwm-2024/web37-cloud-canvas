@@ -17,7 +17,7 @@ export const ResourceNode = (props: ResourceNodeProps) => {
 
     const viewMode = useCanvasStore.use.viewMode();
 
-    const { startDragNode } = useDragNode();
+    const { startDragNode } = useDragNode(id);
 
     const handleMouseDown = (event: React.MouseEvent) => {
         event.stopPropagation();

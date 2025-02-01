@@ -5,12 +5,19 @@ type EventMap = WindowEventMap & SVGElementEventMap & HTMLElementEventMap;
 export const useEventListener = <
     T extends EventTarget,
     K extends keyof EventMap,
->(
-    target: T | null,
-    eventType: K,
-    handler: (event: EventMap[K]) => void,
-    options?: boolean | AddEventListenerOptions,
-) => {
+>({
+    target,
+    eventType,
+    handler,
+    options,
+    deps,
+}: {
+    target: T | null;
+    eventType: K;
+    handler: (event: EventMap[K]) => void;
+    options?: boolean | AddEventListenerOptions;
+    deps?: React.DependencyList;
+}) => {
     const handlerRef = useRef(handler);
 
     /** 최신값 참조 */
@@ -28,5 +35,5 @@ export const useEventListener = <
         return () => {
             target.removeEventListener(eventType, listener);
         };
-    }, [target, eventType, options]);
+    }, [target, eventType, options, ...(deps || [])]);
 };

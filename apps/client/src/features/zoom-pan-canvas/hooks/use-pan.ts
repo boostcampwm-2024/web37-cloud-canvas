@@ -56,7 +56,19 @@ export const usePan = () => {
         applyCursorStyle('body', 'default');
     };
 
-    useEventListener(getCanvasEl(), 'mousedown', handleMouseDown);
-    useEventListener(getCanvasEl(), 'mousemove', handleMouseMove);
-    useEventListener(getCanvasEl(), 'mouseup', handleMouseUp);
+    useEventListener({
+        target: getCanvasEl(),
+        eventType: 'mousedown',
+        handler: handleMouseDown,
+    });
+    useEventListener({
+        target: document,
+        eventType: 'mousemove',
+        handler: handleMouseMove,
+    });
+    useEventListener({
+        target: document,
+        eventType: 'mouseup',
+        handler: handleMouseUp,
+    });
 };

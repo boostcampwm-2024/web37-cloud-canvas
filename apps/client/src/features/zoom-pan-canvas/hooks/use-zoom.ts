@@ -51,5 +51,10 @@ export const useZoom = () => {
         }, 500);
     };
 
-    useEventListener(getCanvasEl(), 'wheel', handleWheel, { passive: false });
+    useEventListener({
+        target: getCanvasEl(),
+        eventType: 'wheel',
+        handler: handleWheel,
+        options: { passive: false },
+    });
 };

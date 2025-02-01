@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
@@ -9,13 +9,15 @@ import { snapPoint } from '@/shared/lib/canvas/point';
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
 import type { CoordPoint } from '@/shared/types/canvas';
 
-export const useDragNode = () => {
+import { useDragNodeStore } from '../model/drag-node.store';
+
+export const useDragNode = (id: string) => {
     const { getCanvasEl } = useCanvasContext();
 
+    const { draggedId, setDraggedId } = useDragNodeStore();
     const viewMode = useCanvasStore.use.viewMode();
     const moveNode = useNodeStore.use.moveNode();
 
-    const [draggedId, setDraggedId] = useState<string | null>(null);
     const startPointRef = useRef<CoordPoint | null>(null);
 
     const startDragNode = (id: string, point: CoordPoint) => {
@@ -29,7 +31,7 @@ export const useDragNode = () => {
 
     const dragNode = (point: CoordPoint) => {
         const $canvas = getCanvasEl();
-        if (!$canvas || !draggedId) return;
+        if (!$canvas || !draggedId || draggedId !== id) return;
 
         const svgPoint = screenToSvgPoint($canvas, point);
         const offset = {
@@ -60,8 +62,16 @@ export const useDragNode = () => {
         stopDragNode();
     };
 
-    useEventListener(getCanvasEl(), 'mousemove', handleMouseMove);
-    useEventListener(getCanvasEl(), 'mouseup', handleMouseUp);
+    useEventListener({
+        target: getCanvasEl(),
+        eventType: 'mouseup',
+        handler: handleMouseUp,
+    });
+    useEventListener({
+        target: document,
+        eventType: 'mousemove',
+        handler: handleMouseMove,
+    });
 
     return {
         startDragNode,
