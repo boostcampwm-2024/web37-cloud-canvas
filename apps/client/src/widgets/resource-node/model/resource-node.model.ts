@@ -5,6 +5,17 @@ const ServerSVG = dynamic(
     { ssr: false },
 );
 
+const ContainerSVG = dynamic(
+    () =>
+        import('@/shared/ui/svg/container/index').then(
+            (mod) => mod.ContainerSVG,
+        ),
+    {
+        ssr: false,
+    },
+);
+
 export const ResourceNodeComponents = {
     server: ServerSVG,
+    container: ContainerSVG,
 };

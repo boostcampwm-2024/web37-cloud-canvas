@@ -18,7 +18,7 @@ export default function Page() {
                             key={node.id}
                             id={node.id}
                             point={node.point}
-                            resourceType="server"
+                            resourceType={node.properties.type}
                         />
                     ))}
                 </Canvas>

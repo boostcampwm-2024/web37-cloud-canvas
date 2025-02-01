@@ -20,3 +20,17 @@ export const ServerSVGConfig: ResourceSVGConfig = {
         },
     },
 };
+
+export const ContainerSVGConfig: ResourceSVGConfig = {
+    size: {
+        '2d': {
+            cols: 3,
+            rows: 3,
+        },
+        '3d': {
+            cols: 3,
+            rows: 3,
+            depth: 0.25,
+        },
+    },
+};
