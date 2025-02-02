@@ -5,8 +5,26 @@ import {
 
 import type { Node } from './node.types';
 
-const mockNode: Node = {
+const mockNode1: Node = {
     id: `mock-node-1111`,
+    point: { col: 0, row: 0 },
+    properties: {
+        type: 'server',
+    },
+    size: ServerSVGConfig.size,
+};
+
+const mockNode2: Node = {
+    id: `mock-node-2222`,
+    point: { col: 0, row: 0 },
+    properties: {
+        type: 'server',
+    },
+    size: ServerSVGConfig.size,
+};
+
+const mockNode3: Node = {
+    id: `mock-node-3333`,
     point: { col: 0, row: 0 },
     properties: {
         type: 'server',
@@ -24,7 +42,7 @@ const mockContainer: Node = {
     size: ContainerSVGConfig.size,
 };
 
-const mockNodes = [mockContainer, mockNode];
+const mockNodes = [mockContainer, mockNode1, mockNode2, mockNode3];
 
 export const initialMockNodes = mockNodes.reduce((nodes, curNode) => {
     return {

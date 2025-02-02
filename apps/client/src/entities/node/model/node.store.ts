@@ -2,9 +2,12 @@ import _ from 'lodash';
 
 import { create } from 'zustand';
 
-import { getCenterGridPoint } from '@/shared/lib/canvas/svg';
 import { createSelectors } from '@/shared/lib/zustand/selector';
 import { GridPoint } from '@/shared/types/canvas';
+import {
+    calcParentSizeByChildren,
+    calcChildrenLayout,
+} from '../lib/node-layout';
 import { initialMockNodes } from './mocks';
 import { Node } from './node.types';
 
@@ -50,24 +53,32 @@ const store = create<NodeStates & NodeActions>((set) => ({
             const parent = state.nodes[parentId];
             if (!parent) return state;
 
-            //INFO: container size는 2d, 3d 동일
-            const centerPoint = getCenterGridPoint(
-                parent.point,
-                parent.size['2d'],
-            );
+            const children = _.compact(
+                parent.children?.map((id) => state.nodes[id]),
+            ).concat(state.nodes[childId]);
+
+            const childrenLayout = calcChildrenLayout(parent, children);
+            const updatedChildren = children.map((child, idx) => ({
+                ...child,
+                parent: parentId,
+                ...childrenLayout[idx],
+            }));
+
+            const newSize = calcParentSizeByChildren(updatedChildren);
+            const updatedParent = {
+                ...parent,
+                children: updatedChildren.map((child) => child.id),
+                size: {
+                    '2d': _.merge(parent.size['2d'], newSize),
+                    '3d': _.merge(parent.size['3d'], newSize),
+                },
+            };
 
             return {
                 nodes: {
                     ...state.nodes,
-                    [parentId]: {
-                        ...parent,
-                        children: [...(parent.children || []), childId],
-                    },
-                    [childId]: {
-                        ...state.nodes[childId],
-                        parent: parentId,
-                        point: centerPoint,
-                    },
+                    [parentId]: updatedParent,
+                    ..._.keyBy(updatedChildren, 'id'),
                 },
             };
         }),
