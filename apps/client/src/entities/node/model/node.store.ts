@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 import { create } from 'zustand';
 
+import { getCenterGridPoint } from '@/shared/lib/canvas/svg';
 import { createSelectors } from '@/shared/lib/zustand/selector';
 import { GridPoint } from '@/shared/types/canvas';
 import { initialMockNodes } from './mocks';
@@ -49,6 +50,12 @@ const store = create<NodeStates & NodeActions>((set) => ({
             const parent = state.nodes[parentId];
             if (!parent) return state;
 
+            //INFO: container size는 2d, 3d 동일
+            const centerPoint = getCenterGridPoint(
+                parent.point,
+                parent.size['2d'],
+            );
+
             return {
                 nodes: {
                     ...state.nodes,
@@ -59,6 +66,7 @@ const store = create<NodeStates & NodeActions>((set) => ({
                     [childId]: {
                         ...state.nodes[childId],
                         parent: parentId,
+                        point: centerPoint,
                     },
                 },
             };

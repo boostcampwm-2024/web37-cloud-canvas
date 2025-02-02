@@ -1,4 +1,10 @@
-import type { CoordPoint } from '@/shared/types/canvas';
+import type {
+    CoordPoint,
+    GridPoint,
+    GridSize2D,
+    GridSize3D,
+    ViewMode,
+} from '@/shared/types/canvas';
 
 const createSvgPoint = (svg: SVGSVGElement, point: CoordPoint): SVGPoint => {
     const svgPoint = svg.createSVGPoint();
@@ -36,4 +42,14 @@ export const svgToScreenPoint = (
     const svgPoint = createSvgPoint(svg, point);
     const screenCTM = getScreenCTM(svg);
     return transformPoint(svgPoint, screenCTM);
+};
+
+export const getCenterGridPoint = (
+    point: GridPoint,
+    size: GridSize2D | GridSize2D,
+): GridPoint => {
+    return {
+        col: point.col + Math.floor(size.cols / 2),
+        row: point.row + Math.floor(size.rows / 2),
+    };
 };
