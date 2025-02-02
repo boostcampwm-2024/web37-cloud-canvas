@@ -49,7 +49,6 @@ const store = create<NodeStates & NodeActions>((set) => ({
             const parent = state.nodes[parentId];
             if (!parent) return state;
 
-            console.log('add');
             return {
                 nodes: {
                     ...state.nodes,

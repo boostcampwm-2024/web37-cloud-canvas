@@ -4,26 +4,24 @@ import { Canvas } from '@/widgets/canvas/ui/canvas';
 import { Header } from '@/widgets/header/ui/header';
 import { ResourceNode } from '@/widgets/resource-node/ui/resource-node';
 
-import { Droppable } from '@/features/drag-node/ui/droppable';
-
 import { useNodeStore } from '@/entities/node/model/node.store';
 
 export default function Page() {
     const nodes = useNodeStore.use.nodes();
+
     return (
         <div className="h-screen overflow-hidden">
             <div className="h-full">
                 <Header />
                 <Canvas>
                     {Object.values(nodes).map((node) => (
-                        <Droppable key={node.id}>
-                            <ResourceNode
-                                key={node.id}
-                                id={node.id}
-                                point={node.point}
-                                resourceType={node.properties.type}
-                            />
-                        </Droppable>
+                        <ResourceNode
+                            key={node.id}
+                            id={node.id}
+                            point={node.point}
+                            resourceType={node.properties.type}
+                            droppable={node.droppable}
+                        />
                     ))}
                 </Canvas>
             </div>

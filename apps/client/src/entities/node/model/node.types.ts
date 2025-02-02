@@ -6,4 +6,5 @@ export interface Node {
     children?: string[];
     parent?: string;
     properties: Record<string, any>;
+    droppable?: boolean;
 }

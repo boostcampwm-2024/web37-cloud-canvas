@@ -1,15 +1,12 @@
 import dynamic from 'next/dynamic';
 
 const ServerSVG = dynamic(
-    () => import('@/shared/ui/svg/server/index').then((mod) => mod.ServerSVG),
+    () => import('@/shared/ui/svg/server').then((mod) => mod.ServerSVG),
     { ssr: false },
 );
 
 const ContainerSVG = dynamic(
-    () =>
-        import('@/shared/ui/svg/container/index').then(
-            (mod) => mod.ContainerSVG,
-        ),
+    () => import('@/shared/ui/svg/container').then((mod) => mod.ContainerSVG),
     {
         ssr: false,
     },

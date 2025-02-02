@@ -1,20 +1,23 @@
 import { gridToCoordPoint } from '@/shared/lib/canvas/point';
 import { GridPoint, ViewMode } from '@/shared/types/canvas';
-import { ReactNode, SVGProps } from 'react';
+import { ResourceSVGProps } from '@/shared/types/resource';
+import { ComponentType, SVGProps } from 'react';
 
-interface NodeProps extends SVGProps<SVGGElement> {
+export interface NodeProps extends SVGProps<SVGGElement> {
+    id: string;
     point: GridPoint;
     viewMode: ViewMode;
-    children: ReactNode;
+    svg: ComponentType<ResourceSVGProps>;
 }
 export const Node = (props: NodeProps) => {
-    const { point, viewMode, children, ...rest } = props;
+    const { point, viewMode, svg: SVGCompnent, ...rest } = props;
 
     const coordPoint = gridToCoordPoint(point, viewMode);
     const transform = `translate(${coordPoint.x}, ${coordPoint.y})`;
+
     return (
         <g transform={transform} {...rest}>
-            {children}
+            <SVGCompnent viewMode={viewMode} />
         </g>
     );
 };
