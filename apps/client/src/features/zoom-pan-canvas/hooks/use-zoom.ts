@@ -9,7 +9,7 @@ import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
 import { applyCursorStyle } from '@/shared/lib/shadcn/utils';
 import type { CoordPoint } from '@/shared/types/canvas';
 
-import { Zoom } from '../model/zoom.model';
+import { MIN_ZOOM, MAX_ZOOM, SCALE_STEP } from '../config/zoom';
 
 export const useZoom = () => {
     const viewbox = useCanvasStore.use.viewbox();
@@ -18,21 +18,34 @@ export const useZoom = () => {
 
     const curZoomRatioRef = useRef<number>(1);
 
+    const validateZoomFactor = (zoomFactor: number): boolean => {
+        if (zoomFactor < 1 && zoomFactor <= MIN_ZOOM) return false;
+        if (zoomFactor > 1 && zoomFactor >= MAX_ZOOM) return false;
+        return true;
+    };
+
+    const calcZoomFactor = (currentZoom: number, zoomDelta: number): number => {
+        const newZoom = currentZoom * zoomDelta;
+        return Math.min(Math.max(newZoom, MIN_ZOOM), MAX_ZOOM);
+    };
+
     const zoom = (point: CoordPoint, zoomStep: number) => {
         const $canvas = getCanvasEl();
         if (!$canvas) return;
 
-        const newZoomFactor = Zoom.calcZoomFactor(
-            curZoomRatioRef.current,
-            zoomStep,
-        );
+        const newZoomFactor = calcZoomFactor(curZoomRatioRef.current, zoomStep);
 
-        if (!Zoom.validateZoomFactor(newZoomFactor)) return;
+        if (!validateZoomFactor(newZoomFactor)) return;
         curZoomRatioRef.current = newZoomFactor;
 
         const svgPoint = screenToSvgPoint($canvas!, point);
 
-        const newViewbox = Zoom.zoom(viewbox, svgPoint, zoomStep);
+        const newViewbox = {
+            x: viewbox.x + (svgPoint.x - viewbox.x) * (1 - zoomStep),
+            y: viewbox.y + (svgPoint.y - viewbox.y) * (1 - zoomStep),
+            width: viewbox.width * zoomStep,
+            height: viewbox.height * zoomStep,
+        };
 
         setViewbox(newViewbox);
     };
@@ -41,8 +54,7 @@ export const useZoom = () => {
         const point = { x: event.clientX, y: event.clientY };
 
         //INFO: deltaY > 0 is zoom in, deltaY < 0 is zoom out
-        const zoomStep =
-            event.deltaY > 0 ? 1 - Zoom.SCALE_STEP : 1 + Zoom.SCALE_STEP;
+        const zoomStep = event.deltaY > 0 ? 1 - SCALE_STEP : 1 + SCALE_STEP;
         zoom(point, zoomStep);
 
         applyCursorStyle('body', event.deltaY > 0 ? 'zoom-in' : 'zoom-out');

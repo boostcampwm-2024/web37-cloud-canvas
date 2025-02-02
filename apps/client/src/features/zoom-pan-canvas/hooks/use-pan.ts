@@ -62,12 +62,12 @@ export const usePan = () => {
         handler: handleMouseDown,
     });
     useEventListener({
-        target: document,
+        target: getCanvasEl(),
         eventType: 'mousemove',
         handler: handleMouseMove,
     });
     useEventListener({
-        target: document,
+        target: getCanvasEl(),
         eventType: 'mouseup',
         handler: handleMouseUp,
     });
