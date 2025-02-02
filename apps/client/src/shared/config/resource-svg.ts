@@ -1,11 +1,4 @@
-import { GridSize2D, GridSize3D } from '../types/canvas';
-
-interface ResourceSVGConfig {
-    size: {
-        '2d': GridSize2D;
-        '3d': GridSize3D;
-    };
-}
+import type { ResourceSVGConfig } from '../types/resource';
 
 export const ServerSVGConfig: ResourceSVGConfig = {
     size: {

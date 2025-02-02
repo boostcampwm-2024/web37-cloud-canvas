@@ -19,6 +19,7 @@ export default function Page() {
                             key={node.id}
                             id={node.id}
                             point={node.point}
+                            size={node.size}
                             resourceType={node.properties.type}
                             droppable={node.droppable}
                         />

@@ -1,4 +1,7 @@
-import { nanoid } from 'nanoid/non-secure';
+import {
+    ContainerSVGConfig,
+    ServerSVGConfig,
+} from '@/shared/config/resource-svg';
 
 import type { Node } from './node.types';
 
@@ -8,6 +11,7 @@ const mockNode: Node = {
     properties: {
         type: 'server',
     },
+    size: ServerSVGConfig.size,
 };
 
 const mockContainer: Node = {
@@ -17,6 +21,7 @@ const mockContainer: Node = {
         type: 'container',
     },
     droppable: true,
+    size: ContainerSVGConfig.size,
 };
 
 const mockNodes = [mockContainer, mockNode];

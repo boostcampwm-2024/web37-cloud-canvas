@@ -18,3 +18,8 @@ export interface GridSize2D {
 export interface GridSize3D extends GridSize2D {
     depth: number;
 }
+
+export interface SizeByViewMode {
+    '2d': GridSize2D;
+    '3d': GridSize3D;
+}

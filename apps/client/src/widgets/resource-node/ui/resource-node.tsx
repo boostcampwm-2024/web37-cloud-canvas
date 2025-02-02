@@ -3,7 +3,7 @@
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { Node } from '@/entities/node/ui/Node';
 import { Draggable } from '@/features/drag-drop-node/ui/draggable';
-import { GridPoint } from '@/shared/types/canvas';
+import { GridPoint, SizeByViewMode } from '@/shared/types/canvas';
 import { ResourceType } from '@/shared/types/resource';
 import { useMemo } from 'react';
 import { ResourceNodeComponents } from '../model/resource-node.model';
@@ -11,12 +11,13 @@ import { ResourceNodeComponents } from '../model/resource-node.model';
 interface ResourceNodeProps {
     id: string;
     point: GridPoint;
+    size: SizeByViewMode;
     resourceType: ResourceType;
     droppable?: boolean;
 }
 
 export const ResourceNode = (props: ResourceNodeProps) => {
-    const { id, point, resourceType, droppable } = props;
+    const { id, point, size, resourceType, droppable } = props;
 
     const viewMode = useCanvasStore.use.viewMode();
 
@@ -32,6 +33,7 @@ export const ResourceNode = (props: ResourceNodeProps) => {
             <Node
                 id={id}
                 point={point}
+                size={props.size}
                 viewMode={viewMode}
                 data-canvas-type="node"
                 data-resource-type={resourceType}

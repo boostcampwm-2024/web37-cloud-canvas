@@ -7,7 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "test": "vitest"
+        "test": "vitest",
+        "debug": "NODE_OPTIONS='--inspect' next dev"
     },
     "dependencies": {
         "@radix-ui/react-slot": "^1.1.1",
