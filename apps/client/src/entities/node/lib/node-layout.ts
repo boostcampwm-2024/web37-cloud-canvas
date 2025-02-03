@@ -5,10 +5,10 @@ import type { GridPoint, GridSize2D, GridSize3D } from '@/shared/types/canvas';
 import { GAP, PADDING } from '../config/layout';
 import type { Node } from '../model/node.types';
 
-export const calcChildrenLayout = (
+export const calcChildrenPoints = (
     parent: Node,
     children: Node[],
-): { point: GridPoint }[] => {
+): Array<GridPoint> => {
     if (!children.length) return [];
 
     return children.map((child, idx) => {
@@ -17,13 +17,11 @@ export const calcChildrenLayout = (
             (parent.size['2d'].rows - child.size['2d'].rows) / 2;
 
         return {
-            point: {
-                col:
-                    PADDING +
-                    parent.point.col +
-                    (child.size['2d'].cols + GAP) * idx,
-                row: centerRows,
-            },
+            col:
+                PADDING +
+                parent.point.col +
+                (child.size['2d'].cols + GAP) * idx,
+            row: centerRows,
         };
     });
 };

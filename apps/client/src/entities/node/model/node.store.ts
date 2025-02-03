@@ -6,7 +6,7 @@ import { createSelectors } from '@/shared/lib/zustand/selector';
 import { GridPoint } from '@/shared/types/canvas';
 import {
     calcParentSizeByChildren,
-    calcChildrenLayout,
+    calcChildrenPoints,
 } from '../lib/node-layout';
 import { initialMockNodes } from './mocks';
 import { Node } from './node.types';
@@ -53,17 +53,15 @@ const store = create<NodeStates & NodeActions>((set) => ({
             const parent = state.nodes[parentId];
             if (!parent) return state;
 
-            const children = _.compact(
-                _.uniq([childId, ...(parent.children ?? [])]).map(
-                    (id) => state.nodes[id],
-                ),
+            const children = _.uniq([childId, ...(parent.children ?? [])]).map(
+                (id) => state.nodes[id],
             );
 
-            const childrenLayout = calcChildrenLayout(parent, children);
+            const childrenPoints = calcChildrenPoints(parent, children);
             const updatedChildren = children.map((child, idx) => ({
                 ...child,
                 parent: parentId,
-                ...childrenLayout[idx],
+                point: childrenPoints[idx],
             }));
 
             const newSize = calcParentSizeByChildren(updatedChildren);
@@ -89,17 +87,40 @@ const store = create<NodeStates & NodeActions>((set) => ({
             const parent = state.nodes[parentId];
             if (!parent) return state;
 
+            const children = _.without(parent.children, childId).map(
+                (id) => state.nodes[id],
+            );
+            const childrenPoints = calcChildrenPoints(parent, children);
+            const updatedChildren = children.map((child, idx) => ({
+                ...child,
+                parent: parentId,
+                point: childrenPoints[idx],
+            }));
+
+            const newSize =
+                children.length > 0
+                    ? calcParentSizeByChildren(updatedChildren)
+                    : parent.size;
+            const updatedParent = {
+                ...parent,
+                children: updatedChildren.map((child) => child.id),
+                size: {
+                    '2d': _.merge(parent.size['2d'], newSize),
+                    '3d': _.merge(parent.size['3d'], newSize),
+                },
+            };
+
+            const excludedChild = {
+                ...state.nodes[childId],
+                parent: undefined,
+            };
+
             return {
                 nodes: {
                     ...state.nodes,
-                    [parentId]: {
-                        ...parent,
-                        children: _.without(parent.children, childId),
-                    },
-                    [childId]: {
-                        ...state.nodes[childId],
-                        parent: undefined,
-                    },
+                    [parentId]: updatedParent,
+                    [childId]: excludedChild,
+                    ..._.keyBy(updatedChildren, 'id'),
                 },
             };
         }),
