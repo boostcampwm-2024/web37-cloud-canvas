@@ -5,6 +5,7 @@ import { createSelectors } from '@/shared/lib/zustand/selector';
 import type { GridPoint } from '@/shared/types/canvas';
 
 import { calcParentSizeByChildren, calcChildrenPoints } from '../lib/layout';
+import { sortNode } from '../lib/sort';
 
 import type { Node } from './node.types';
 
@@ -27,22 +28,26 @@ const store = create<NodeStates & NodeActions>((set) => ({
     ...initialState,
     addNode: (node) =>
         set((state) => ({ nodes: { ...state.nodes, [node.id]: node } })),
-    moveNode: (id, point) =>
+    moveNode: (id, offset) =>
         set((state) => {
             const node = state.nodes[id];
             if (!node) return state;
 
-            return {
-                nodes: {
-                    ...state.nodes,
-                    [id]: {
-                        ...node,
-                        point: {
-                            col: node.point.col + point.col,
-                            row: node.point.row + point.row,
-                        },
-                    },
+            const children = (node.children ?? []).map((id) => state.nodes[id]);
+
+            const updatedNodes = [node, ...children].map((child) => ({
+                ...child,
+                point: {
+                    col: child.point.col + offset.col,
+                    row: child.point.row + offset.row,
                 },
+            }));
+
+            return {
+                nodes: sortNode({
+                    ...state.nodes,
+                    ..._.keyBy(updatedNodes, 'id'),
+                }),
             };
         }),
     addChildNode: (parentId, childId) =>
@@ -66,17 +71,17 @@ const store = create<NodeStates & NodeActions>((set) => ({
                 ...parent,
                 children: updatedChildren.map((child) => child.id),
                 size: {
-                    '2d': _.merge(parent.size['2d'], newSize),
-                    '3d': _.merge(parent.size['3d'], newSize),
+                    '2d': { ..._.merge(parent.size['2d'], newSize) },
+                    '3d': { ..._.merge(parent.size['3d'], newSize) },
                 },
             };
 
             return {
-                nodes: {
+                nodes: sortNode({
                     ...state.nodes,
                     [parentId]: updatedParent,
                     ..._.keyBy(updatedChildren, 'id'),
-                },
+                }),
             };
         }),
     removeChildNode: (parentId, childId) =>
@@ -102,8 +107,8 @@ const store = create<NodeStates & NodeActions>((set) => ({
                 ...parent,
                 children: updatedChildren.map((child) => child.id),
                 size: {
-                    '2d': _.merge(parent.size['2d'], newSize),
-                    '3d': _.merge(parent.size['3d'], newSize),
+                    '2d': { ..._.merge(parent.size['2d'], newSize) },
+                    '3d': { ..._.merge(parent.size['3d'], newSize) },
                 },
             };
 
@@ -113,12 +118,12 @@ const store = create<NodeStates & NodeActions>((set) => ({
             };
 
             return {
-                nodes: {
+                nodes: sortNode({
                     ...state.nodes,
                     [parentId]: updatedParent,
                     [childId]: excludedChild,
                     ..._.keyBy(updatedChildren, 'id'),
-                },
+                }),
             };
         }),
 }));
