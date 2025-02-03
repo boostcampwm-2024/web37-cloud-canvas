@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { CanvasProvider } from '@/entities/canvas/model/canvas.context';
 
 import './global.css';
+import { SidebarProvider } from '@/shared/ui/shadcn/sidebar';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -30,7 +31,9 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <CanvasProvider>{children}</CanvasProvider>
+                <CanvasProvider>
+                    <SidebarProvider>{children}</SidebarProvider>
+                </CanvasProvider>
             </body>
         </html>
     );

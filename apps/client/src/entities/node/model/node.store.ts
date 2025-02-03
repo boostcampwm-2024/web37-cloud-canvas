@@ -1,15 +1,12 @@
 import _ from 'lodash';
-
 import { create } from 'zustand';
 
 import { createSelectors } from '@/shared/lib/zustand/selector';
-import { GridPoint } from '@/shared/types/canvas';
-import {
-    calcParentSizeByChildren,
-    calcChildrenPoints,
-} from '../lib/node-layout';
-import { initialMockNodes } from './mocks';
-import { Node } from './node.types';
+import type { GridPoint } from '@/shared/types/canvas';
+
+import { calcParentSizeByChildren, calcChildrenPoints } from '../lib/layout';
+
+import type { Node } from './node.types';
 
 interface NodeStates {
     nodes: Record<string, Node>;
@@ -23,7 +20,7 @@ interface NodeActions {
 }
 
 const initialState: NodeStates = {
-    nodes: initialMockNodes,
+    nodes: {},
 };
 
 const store = create<NodeStates & NodeActions>((set) => ({

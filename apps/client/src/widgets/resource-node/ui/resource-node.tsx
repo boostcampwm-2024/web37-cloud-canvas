@@ -1,25 +1,32 @@
 'use client';
 
+import { useMemo } from 'react';
+
+import { Draggable } from '@/features/drag-drop-node/ui/draggable';
+
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { Node } from '@/entities/node/ui/Node';
-import { Draggable } from '@/features/drag-drop-node/ui/draggable';
-import { GridPoint, SizeByViewMode } from '@/shared/types/canvas';
-import { ResourceType } from '@/shared/types/resource';
-import { useMemo } from 'react';
+import { useResourceStore } from '@/entities/resource/model/resource.store';
+
+import type { GridPoint, SizeByViewMode } from '@/shared/types/canvas';
+import type { ResourceType } from '@/shared/types/resource';
+
 import { ResourceNodeComponents } from '../model/resource-node.model';
 
 interface ResourceNodeProps {
     id: string;
     point: GridPoint;
     size: SizeByViewMode;
-    resourceType: ResourceType;
     droppable?: boolean;
 }
 
 export const ResourceNode = (props: ResourceNodeProps) => {
-    const { id, point, size, resourceType, droppable } = props;
+    const { id, point, size, droppable } = props;
 
+    const resources = useResourceStore.use.resources();
     const viewMode = useCanvasStore.use.viewMode();
+
+    const resourceType = resources[id].properties.type as ResourceType;
 
     const SVGComponent = useMemo(
         () => ResourceNodeComponents[resourceType],
@@ -33,7 +40,7 @@ export const ResourceNode = (props: ResourceNodeProps) => {
             <Node
                 id={id}
                 point={point}
-                size={props.size}
+                size={size}
                 viewMode={viewMode}
                 data-canvas-type="node"
                 data-resource-type={resourceType}
