@@ -10,9 +10,7 @@ interface DraggableProps {
 export const Draggable = (props: DraggableProps) => {
     const { children, droppable } = props;
 
-    const { startDrag, enterDropZone, leaveDropZone } = useDragDrop(
-        children.props.id,
-    );
+    const { startDrag, enterDropZone } = useDragDrop(children.props.id);
 
     const handleMouseDown = (event: React.MouseEvent) => {
         event.stopPropagation();
@@ -23,13 +21,8 @@ export const Draggable = (props: DraggableProps) => {
         enterDropZone();
     };
 
-    const handleMouseLeave = () => {
-        leaveDropZone();
-    };
-
     return cloneElement(children, {
         onMouseDownCapture: handleMouseDown,
         onMouseEnter: droppable ? handleMouseEnter : undefined,
-        onMouseLeave: droppable ? handleMouseLeave : undefined,
     });
 };

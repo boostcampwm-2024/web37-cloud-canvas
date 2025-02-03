@@ -23,3 +23,5 @@ export interface SizeByViewMode {
     '2d': GridSize2D;
     '3d': GridSize3D;
 }
+
+export type GridBoundary = GridPoint & GridSize2D;

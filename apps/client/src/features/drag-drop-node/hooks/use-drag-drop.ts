@@ -1,11 +1,12 @@
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { useNodeStore } from '@/entities/node/model/node.store';
+import type { Node } from '@/entities/node/model/node.types';
 
 import { useEventListener } from '@/shared/hooks/useEventListener';
 import { snapPoint } from '@/shared/lib/canvas/point';
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
-import type { CoordPoint } from '@/shared/types/canvas';
+import type { CoordPoint, GridBoundary, ViewMode } from '@/shared/types/canvas';
 
 import { useDragDropStore } from '../model/drag-drop.store';
 
@@ -20,6 +21,7 @@ export const useDragDrop = (nodeId: string) => {
         setHoverDropZoneId,
         resetDragState,
     } = useDragDropStore();
+    const nodes = useNodeStore.use.nodes();
     const viewMode = useCanvasStore.use.viewMode();
     const moveNode = useNodeStore.use.moveNode();
     const addChildNode = useNodeStore.use.addChildNode();
@@ -42,6 +44,53 @@ export const useDragDrop = (nodeId: string) => {
 
     const isDraggable = () => {
         return draggedId === nodeId;
+    };
+
+    const getNodeGridBoundary = (
+        node: Node,
+        viewMode: ViewMode,
+    ): GridBoundary => {
+        return {
+            col: node.point.col,
+            row: node.point.row,
+            cols: node.size[viewMode].cols,
+            rows: node.size[viewMode].rows,
+        };
+    };
+
+    const isOutside = (
+        itemBoundary: GridBoundary,
+        containerBoundary: GridBoundary,
+    ) => {
+        const srcCenterPoint = {
+            col: itemBoundary.col + itemBoundary.cols / 2,
+            row: itemBoundary.row + itemBoundary.rows / 2,
+        };
+
+        return (
+            srcCenterPoint.col < containerBoundary.col ||
+            srcCenterPoint.col >
+                containerBoundary.col + containerBoundary.cols ||
+            srcCenterPoint.row < containerBoundary.row ||
+            srcCenterPoint.row > containerBoundary.row + containerBoundary.rows
+        );
+    };
+
+    const isOuterOfDropZone = () => {
+        if (!draggedId || !hoverDropZoneId) return false;
+
+        const dropZoneNode = nodes[hoverDropZoneId];
+        const isDropZoneHasChild = dropZoneNode?.children?.includes(draggedId);
+        if (!isDropZoneHasChild) return false;
+
+        const dropZoneGridBoundary = getNodeGridBoundary(
+            dropZoneNode,
+            viewMode,
+        );
+        const draggedNode = nodes[draggedId];
+        const draggedGridBoundary = getNodeGridBoundary(draggedNode, viewMode);
+
+        return isOutside(draggedGridBoundary, dropZoneGridBoundary);
     };
 
     const startDrag = (point: CoordPoint) => {
@@ -107,12 +156,14 @@ export const useDragDrop = (nodeId: string) => {
         eventType: 'mousemove',
         handler: (event) => {
             processDrag({ x: event.clientX, y: event.clientY });
+            if (isOuterOfDropZone()) {
+                leaveDropZone();
+            }
         },
     });
 
     return {
         startDrag,
         enterDropZone,
-        leaveDropZone,
     };
 };
