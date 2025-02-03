@@ -54,8 +54,10 @@ const store = create<NodeStates & NodeActions>((set) => ({
             if (!parent) return state;
 
             const children = _.compact(
-                parent.children?.map((id) => state.nodes[id]),
-            ).concat(state.nodes[childId]);
+                _.uniq([childId, ...(parent.children ?? [])]).map(
+                    (id) => state.nodes[id],
+                ),
+            );
 
             const childrenLayout = calcChildrenLayout(parent, children);
             const updatedChildren = children.map((child, idx) => ({
