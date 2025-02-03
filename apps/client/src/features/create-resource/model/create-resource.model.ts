@@ -4,6 +4,7 @@ import type { Node } from '@/entities/node/model/node.types';
 import type { Resource } from '@/entities/resource/model/resource.types';
 
 import {
+    DefaultCloudFunctionSVGSize,
     DefaultContainerSVGSize,
     DefaultServerSVGSize,
 } from '@/shared/config/resource-svg';
@@ -28,6 +29,12 @@ export const createNodeFactory = (type: ResourceType): Node => {
                 point: defaultPoint,
                 size: DefaultContainerSVGSize,
                 droppable: true,
+            };
+        case 'cloud-function':
+            return {
+                id,
+                point: defaultPoint,
+                size: DefaultCloudFunctionSVGSize,
             };
     }
 };
@@ -62,6 +69,19 @@ export const createResourceFactory = (
                 },
                 properties: {
                     type: 'container',
+                },
+            };
+        case 'cloud-function':
+            return {
+                id,
+                networks: {
+                    region: '',
+                    vpc: '',
+                    subnet: '',
+                    securityGroup: '',
+                },
+                properties: {
+                    type: 'cloud-function',
                 },
             };
     }

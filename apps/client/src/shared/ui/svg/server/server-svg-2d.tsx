@@ -1,12 +1,7 @@
 import { GRID_SIZE_2D } from '@/shared/config/canvas';
-import { GridSize2D } from '@/shared/types/canvas';
-import { SVGProps } from 'react';
+import type { ResourceSVG2DProps } from '@/shared/types/resource';
 
-interface ServerSVG2DProps extends SVGProps<SVGSVGElement> {
-    size: GridSize2D;
-}
-
-export const ServerSVG2D = (props: ServerSVG2DProps) => {
+export const ServerSVG2D = (props: ResourceSVG2DProps) => {
     const { size, ...svgProps } = props;
 
     const width = GRID_SIZE_2D * size.cols;

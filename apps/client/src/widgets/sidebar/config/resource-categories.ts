@@ -1,4 +1,4 @@
-import { ResourceType } from '@/shared/types/resource';
+import type { ResourceType } from '@/shared/types/resource';
 
 export interface ResourceCategory {
     title: string;

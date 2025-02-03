@@ -7,7 +7,7 @@ import type {
     ViewMode,
 } from './canvas';
 
-export type ResourceType = 'server' | 'container';
+export type ResourceType = 'server' | 'container' | 'cloud-function';
 
 export interface ResourceSVGProps extends SVGProps<SVGSVGElement> {
     viewMode: ViewMode;

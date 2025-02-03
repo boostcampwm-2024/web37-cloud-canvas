@@ -12,7 +12,16 @@ const ContainerSVG = dynamic(
     },
 );
 
+const CloudFunctionSVG = dynamic(
+    () =>
+        import('@/shared/ui/svg/cloud-function').then(
+            (mod) => mod.CloudFunctionSVG,
+        ),
+    { ssr: false },
+);
+
 export const ResourceNodeComponents = {
     server: ServerSVG,
     container: ContainerSVG,
+    'cloud-function': CloudFunctionSVG,
 };

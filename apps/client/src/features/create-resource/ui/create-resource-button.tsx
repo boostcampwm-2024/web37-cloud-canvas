@@ -19,7 +19,7 @@ export const CreateResourceButton = (props: CreateResourceButtonProps) => {
     const addNode = useNodeStore.use.addNode();
     const addResource = useResourceStore.use.addResource();
 
-    const handleCreateResource = () => {
+    const handleClick = () => {
         const node = createNodeFactory(type);
         const resource = createResourceFactory(type, node.id);
 
@@ -31,7 +31,7 @@ export const CreateResourceButton = (props: CreateResourceButtonProps) => {
         <Button
             variant="ghost"
             className="w-full justify-start"
-            onClick={handleCreateResource}
+            onClick={handleClick}
         >
             {title}
         </Button>

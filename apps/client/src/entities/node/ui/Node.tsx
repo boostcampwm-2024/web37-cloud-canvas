@@ -1,7 +1,12 @@
+import type { ComponentType, SVGProps } from 'react';
+
 import { gridToCoordPoint } from '@/shared/lib/canvas/point';
-import { GridPoint, SizeByViewMode, ViewMode } from '@/shared/types/canvas';
-import { ResourceSVGProps } from '@/shared/types/resource';
-import { ComponentType, SVGProps } from 'react';
+import type {
+    GridPoint,
+    SizeByViewMode,
+    ViewMode,
+} from '@/shared/types/canvas';
+import type { ResourceSVGProps } from '@/shared/types/resource';
 
 export interface NodeProps extends SVGProps<SVGGElement> {
     id: string;

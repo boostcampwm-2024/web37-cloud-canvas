@@ -23,3 +23,15 @@ export const DefaultContainerSVGSize: SizeByViewMode = {
         depth: 0.25,
     },
 };
+
+export const DefaultCloudFunctionSVGSize: SizeByViewMode = {
+    '2d': {
+        cols: 1,
+        rows: 1,
+    },
+    '3d': {
+        cols: 1,
+        rows: 1,
+        depth: 1.25,
+    },
+};
