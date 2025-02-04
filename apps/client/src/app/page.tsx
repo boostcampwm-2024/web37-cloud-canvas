@@ -7,6 +7,8 @@ import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
 import { useNodeStore } from '@/entities/node/model/node.store';
 
+import { AutoScalingSVG } from '@/shared/ui/svg/auto-scaling';
+
 export default function Page() {
     const nodes = useNodeStore.use.nodes();
 

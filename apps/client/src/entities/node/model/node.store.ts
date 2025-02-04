@@ -66,7 +66,7 @@ const store = create<NodeStates & NodeActions>((set) => ({
                 point: childrenPoints[idx],
             }));
 
-            const newSize = calcParentSizeByChildren(updatedChildren);
+            const newSize = calcParentSizeByChildren(parent, updatedChildren);
             const updatedParent = {
                 ...parent,
                 children: updatedChildren.map((child) => child.id),
@@ -101,7 +101,7 @@ const store = create<NodeStates & NodeActions>((set) => ({
 
             const newSize =
                 children.length > 0
-                    ? calcParentSizeByChildren(updatedChildren)
+                    ? calcParentSizeByChildren(parent, updatedChildren)
                     : parent.size;
             const updatedParent = {
                 ...parent,

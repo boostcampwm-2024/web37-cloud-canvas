@@ -20,8 +20,19 @@ const CloudFunctionSVG = dynamic(
     { ssr: false },
 );
 
+const AutoScalingSVG = dynamic(
+    () =>
+        import('@/shared/ui/svg/auto-scaling').then(
+            (mod) => mod.AutoScalingSVG,
+        ),
+    {
+        ssr: false,
+    },
+);
+
 export const ResourceNodeComponents = {
     server: ServerSVG,
     container: ContainerSVG,
     'cloud-function': CloudFunctionSVG,
+    'auto-scaling': AutoScalingSVG,
 };

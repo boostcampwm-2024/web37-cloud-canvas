@@ -35,3 +35,15 @@ export const DefaultCloudFunctionSVGSize: SizeByViewMode = {
         depth: 1.25,
     },
 };
+
+export const DefaultAutoScalingSVGSize: SizeByViewMode = {
+    '2d': {
+        cols: 2,
+        rows: 1,
+    },
+    '3d': {
+        cols: 2,
+        rows: 1,
+        depth: 0,
+    },
+};

@@ -13,9 +13,7 @@ export const CloudFunctionSVG3D = (props: ResourceSVG3DProps) => {
             height={height}
             x={364}
             y={-136}
-            style={{
-                overflow: 'visible',
-            }}
+            overflow="visible"
             {...svgProps}
         >
             <path

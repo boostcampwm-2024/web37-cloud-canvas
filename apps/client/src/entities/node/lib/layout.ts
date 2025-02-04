@@ -27,6 +27,7 @@ export const calcChildrenPoints = (
 };
 
 export const calcParentSizeByChildren = (
+    parent: Node,
     children: Node[],
 ): GridSize2D | GridSize3D => {
     const totalChildrenWidth = _.sumBy(
@@ -37,7 +38,7 @@ export const calcParentSizeByChildren = (
     const totalPadding = PADDING * 2;
 
     return {
-        rows: children[0].size['2d'].rows + totalPadding,
+        rows: parent.size['2d'].rows,
         cols: totalChildrenWidth + totalGaps + totalPadding,
     };
 };

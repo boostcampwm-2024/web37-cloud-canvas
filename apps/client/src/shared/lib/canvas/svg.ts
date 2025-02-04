@@ -1,10 +1,4 @@
-import type {
-    CoordPoint,
-    GridPoint,
-    GridSize2D,
-    GridSize3D,
-    ViewMode,
-} from '@/shared/types/canvas';
+import type { CoordPoint, GridPoint, GridSize2D } from '@/shared/types/canvas';
 
 const createSvgPoint = (svg: SVGSVGElement, point: CoordPoint): SVGPoint => {
     const svgPoint = svg.createSVGPoint();
