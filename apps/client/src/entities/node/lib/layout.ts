@@ -1,44 +1,94 @@
-import _ from 'lodash';
-
 import type { GridPoint, GridSize2D, GridSize3D } from '@/shared/types/canvas';
+import type { ResourceDropLayoutType } from '@/shared/types/resource';
 
-import { GAP, PADDING } from '../config/layout';
 import type { Node } from '../model/node.types';
 
-export const calcChildrenPoints = (
-    parent: Node,
-    children: Node[],
-): Array<GridPoint> => {
-    if (!children.length) return [];
+const calcSquareLayout = (parent: Node, children: Node[], padding: number) => {
+    const numChildren = children.length;
+    const cols = Math.ceil(Math.sqrt(numChildren));
 
     return children.map((child, idx) => {
-        const centerRows =
-            parent.point.row +
-            (parent.size['2d'].rows - child.size['2d'].rows) / 2;
+        const row = Math.floor(idx / cols);
+        const col = idx % cols;
+
+        const childWidth = child.size['2d'].cols;
+        const childHeight = child.size['2d'].rows;
+
+        const colOffset = col * childWidth;
+        const rowOffset = row * childHeight;
+
+        const centerCol = parent.point.col + padding + colOffset;
+
+        const centerRow = parent.point.row + padding + rowOffset;
 
         return {
-            col:
-                PADDING +
-                parent.point.col +
-                (child.size['2d'].cols + GAP) * idx,
-            row: centerRows,
+            col: centerCol,
+            row: centerRow,
         };
     });
 };
 
-export const calcParentSizeByChildren = (
+const calcHorizontalLayout = (
     parent: Node,
     children: Node[],
-): GridSize2D | GridSize3D => {
-    const totalChildrenWidth = _.sumBy(
-        children,
-        (child) => child.size['2d'].cols,
+    padding: number,
+) => {
+    return children.map((child, idx) => {
+        const colOffset = idx * child.size['2d'].cols;
+
+        return {
+            col: parent.point.col + padding + colOffset,
+            row: parent.point.row + padding,
+        };
+    });
+};
+
+const calcChildrenBoundary = (children: Node[]) => {
+    return children.reduce(
+        (boundary, node) => {
+            const { col, row } = node.point;
+            const { cols, rows } = node.size['2d'];
+
+            return {
+                minCol: Math.min(boundary.minCol, col),
+                maxCol: Math.max(boundary.maxCol, col + cols),
+                minRow: Math.min(boundary.minRow, row),
+                maxRow: Math.max(boundary.maxRow, row + rows),
+            };
+        },
+        {
+            minCol: Infinity,
+            maxCol: -Infinity,
+            minRow: Infinity,
+            maxRow: -Infinity,
+        },
     );
-    const totalGaps = GAP * (children.length - 1);
-    const totalPadding = PADDING * 2;
+};
+
+export const calcChildrenPoints = (
+    parent: Node,
+    children: Node[],
+    layoutType: ResourceDropLayoutType = 'horizontal',
+    padding: number = 1,
+): Array<GridPoint> => {
+    if (!children.length) return [];
+
+    switch (layoutType) {
+        case 'square':
+            return calcSquareLayout(parent, children, padding);
+        case 'horizontal':
+            return calcHorizontalLayout(parent, children, padding);
+    }
+};
+
+export const calcParentSizeByChildren = (
+    children: Node[],
+    padding: number = 1,
+): GridSize2D | GridSize3D => {
+    const childrenBoundary = calcChildrenBoundary(children);
 
     return {
-        rows: parent.size['2d'].rows,
-        cols: totalChildrenWidth + totalGaps + totalPadding,
+        rows: childrenBoundary.maxRow - childrenBoundary.minRow + padding * 2,
+        cols: childrenBoundary.maxCol - childrenBoundary.minCol + padding * 2,
     };
 };
