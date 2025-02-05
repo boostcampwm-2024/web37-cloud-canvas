@@ -1,15 +1,14 @@
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { useNodeStore } from '@/entities/node/model/node.store';
-import type { Node } from '@/entities/node/model/node.types';
 import { useResourceStore } from '@/entities/resource/model/resource.store';
 
-import { useEventListener } from '@/shared/hooks/useEventListener';
 import { snapPoint } from '@/shared/lib/canvas/point';
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
-import type { CoordPoint, GridBoundary, ViewMode } from '@/shared/types/canvas';
+import type { CoordPoint } from '@/shared/types/canvas';
 
 import { DROP_OPTIONS } from '../config/drop';
+import { getNodeGridBoundary, isOutsideBoundary } from '../lib/boundary';
 import { useDragDropStore } from '../model/drag-drop.store';
 
 export const useDragDrop = (nodeId: string) => {
@@ -37,60 +36,35 @@ export const useDragDrop = (nodeId: string) => {
         $node?.setAttribute('pointer-events', value);
     };
 
-    const calculateDragOffset = (currentPoint: CoordPoint): CoordPoint => {
-        if (!prevDragPoint) return { x: 0, y: 0 };
-
+    const calculateDragOffset = (
+        currentPoint: CoordPoint,
+        previousPoint: CoordPoint,
+    ): CoordPoint => {
         return {
-            x: currentPoint.x - prevDragPoint.x,
-            y: currentPoint.y - prevDragPoint.y,
+            x: currentPoint.x - previousPoint.x,
+            y: currentPoint.y - previousPoint.y,
         };
-    };
-
-    const getNodeGridBoundary = (
-        node: Node,
-        viewMode: ViewMode,
-    ): GridBoundary => {
-        return {
-            col: node.point.col,
-            row: node.point.row,
-            cols: node.size[viewMode].cols,
-            rows: node.size[viewMode].rows,
-        };
-    };
-
-    const isOutside = (
-        itemBoundary: GridBoundary,
-        containerBoundary: GridBoundary,
-    ) => {
-        const srcCenterPoint = {
-            col: itemBoundary.col + itemBoundary.cols / 2,
-            row: itemBoundary.row + itemBoundary.rows / 2,
-        };
-
-        return (
-            srcCenterPoint.col < containerBoundary.col ||
-            srcCenterPoint.col >
-                containerBoundary.col + containerBoundary.cols ||
-            srcCenterPoint.row < containerBoundary.row ||
-            srcCenterPoint.row > containerBoundary.row + containerBoundary.rows
-        );
     };
 
     const isOuterOfDropZone = () => {
         if (!draggedId || !hoverDropZoneId) return false;
 
         const dropZoneNode = nodes[hoverDropZoneId];
-        const isDropZoneHasChild = dropZoneNode?.children?.includes(draggedId);
-        if (!isDropZoneHasChild) return false;
+        if (!dropZoneNode?.children?.includes(draggedId)) return false;
 
-        const dropZoneGridBoundary = getNodeGridBoundary(
-            dropZoneNode,
+        const dropZoneGridBoundary = getNodeGridBoundary({
+            node: dropZoneNode,
             viewMode,
-        );
-        const draggedNode = nodes[draggedId];
-        const draggedGridBoundary = getNodeGridBoundary(draggedNode, viewMode);
+        });
+        const draggedGridBoundary = getNodeGridBoundary({
+            node: nodes[draggedId],
+            viewMode,
+        });
 
-        return isOutside(draggedGridBoundary, dropZoneGridBoundary);
+        return isOutsideBoundary({
+            itemBoundary: draggedGridBoundary,
+            containerBoundary: dropZoneGridBoundary,
+        });
     };
 
     const startDrag = (point: CoordPoint) => {
@@ -105,38 +79,41 @@ export const useDragDrop = (nodeId: string) => {
 
     const processDrag = (point: CoordPoint) => {
         const $canvas = getCanvasEl();
-        if (!$canvas || draggedId !== nodeId) return;
+        if (!$canvas || draggedId !== nodeId || !prevDragPoint) return;
 
         const svgPoint = screenToSvgPoint($canvas, point);
-        const offset = calculateDragOffset(svgPoint);
+        const offset = calculateDragOffset(svgPoint, prevDragPoint);
 
         const snappedPoint = snapPoint(offset, viewMode);
         moveNode(nodeId, snappedPoint.grid);
 
         const updatedPoint = {
-            x: prevDragPoint!.x + snappedPoint.coord.x,
-            y: prevDragPoint!.y + snappedPoint.coord.y,
+            x: prevDragPoint.x + snappedPoint.coord.x,
+            y: prevDragPoint.y + snappedPoint.coord.y,
         };
 
         setPrevDragPoint(updatedPoint);
+    };
+    const dropDropZone = () => {
+        if (!hoverDropZoneId || !draggedId) return;
+
+        const dropZoneResource = resources[hoverDropZoneId];
+        const draggedResource = resources[draggedId];
+        const options = DROP_OPTIONS[dropZoneResource.properties.type];
+
+        if (options.accepts.includes(draggedResource.properties.type)) {
+            addChildNode(hoverDropZoneId, draggedId);
+            updateNodeLayout(hoverDropZoneId, {
+                layoutType: options.layoutType,
+                padding: options.padding,
+            });
+        }
     };
 
     const stopDrag = () => {
         if (draggedId !== nodeId) return;
 
-        if (hoverDropZoneId) {
-            const dropZoneResource = resources[hoverDropZoneId];
-            const draggedResource = resources[draggedId];
-            const options = DROP_OPTIONS[dropZoneResource.properties.type];
-            if (options.accepts.includes(draggedResource.properties.type)) {
-                addChildNode(hoverDropZoneId, nodeId);
-                updateNodeLayout(hoverDropZoneId, {
-                    layoutType: options.layoutType,
-                    padding: options.padding,
-                });
-            }
-        }
-
+        dropDropZone();
         resetDragState();
         updateNodePointerEvents('default');
     };
@@ -160,25 +137,12 @@ export const useDragDrop = (nodeId: string) => {
         setHoverDropZoneId(null);
     };
 
-    useEventListener({
-        target: getCanvasEl(),
-        eventType: 'mouseup',
-        handler: () => stopDrag(),
-    });
-
-    useEventListener({
-        target: getCanvasEl(),
-        eventType: 'mousemove',
-        handler: (event) => {
-            processDrag({ x: event.clientX, y: event.clientY });
-            if (isOuterOfDropZone()) {
-                leaveDropZone();
-            }
-        },
-    });
-
     return {
         startDrag,
+        processDrag,
+        stopDrag,
+        isOuterOfDropZone,
+        leaveDropZone,
         enterDropZone,
     };
 };
