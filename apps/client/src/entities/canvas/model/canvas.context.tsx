@@ -14,7 +14,7 @@ import type { Viewbox } from './canvas.types';
 
 interface CanvasContext {
     canvasRef: RefObject<SVGSVGElement | null>;
-    getCanvasEl: () => SVGSVGElement | null;
+    getCanvasEl: () => SVGSVGElement;
 }
 
 const CanvasContext = createContext<CanvasContext | null>(null);
@@ -30,7 +30,10 @@ export const CanvasProvider = (props: CanvasProviderProps) => {
     const canvasRef = useRef<SVGSVGElement>(null);
     const setViewbox = useCanvasStore.use.setViewbox();
 
-    const getCanvasEl = useCallback(() => canvasRef.current, []);
+    const getCanvasEl = useCallback(
+        () => canvasRef.current as SVGSVGElement,
+        [],
+    );
 
     const initializeViewbox = useCallback(
         ($canvas: SVGSVGElement) => {
@@ -51,10 +54,10 @@ export const CanvasProvider = (props: CanvasProviderProps) => {
     );
 
     useLayoutEffect(() => {
-        const $canvas = getCanvasEl();
-        if (!$canvas) return;
+        if (!canvasRef.current)
+            throw new Error('CanvasProvider: canvas element이 없습니다.');
 
-        initializeViewbox($canvas);
+        initializeViewbox(canvasRef.current);
     }, [getCanvasEl, initializeViewbox]);
 
     return (

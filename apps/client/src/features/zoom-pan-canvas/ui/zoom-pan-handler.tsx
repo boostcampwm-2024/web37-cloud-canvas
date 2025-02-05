@@ -10,9 +10,10 @@ import { useZoom } from '../hooks/use-zoom';
 
 export const ZoomPanHandler = () => {
     const { getCanvasEl } = useCanvasContext();
+    const $canvas = getCanvasEl();
 
-    const { zoomIn, zoomOut } = useZoom();
-    const { startPan, movePan, stopPan } = usePan();
+    const { zoomIn, zoomOut } = useZoom($canvas);
+    const { startPan, movePan, stopPan } = usePan($canvas);
 
     const handleMouseDown = (e: MouseEvent) => {
         applyCursorStyle('body', 'grab');
@@ -45,23 +46,23 @@ export const ZoomPanHandler = () => {
     };
 
     useEventListener({
-        target: getCanvasEl(),
+        target: $canvas,
         eventType: 'mousedown',
         handler: handleMouseDown,
     });
     useEventListener({
-        target: getCanvasEl(),
+        target: $canvas,
         eventType: 'mousemove',
         handler: handleMouseMove,
     });
     useEventListener({
-        target: getCanvasEl(),
+        target: $canvas,
         eventType: 'mouseup',
         handler: handleMouseUp,
     });
 
     useEventListener({
-        target: getCanvasEl(),
+        target: $canvas,
         eventType: 'wheel',
         handler: handleWheel,
         options: { passive: false },

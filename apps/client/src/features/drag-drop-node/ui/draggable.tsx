@@ -13,14 +13,13 @@ export const Draggable = (props: Draggable) => {
     const { nodeId, children } = props;
 
     const { getCanvasEl } = useCanvasContext();
-    const { startDrag, processDrag, stopDrag } = useDrag(nodeId);
+    const $canvas = getCanvasEl();
+
+    const { startDrag, processDrag, stopDrag } = useDrag(nodeId, $canvas);
 
     const handleMouseDown = (event: React.MouseEvent) => {
         event.stopPropagation();
         startDrag({ x: event.clientX, y: event.clientY });
-
-        const canvas = getCanvasEl();
-        if (!canvas) return;
 
         const handleMouseMove = (e: MouseEvent) => {
             processDrag({ x: e.clientX, y: e.clientY });
@@ -28,12 +27,12 @@ export const Draggable = (props: Draggable) => {
 
         const handleMouseUp = () => {
             stopDrag();
-            canvas.removeEventListener('mousemove', handleMouseMove);
-            canvas.removeEventListener('mouseup', handleMouseUp);
+            $canvas.removeEventListener('mousemove', handleMouseMove);
+            $canvas.removeEventListener('mouseup', handleMouseUp);
         };
 
-        canvas.addEventListener('mousemove', handleMouseMove);
-        canvas.addEventListener('mouseup', handleMouseUp);
+        $canvas.addEventListener('mousemove', handleMouseMove);
+        $canvas.addEventListener('mouseup', handleMouseUp);
     };
 
     return <g onMouseDownCapture={handleMouseDown}>{children}</g>;

@@ -11,14 +11,13 @@ import type { CoordPoint } from '@/shared/types/canvas';
 
 import { useDragStore } from '../model/drag.store';
 
-export const useDrag = (nodeId: string) => {
-    const { getCanvasEl } = useCanvasContext();
-    const prevPointRef = useRef<CoordPoint | null>(null);
-
+export const useDrag = (nodeId: string, $canvas: SVGSVGElement) => {
+    const viewMode = useCanvasStore.use.viewMode();
     const nodes = useNodeStore.use.nodes();
     const setDraggedId = useDragStore.use.setDraggedId();
-    const viewMode = useCanvasStore.use.viewMode();
     const moveNode = useNodeStore.use.moveNode();
+
+    const prevPointRef = useRef<CoordPoint | null>(null);
 
     const calculateDragOffset = (
         currentPoint: CoordPoint,
@@ -31,9 +30,6 @@ export const useDrag = (nodeId: string) => {
     };
 
     const updatePointerEvents = (value: 'default' | 'none') => {
-        const $canvas = getCanvasEl();
-        if (!$canvas) return;
-
         const nodesWithoutDroppable = _.omitBy(nodes, (node) => {
             return node.droppable;
         });
@@ -44,9 +40,6 @@ export const useDrag = (nodeId: string) => {
     };
 
     const startDrag = (point: CoordPoint) => {
-        const $canvas = getCanvasEl();
-        if (!$canvas) return;
-
         const svgPoint = screenToSvgPoint($canvas, point);
         prevPointRef.current = svgPoint;
         setDraggedId(nodeId);
@@ -54,9 +47,6 @@ export const useDrag = (nodeId: string) => {
     };
 
     const processDrag = (point: CoordPoint) => {
-        const $canvas = getCanvasEl();
-        if (!$canvas) return;
-
         const svgPoint = screenToSvgPoint($canvas, point);
         const prevPoint = prevPointRef.current;
         if (!prevPoint) return;
