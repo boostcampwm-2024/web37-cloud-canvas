@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 
-import { DnDResourceNode } from '@/features/drag-drop-node/ui/draggable';
+import { DnDWrapper } from '@/features/drag-drop-node/ui/dnd-wrapper';
 
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { Node } from '@/entities/node/ui/Node';
@@ -36,7 +36,7 @@ export const ResourceNode = (props: ResourceNodeProps) => {
     if (!SVGComponent) return null;
 
     return (
-        <DnDResourceNode droppable={droppable}>
+        <DnDWrapper droppable={droppable}>
             <Node
                 id={id}
                 point={point}
@@ -46,6 +46,6 @@ export const ResourceNode = (props: ResourceNodeProps) => {
                 data-resource-type={resourceType}
                 svg={SVGComponent}
             />
-        </DnDResourceNode>
+        </DnDWrapper>
     );
 };

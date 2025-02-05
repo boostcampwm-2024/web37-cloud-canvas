@@ -1,65 +1,40 @@
-import type { ReactElement } from 'react';
-import { cloneElement } from 'react';
+import type { ReactNode } from 'react';
 
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
-import type { NodeProps } from '@/entities/node/ui/Node';
 
-import { useEventListener } from '@/shared/hooks/useEventListener';
+import { useDrag } from '../hooks/use-darg';
 
-import { useDragDrop } from '../hooks/use-drag-drop';
-
-interface DnDResourceNodeProps {
-    children: ReactElement<NodeProps>;
-    droppable?: boolean;
+interface Draggable {
+    nodeId: string;
+    children: ReactNode;
 }
 
-export const DnDResourceNode = (props: DnDResourceNodeProps) => {
-    const { children, droppable } = props;
+export const Draggable = (props: Draggable) => {
+    const { nodeId, children } = props;
 
     const { getCanvasEl } = useCanvasContext();
-    const {
-        startDrag,
-        stopDrag,
-        processDrag,
-        isOuterOfDropZone,
-        leaveDropZone,
-        enterDropZone,
-    } = useDragDrop(children.props.id);
+    const { startDrag, processDrag, stopDrag } = useDrag(nodeId);
 
     const handleMouseDown = (event: React.MouseEvent) => {
         event.stopPropagation();
         startDrag({ x: event.clientX, y: event.clientY });
+
+        const canvas = getCanvasEl();
+        if (!canvas) return;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            processDrag({ x: e.clientX, y: e.clientY });
+        };
+
+        const handleMouseUp = () => {
+            stopDrag();
+            canvas.removeEventListener('mousemove', handleMouseMove);
+            canvas.removeEventListener('mouseup', handleMouseUp);
+        };
+
+        canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('mouseup', handleMouseUp);
     };
 
-    const handleMouseEnter = () => {
-        enterDropZone();
-    };
-
-    const handleMouseUp = () => {
-        stopDrag();
-    };
-
-    const handleMouseMove = (event: MouseEvent) => {
-        processDrag({ x: event.clientX, y: event.clientY });
-        if (isOuterOfDropZone()) {
-            leaveDropZone();
-        }
-    };
-
-    useEventListener({
-        target: getCanvasEl(),
-        eventType: 'mouseup',
-        handler: handleMouseUp,
-    });
-
-    useEventListener({
-        target: getCanvasEl(),
-        eventType: 'mousemove',
-        handler: handleMouseMove,
-    });
-
-    return cloneElement(children, {
-        onMouseDownCapture: handleMouseDown,
-        onMouseEnter: droppable ? handleMouseEnter : undefined,
-    });
+    return <g onMouseDownCapture={handleMouseDown}>{children}</g>;
 };

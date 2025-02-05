@@ -1,0 +1,50 @@
+import { useNodeStore } from '@/entities/node/model/node.store';
+import { useResourceStore } from '@/entities/resource/model/resource.store';
+
+import { DROP_OPTIONS } from '../config/drop';
+import { useDragStore } from '../model/drag.store';
+
+export const useDrop = (nodeId: string) => {
+    const resources = useResourceStore.use.resources();
+
+    const draggedId = useDragStore.use.draggedId();
+    const removeChildNode = useNodeStore.use.removeChildNode();
+    const addChildNode = useNodeStore.use.addChildNode();
+    const updateNodeLayout = useNodeStore.use.updateNodeLayout();
+
+    const getDropOption = () => {
+        const dropZoneResource = resources[nodeId];
+        return DROP_OPTIONS[dropZoneResource.properties.type];
+    };
+
+    const leaveDropZone = () => {
+        if (!draggedId) return;
+
+        const options = getDropOption();
+        removeChildNode(nodeId, draggedId);
+        updateNodeLayout(nodeId, {
+            layoutType: options.layoutType,
+            padding: options.padding,
+        });
+    };
+
+    const dropDropZone = () => {
+        if (!draggedId) return;
+
+        const options = getDropOption();
+        const resource = resources[draggedId];
+
+        if (options.accepts.includes(resource.properties.type)) {
+            addChildNode(nodeId, draggedId);
+            updateNodeLayout(nodeId, {
+                layoutType: options.layoutType,
+                padding: options.padding,
+            });
+        }
+    };
+
+    return {
+        leaveDropZone,
+        dropDropZone,
+    };
+};
