@@ -1,15 +1,12 @@
-import _ from 'lodash';
 import { useRef } from 'react';
 
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 
-import { useEventListener } from '@/shared/hooks/useEventListener';
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
-import { applyCursorStyle } from '@/shared/lib/shadcn/utils';
 import type { CoordPoint } from '@/shared/types/canvas';
 
-import { MIN_ZOOM, MAX_ZOOM, SCALE_STEP } from '../config/zoom';
+import { MAX_ZOOM, MIN_ZOOM, SCALE_STEP } from '../config/zoom';
 
 export const useZoom = () => {
     const viewbox = useCanvasStore.use.viewbox();
@@ -50,23 +47,15 @@ export const useZoom = () => {
         setViewbox(newViewbox);
     };
 
-    const handleWheel = (event: WheelEvent) => {
-        const point = { x: event.clientX, y: event.clientY };
-
-        //INFO: deltaY > 0 is zoom in, deltaY < 0 is zoom out
-        const zoomStep = event.deltaY > 0 ? 1 - SCALE_STEP : 1 + SCALE_STEP;
-        zoom(point, zoomStep);
-
-        applyCursorStyle('body', event.deltaY > 0 ? 'zoom-in' : 'zoom-out');
-        _.delay(() => {
-            applyCursorStyle('body', 'default');
-        }, 500);
+    const zoomIn = (point: CoordPoint) => {
+        zoom(point, 1 + SCALE_STEP);
+    };
+    const zoomOut = (point: CoordPoint) => {
+        zoom(point, 1 - SCALE_STEP);
     };
 
-    useEventListener({
-        target: getCanvasEl(),
-        eventType: 'wheel',
-        handler: handleWheel,
-        options: { passive: false },
-    });
+    return {
+        zoomIn,
+        zoomOut,
+    };
 };

@@ -3,9 +3,7 @@ import { useRef } from 'react';
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 
-import { useEventListener } from '@/shared/hooks/useEventListener';
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
-import { applyCursorStyle } from '@/shared/lib/shadcn/utils';
 import type { CoordPoint } from '@/shared/types/canvas';
 
 export const usePan = () => {
@@ -42,33 +40,9 @@ export const usePan = () => {
         startSvgPointRef.current = null;
     };
 
-    const handleMouseDown = (e: MouseEvent) => {
-        applyCursorStyle('body', 'grab');
-        startPan({ x: e.clientX, y: e.clientY });
+    return {
+        startPan,
+        movePan,
+        stopPan,
     };
-
-    const handleMouseMove = (e: MouseEvent) => {
-        movePan({ x: e.clientX, y: e.clientY });
-    };
-
-    const handleMouseUp = () => {
-        stopPan();
-        applyCursorStyle('body', 'default');
-    };
-
-    useEventListener({
-        target: getCanvasEl(),
-        eventType: 'mousedown',
-        handler: handleMouseDown,
-    });
-    useEventListener({
-        target: getCanvasEl(),
-        eventType: 'mousemove',
-        handler: handleMouseMove,
-    });
-    useEventListener({
-        target: getCanvasEl(),
-        eventType: 'mouseup',
-        handler: handleMouseUp,
-    });
 };
