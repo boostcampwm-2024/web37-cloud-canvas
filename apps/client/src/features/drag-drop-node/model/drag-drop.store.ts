@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { createSelectors } from '@/shared/lib/zustand/selector';
-import { CoordPoint } from '@/shared/types/canvas';
+import type { CoordPoint } from '@/shared/types/canvas';
 
 interface DragDropStore {
     draggedId: string | null;

@@ -1,5 +1,5 @@
 import type { GridPoint, GridSize2D, GridSize3D } from '@/shared/types/canvas';
-import type { ResourceDropLayoutType } from '@/shared/types/resource';
+import type { DropLayoutType } from '@/shared/types/resource';
 
 import type { Node } from '../model/node.types';
 
@@ -38,7 +38,7 @@ const calcHorizontalLayout = (
 
         return {
             col: parent.point.col + padding + colOffset,
-            row: parent.point.row + padding,
+            row: parent.point.row,
         };
     });
 };
@@ -68,7 +68,7 @@ const calcChildrenBoundary = (children: Node[]) => {
 export const calcChildrenPoints = (
     parent: Node,
     children: Node[],
-    layoutType: ResourceDropLayoutType = 'horizontal',
+    layoutType: DropLayoutType,
     padding: number = 1,
 ): Array<GridPoint> => {
     if (!children.length) return [];
@@ -83,12 +83,30 @@ export const calcChildrenPoints = (
 
 export const calcParentSizeByChildren = (
     children: Node[],
+    layoutType: DropLayoutType,
     padding: number = 1,
 ): GridSize2D | GridSize3D => {
     const childrenBoundary = calcChildrenBoundary(children);
 
-    return {
-        rows: childrenBoundary.maxRow - childrenBoundary.minRow + padding * 2,
-        cols: childrenBoundary.maxCol - childrenBoundary.minCol + padding * 2,
-    };
+    switch (layoutType) {
+        case 'square':
+            return {
+                rows:
+                    childrenBoundary.maxRow -
+                    childrenBoundary.minRow +
+                    padding * 2,
+                cols:
+                    childrenBoundary.maxCol -
+                    childrenBoundary.minCol +
+                    padding * 2,
+            };
+        case 'horizontal':
+            return {
+                rows: childrenBoundary.maxRow - childrenBoundary.minRow,
+                cols:
+                    childrenBoundary.maxCol -
+                    childrenBoundary.minCol +
+                    padding * 2,
+            };
+    }
 };

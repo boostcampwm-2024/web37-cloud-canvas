@@ -25,3 +25,5 @@ export interface ResourceSVG2DProps extends SVGProps<SVGSVGElement> {
 export interface ResourceSVG3DProps extends SVGProps<SVGSVGElement> {
     size: GridSize3D;
 }
+
+export type DropLayoutType = 'square' | 'horizontal';

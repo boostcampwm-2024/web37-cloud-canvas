@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 import { createSelectors } from '@/shared/lib/zustand/selector';
 import type { GridPoint } from '@/shared/types/canvas';
-import type { ResourceDropLayoutType } from '@/shared/types/resource';
+import type { DropLayoutType } from '@/shared/types/resource';
 
 import { calcParentSizeByChildren, calcChildrenPoints } from '../lib/layout';
 import { sortNode } from '../lib/sort';
@@ -22,7 +22,7 @@ interface NodeActions {
     updateNodeLayout: (
         id: string,
         options: {
-            layoutType: ResourceDropLayoutType;
+            layoutType: DropLayoutType;
             padding: number;
         },
     ) => void;
@@ -124,7 +124,11 @@ const store = create<NodeStates & NodeActions>((set) => ({
 
             const newSize =
                 children.length > 0
-                    ? calcParentSizeByChildren(updatedChildren, padding)
+                    ? calcParentSizeByChildren(
+                          updatedChildren,
+                          layoutType,
+                          padding,
+                      )
                     : node.size;
             const updatedParent = {
                 ...node,

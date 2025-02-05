@@ -2,12 +2,14 @@ import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { useNodeStore } from '@/entities/node/model/node.store';
 import type { Node } from '@/entities/node/model/node.types';
+import { useResourceStore } from '@/entities/resource/model/resource.store';
 
 import { useEventListener } from '@/shared/hooks/useEventListener';
 import { snapPoint } from '@/shared/lib/canvas/point';
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
 import type { CoordPoint, GridBoundary, ViewMode } from '@/shared/types/canvas';
 
+import { DROP_OPTIONS } from '../config/drop';
 import { useDragDropStore } from '../model/drag-drop.store';
 
 export const useDragDrop = (nodeId: string) => {
@@ -21,11 +23,13 @@ export const useDragDrop = (nodeId: string) => {
         setHoverDropZoneId,
         resetDragState,
     } = useDragDropStore();
+    const resources = useResourceStore.use.resources();
     const nodes = useNodeStore.use.nodes();
     const viewMode = useCanvasStore.use.viewMode();
     const moveNode = useNodeStore.use.moveNode();
     const addChildNode = useNodeStore.use.addChildNode();
     const removeChildNode = useNodeStore.use.removeChildNode();
+    const updateNodeLayout = useNodeStore.use.updateNodeLayout();
 
     const updateNodePointerEvents = (value: 'none' | 'default') => {
         const $canvas = getCanvasEl();
@@ -40,10 +44,6 @@ export const useDragDrop = (nodeId: string) => {
             x: currentPoint.x - prevDragPoint.x,
             y: currentPoint.y - prevDragPoint.y,
         };
-    };
-
-    const isDraggable = () => {
-        return draggedId === nodeId;
     };
 
     const getNodeGridBoundary = (
@@ -105,7 +105,7 @@ export const useDragDrop = (nodeId: string) => {
 
     const processDrag = (point: CoordPoint) => {
         const $canvas = getCanvasEl();
-        if (!$canvas || !isDraggable()) return;
+        if (!$canvas || draggedId !== nodeId) return;
 
         const svgPoint = screenToSvgPoint($canvas, point);
         const offset = calculateDragOffset(svgPoint);
@@ -122,10 +122,19 @@ export const useDragDrop = (nodeId: string) => {
     };
 
     const stopDrag = () => {
-        if (!isDraggable()) return;
+        if (draggedId !== nodeId) return;
 
         if (hoverDropZoneId) {
-            addChildNode(hoverDropZoneId, nodeId);
+            const dropZoneResource = resources[hoverDropZoneId];
+            const draggedResource = resources[draggedId];
+            const options = DROP_OPTIONS[dropZoneResource.properties.type];
+            if (options.accepts.includes(draggedResource.properties.type)) {
+                addChildNode(hoverDropZoneId, nodeId);
+                updateNodeLayout(hoverDropZoneId, {
+                    layoutType: options.layoutType,
+                    padding: options.padding,
+                });
+            }
         }
 
         resetDragState();
@@ -142,6 +151,12 @@ export const useDragDrop = (nodeId: string) => {
         if (!draggedId || !hoverDropZoneId) return;
 
         removeChildNode(hoverDropZoneId, draggedId);
+        const dropZoneResource = resources[hoverDropZoneId];
+        const options = DROP_OPTIONS[dropZoneResource.properties.type];
+        updateNodeLayout(hoverDropZoneId, {
+            layoutType: options.layoutType,
+            padding: options.padding,
+        });
         setHoverDropZoneId(null);
     };
 
