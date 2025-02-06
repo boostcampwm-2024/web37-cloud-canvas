@@ -7,7 +7,7 @@ import { useCanvasStore } from '../model/canvas.store';
 
 import { GridBackground } from './grid-background';
 
-export const BaseCanvas = (props: ComponentProps<'svg'>) => {
+export const Canvas = (props: ComponentProps<'svg'>) => {
     const { children, ...restProps } = props;
     const { canvasRef } = useCanvasContext();
     const viewbox = useCanvasStore.use.viewbox();

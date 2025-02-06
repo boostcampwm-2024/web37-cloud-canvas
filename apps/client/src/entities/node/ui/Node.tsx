@@ -22,7 +22,7 @@ export const Node = (props: NodeProps) => {
     const transform = `translate(${coordPoint.x}, ${coordPoint.y})`;
 
     return (
-        <g transform={transform} {...rest}>
+        <g transform={transform} {...rest} pointerEvents="all">
             <SVGComponent viewMode={viewMode} size={size} />
         </g>
     );

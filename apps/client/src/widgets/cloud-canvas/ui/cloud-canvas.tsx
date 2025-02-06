@@ -1,26 +1,35 @@
+'use client';
+
 import _ from 'lodash';
+import type { ReactNode } from 'react';
+
+import { usePan } from '@/features/zoom-pan-canvas/hooks/use-pan';
+import { useZoom } from '@/features/zoom-pan-canvas/hooks/use-zoom';
 
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
+import { Canvas } from '@/entities/canvas/ui/canvas';
 
-import { useEventListener } from '@/shared/hooks/useEventListener';
 import { applyCursorStyle } from '@/shared/lib/shadcn/utils';
 
-import { usePan } from '../hooks/use-pan';
-import { useZoom } from '../hooks/use-zoom';
+interface CanvasProps {
+    children: ReactNode;
+}
 
-export const ZoomPanHandler = () => {
+export const CloudCanvas = (props: CanvasProps) => {
+    const { children } = props;
+
     const { getCanvasEl } = useCanvasContext();
     const $canvas = getCanvasEl();
 
     const { zoomIn, zoomOut } = useZoom($canvas);
     const { startPan, movePan, stopPan } = usePan($canvas);
 
-    const handleMouseDown = (e: MouseEvent) => {
+    const handleMouseDown = (e: React.MouseEvent) => {
         applyCursorStyle('body', 'grab');
         startPan({ x: e.clientX, y: e.clientY });
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (e: React.MouseEvent) => {
         movePan({ x: e.clientX, y: e.clientY });
     };
 
@@ -29,7 +38,7 @@ export const ZoomPanHandler = () => {
         applyCursorStyle('body', 'default');
     };
 
-    const handleWheel = (event: WheelEvent) => {
+    const handleWheel = (event: React.WheelEvent) => {
         const point = { x: event.clientX, y: event.clientY };
 
         if (event.deltaY < 0) {
@@ -45,27 +54,14 @@ export const ZoomPanHandler = () => {
         }, 500);
     };
 
-    useEventListener({
-        target: $canvas,
-        eventType: 'mousedown',
-        handler: handleMouseDown,
-    });
-    useEventListener({
-        target: $canvas,
-        eventType: 'mousemove',
-        handler: handleMouseMove,
-    });
-    useEventListener({
-        target: $canvas,
-        eventType: 'mouseup',
-        handler: handleMouseUp,
-    });
-
-    useEventListener({
-        target: $canvas,
-        eventType: 'wheel',
-        handler: handleWheel,
-        options: { passive: false },
-    });
-    return null;
+    return (
+        <Canvas
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onWheel={handleWheel}
+        >
+            {children}
+        </Canvas>
+    );
 };

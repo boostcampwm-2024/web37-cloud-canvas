@@ -7,6 +7,7 @@ import { DnDWrapper } from '@/features/drag-drop-node/ui/dnd-wrapper';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { Node } from '@/entities/node/ui/Node';
 import { useResourceStore } from '@/entities/resource/model/resource.store';
+import { useSelectionStore } from '@/entities/selection/model/selection.store';
 
 import type { GridPoint, SizeByViewMode } from '@/shared/types/canvas';
 import type { ResourceType } from '@/shared/types/resource';
@@ -25,6 +26,7 @@ export const ResourceNode = (props: ResourceNodeProps) => {
 
     const resources = useResourceStore.use.resources();
     const viewMode = useCanvasStore.use.viewMode();
+    const select = useSelectionStore.use.select();
 
     const resourceType = resources[id].properties.type as ResourceType;
 
@@ -42,6 +44,7 @@ export const ResourceNode = (props: ResourceNodeProps) => {
                 point={point}
                 size={size}
                 viewMode={viewMode}
+                onMouseDown={() => select(id)}
                 data-canvas-type="node"
                 data-resource-type={resourceType}
                 svg={SVGComponent}

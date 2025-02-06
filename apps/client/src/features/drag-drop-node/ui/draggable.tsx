@@ -35,5 +35,5 @@ export const Draggable = (props: Draggable) => {
         $canvas.addEventListener('mouseup', handleMouseUp);
     };
 
-    return <g onMouseDownCapture={handleMouseDown}>{children}</g>;
+    return <g onMouseDown={handleMouseDown}>{children}</g>;
 };

@@ -1,13 +1,11 @@
 'use client';
 
-import { Canvas } from '@/widgets/canvas/ui/canvas';
+import { CloudCanvas } from '@/widgets/cloud-canvas/ui/cloud-canvas';
 import { Header } from '@/widgets/header/ui/header';
 import { ResourceNode } from '@/widgets/resource-node/ui/resource-node';
 import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
 import { useNodeStore } from '@/entities/node/model/node.store';
-
-import { AutoScalingSVG } from '@/shared/ui/svg/auto-scaling';
 
 export default function Page() {
     const nodes = useNodeStore.use.nodes();
@@ -17,7 +15,7 @@ export default function Page() {
             <Sidebar />
             <div className="relative h-full flex-1">
                 <Header />
-                <Canvas>
+                <CloudCanvas>
                     {Object.values(nodes).map((node) => (
                         <ResourceNode
                             key={node.id}
@@ -27,7 +25,7 @@ export default function Page() {
                             droppable={node.droppable}
                         />
                     ))}
-                </Canvas>
+                </CloudCanvas>
             </div>
         </div>
     );
