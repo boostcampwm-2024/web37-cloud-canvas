@@ -2,6 +2,7 @@
 
 import { CloudCanvas } from '@/widgets/cloud-canvas/ui/cloud-canvas';
 import { Header } from '@/widgets/header/ui/header';
+import { ResourceControls } from '@/widgets/resource-controls/ui/resource-controls';
 import { ResourceNode } from '@/widgets/resource-node/ui/resource-node';
 import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
@@ -25,6 +26,7 @@ export default function Page() {
                             droppable={node.droppable}
                         />
                     ))}
+                    <ResourceControls />
                 </CloudCanvas>
             </div>
         </div>

@@ -1,5 +1,3 @@
-import { useRef } from 'react';
-
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
@@ -8,10 +6,10 @@ import type { CoordPoint } from '@/shared/types/canvas';
 import { MAX_ZOOM, MIN_ZOOM, SCALE_STEP } from '../config/zoom';
 
 export const useZoom = ($canvas: SVGSVGElement) => {
+    const zoomFactor = useCanvasStore.use.zoomFactor();
     const viewbox = useCanvasStore.use.viewbox();
     const setViewbox = useCanvasStore.use.setViewbox();
-
-    const curZoomRatioRef = useRef<number>(1);
+    const setZoomFactor = useCanvasStore.use.setZoomFactor();
 
     const validateZoomFactor = (zoomFactor: number): boolean => {
         if (zoomFactor < 1 && zoomFactor <= MIN_ZOOM) return false;
@@ -25,10 +23,10 @@ export const useZoom = ($canvas: SVGSVGElement) => {
     };
 
     const zoom = (point: CoordPoint, zoomStep: number) => {
-        const newZoomFactor = calcZoomFactor(curZoomRatioRef.current, zoomStep);
+        const newZoomFactor = calcZoomFactor(zoomFactor, zoomStep);
 
         if (!validateZoomFactor(newZoomFactor)) return;
-        curZoomRatioRef.current = newZoomFactor;
+        setZoomFactor(newZoomFactor);
 
         const svgPoint = screenToSvgPoint($canvas!, point);
 

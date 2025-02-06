@@ -61,7 +61,7 @@ const store = create<NodeStates & NodeActions>((set) => ({
     addChildNode: (parentId, childId) =>
         set((state) => {
             const parent = state.nodes[parentId];
-            if (!parent) return state;
+            if (!parent || parent.children?.includes(childId)) return state;
 
             const children = _.uniq([childId, ...(parent.children ?? [])]).map(
                 (id) => state.nodes[id],
