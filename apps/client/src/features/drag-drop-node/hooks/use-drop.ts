@@ -1,7 +1,7 @@
 import { useNodeStore } from '@/entities/node/model/node.store';
 import { useResourceStore } from '@/entities/resource/model/resource.store';
 
-import { DROP_OPTIONS } from '../config/drop';
+import { DROP_OPTIONS } from '../config/drop-resource';
 import { useDragStore } from '../model/drag.store';
 
 export const useDrop = (nodeId: string) => {

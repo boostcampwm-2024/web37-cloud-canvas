@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { useRef } from 'react';
 
-import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { useNodeStore } from '@/entities/node/model/node.store';
 
