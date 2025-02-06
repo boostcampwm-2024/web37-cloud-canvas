@@ -14,6 +14,8 @@ export const ContainerSVG3D = (props: ResourceSVG3DProps) => {
     const width = GRID_WIDTH_3D * size.cols;
     const height = GRID_HEIGHT_3D * (size.rows + size.depth);
 
+    const strokePoints = [top[0], top[1], right[3], right[2], left[1], left[0]];
+
     return (
         <svg
             width={width}
@@ -55,6 +57,12 @@ export const ContainerSVG3D = (props: ResourceSVG3DProps) => {
                 ]}
                 fill="#326ca2"
                 stroke="#83838a"
+            />
+            <Polygon
+                points={strokePoints}
+                stroke="#000"
+                fill="none"
+                strokeWidth="2"
             />
         </svg>
     );

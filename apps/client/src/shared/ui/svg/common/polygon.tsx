@@ -1,5 +1,6 @@
-import { CoordPoint } from '@/shared/types/canvas';
-import { SVGProps } from 'react';
+import type { SVGProps } from 'react';
+
+import type { CoordPoint } from '@/shared/types/canvas';
 
 type DefaultPolygonProps = Omit<SVGProps<SVGPolygonElement>, 'points'>;
 
