@@ -11,7 +11,8 @@ export type ResourceType =
     | 'server'
     | 'container'
     | 'cloud-function'
-    | 'auto-scaling';
+    | 'auto-scaling'
+    | 'object-storage';
 
 export interface ResourceSVGProps extends SVGProps<SVGSVGElement> {
     viewMode: ViewMode;

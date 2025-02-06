@@ -1,5 +1,7 @@
-import { GridSize3D } from '@/shared/types/canvas';
-import { SVGProps } from 'react';
+import type { SVGProps } from 'react';
+
+import type { GridSize3D } from '@/shared/types/canvas';
+
 import { Block } from '../common/block';
 
 interface ServerSVG3DProps extends SVGProps<SVGSVGElement> {

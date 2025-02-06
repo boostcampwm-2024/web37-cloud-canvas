@@ -47,3 +47,15 @@ export const DefaultAutoScalingSVGSize: SizeByViewMode = {
         depth: 0,
     },
 };
+
+export const DefaultObjectStorageSVGSize: SizeByViewMode = {
+    '2d': {
+        cols: 1,
+        rows: 1,
+    },
+    '3d': {
+        cols: 1,
+        rows: 1,
+        depth: 1.25,
+    },
+};

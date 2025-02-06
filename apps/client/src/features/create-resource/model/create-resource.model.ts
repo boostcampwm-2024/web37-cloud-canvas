@@ -8,6 +8,7 @@ import {
     DefaultContainerSVGSize,
     DefaultServerSVGSize,
     DefaultAutoScalingSVGSize,
+    DefaultObjectStorageSVGSize,
 } from '@/shared/config/resource-svg';
 import type { ResourceType } from '@/shared/types/resource';
 
@@ -43,6 +44,12 @@ export const createNodeFactory = (type: ResourceType): Node => {
                 point: defaultPoint,
                 size: DefaultAutoScalingSVGSize,
                 droppable: true,
+            };
+        case 'object-storage':
+            return {
+                id,
+                point: defaultPoint,
+                size: DefaultObjectStorageSVGSize,
             };
     }
 };
@@ -103,6 +110,19 @@ export const createResourceFactory = (
                 },
                 properties: {
                     type: 'auto-scaling',
+                },
+            };
+        case 'object-storage':
+            return {
+                id,
+                networks: {
+                    region: '',
+                    vpc: '',
+                    subnet: '',
+                    securityGroup: '',
+                },
+                properties: {
+                    type: 'object-storage',
                 },
             };
     }
