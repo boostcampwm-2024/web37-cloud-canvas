@@ -3,11 +3,11 @@
 import { useMemo } from 'react';
 
 import { DnDWrapper } from '@/features/drag-drop-node/ui/dnd-wrapper';
+import { useSelectStore } from '@/features/select/model/select.store';
 
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { Node } from '@/entities/node/ui/Node';
 import { useResourceStore } from '@/entities/resource/model/resource.store';
-import { useSelectionStore } from '@/entities/selection/model/selection.store';
 
 import type { GridPoint, SizeByViewMode } from '@/shared/types/canvas';
 import type { ResourceType } from '@/shared/types/resource';
@@ -26,8 +26,8 @@ export const ResourceNode = (props: ResourceNodeProps) => {
 
     const resources = useResourceStore.use.resources();
     const viewMode = useCanvasStore.use.viewMode();
-    const selectedNodeId = useSelectionStore.use.selectedNodeId();
-    const select = useSelectionStore.use.select();
+    const selectedNodeId = useSelectStore.use.selectedNodeId();
+    const select = useSelectStore.use.select();
 
     const resourceType = resources[id].properties.type as ResourceType;
 

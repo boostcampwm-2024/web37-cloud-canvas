@@ -2,17 +2,17 @@ import { create } from 'zustand';
 
 import { createSelectors } from '@/shared/lib/zustand/selector';
 
-interface SelectionState {
+interface Select {
     selectedNodeId: string | null;
     selectedEdgeId: string | null;
 }
 
-interface SelectionActions {
+interface SelectActions {
     select: (id: string, type: 'node' | 'edge') => void;
     deselect: () => void;
 }
 
-const store = create<SelectionState & SelectionActions>((set) => ({
+const store = create<Select & SelectActions>((set) => ({
     selectedNodeId: null,
     selectedEdgeId: null,
     select: (id, type) =>
@@ -26,4 +26,4 @@ const store = create<SelectionState & SelectionActions>((set) => ({
     deselect: () => set({ selectedNodeId: null, selectedEdgeId: null }),
 }));
 
-export const useSelectionStore = createSelectors(store);
+export const useSelectStore = createSelectors(store);

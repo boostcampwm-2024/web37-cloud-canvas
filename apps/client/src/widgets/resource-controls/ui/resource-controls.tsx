@@ -1,7 +1,8 @@
 import { Link, Trash2Icon } from 'lucide-react';
 
+import { useSelectStore } from '@/features/select/model/select.store';
+
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
-import { useSelectionStore } from '@/entities/selection/model/selection.store';
 
 import { useControlsPoint } from '../hooks/use-controls-point';
 
@@ -10,7 +11,7 @@ import { ActionButton } from './action-button';
 const GAP = 30;
 
 export const ResourceControls = () => {
-    const selectedNodeId = useSelectionStore.use.selectedNodeId();
+    const selectedNodeId = useSelectStore.use.selectedNodeId();
     const currentZoom = useCanvasStore.use.zoomFactor();
     const ratio = currentZoom < 1 ? 1 : currentZoom;
 
