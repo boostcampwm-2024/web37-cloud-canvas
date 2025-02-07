@@ -28,7 +28,7 @@ export const AutoScalingSVG3D = (props: ResourceSVG3DProps) => {
                         { x: width - 45, y: height },
                         { x: 45, y: height },
                     ]}
-                    stroke-width="45"
+                    strokeWidth="45"
                     fill="#f5b720"
                     stroke="#f5b720"
                 />
