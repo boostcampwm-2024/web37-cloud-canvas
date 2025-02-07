@@ -8,6 +8,7 @@ import { useZoom } from '@/features/zoom-pan-canvas/hooks/use-zoom';
 
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { Canvas } from '@/entities/canvas/ui/canvas';
+import { useSelectionStore } from '@/entities/selection/model/selection.store';
 
 import { applyCursorStyle } from '@/shared/lib/shadcn/utils';
 
@@ -21,12 +22,15 @@ export const CloudCanvas = (props: CanvasProps) => {
     const { getCanvasEl } = useCanvasContext();
     const $canvas = getCanvasEl();
 
+    const deselect = useSelectionStore.use.deselect();
+
     const { zoomIn, zoomOut } = useZoom($canvas);
     const { startPan, movePan, stopPan } = usePan($canvas);
 
     const handleMouseDown = (e: React.MouseEvent) => {
         applyCursorStyle('body', 'grab');
         startPan({ x: e.clientX, y: e.clientY });
+        deselect();
     };
 
     const handleMouseMove = (e: React.MouseEvent) => {
