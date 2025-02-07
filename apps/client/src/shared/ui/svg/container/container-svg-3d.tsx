@@ -1,11 +1,12 @@
 import { GRID_HEIGHT_3D, GRID_WIDTH_3D } from '@/shared/config/canvas';
 import { generateBlockFaces } from '@/shared/lib/canvas/geometry';
+import { cn } from '@/shared/lib/shadcn/utils';
 import type { ResourceSVG3DProps } from '@/shared/types/resource';
 
 import { Polygon } from '../common/polygon';
 
 export const ContainerSVG3D = (props: ResourceSVG3DProps) => {
-    const { size, ...svgProps } = props;
+    const { size, className, ...svgProps } = props;
 
     //INFO: 하단 파란색 표면 포인트 계산
     const { depth } = size;
@@ -20,7 +21,7 @@ export const ContainerSVG3D = (props: ResourceSVG3DProps) => {
         <svg
             width={width}
             height={height}
-            style={{ overflow: 'visible' }}
+            className={cn('overflow-visible', className)}
             {...svgProps}
         >
             <Polygon points={top} fill="#ececed" stroke="#83838a" />

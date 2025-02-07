@@ -1,10 +1,11 @@
 import { GRID_SIZE_2D, IsoMatrix } from '@/shared/config/canvas';
+import { cn } from '@/shared/lib/shadcn/utils';
 import type { ResourceSVG3DProps } from '@/shared/types/resource';
 
 import { Polygon } from '../common/polygon';
 
 export const AutoScalingSVG3D = (props: ResourceSVG3DProps) => {
-    const { size, ...svgProps } = props;
+    const { size, className, ...svgProps } = props;
 
     const width = GRID_SIZE_2D * size.cols;
     const height = GRID_SIZE_2D * size.rows;
@@ -15,9 +16,8 @@ export const AutoScalingSVG3D = (props: ResourceSVG3DProps) => {
             width={width}
             height={height}
             overflow="visible"
-            style={{
-                transform,
-            }}
+            transform={transform}
+            className={cn('overflow-visible', className)}
             {...svgProps}
         >
             <g transform={transform}>

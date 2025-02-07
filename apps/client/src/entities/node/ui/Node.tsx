@@ -1,4 +1,4 @@
-import type { ComponentType, SVGProps } from 'react';
+import { type ComponentType } from 'react';
 
 import { gridToCoordPoint } from '@/shared/lib/canvas/point';
 import type {
@@ -8,22 +8,42 @@ import type {
 } from '@/shared/types/canvas';
 import type { ResourceSVGProps } from '@/shared/types/resource';
 
-export interface NodeProps extends SVGProps<SVGGElement> {
+export interface NodeProps {
     id: string;
     point: GridPoint;
     size: SizeByViewMode;
     viewMode: ViewMode;
+    isSelected: boolean;
     svg: ComponentType<ResourceSVGProps>;
+    onSelect: () => void;
 }
 export const Node = (props: NodeProps) => {
-    const { point, viewMode, size, svg: SVGComponent, ...rest } = props;
+    const {
+        id,
+        point,
+        viewMode,
+        size,
+        svg: SVGComponent,
+        isSelected,
+        onSelect,
+        ...rest
+    } = props;
 
     const coordPoint = gridToCoordPoint(point, viewMode);
     const transform = `translate(${coordPoint.x}, ${coordPoint.y})`;
 
+    const handleMouseDown = () => {
+        onSelect();
+    };
+
     return (
-        <g transform={transform} {...rest} pointerEvents="all">
-            <SVGComponent viewMode={viewMode} size={size} />
+        <g id={id} transform={transform} {...rest}>
+            <SVGComponent
+                viewMode={viewMode}
+                size={size}
+                onMouseDown={handleMouseDown}
+                className={isSelected ? 'brightness-110' : 'brightness-100'}
+            />
         </g>
     );
 };

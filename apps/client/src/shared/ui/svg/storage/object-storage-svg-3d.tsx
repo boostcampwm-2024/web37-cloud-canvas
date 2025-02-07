@@ -1,8 +1,9 @@
 import { GRID_HEIGHT_3D, GRID_WIDTH_3D } from '@/shared/config/canvas';
+import { cn } from '@/shared/lib/shadcn/utils';
 import type { ResourceSVG3DProps } from '@/shared/types/resource';
 
 export const ObjectStorageSVG3D = (props: ResourceSVG3DProps) => {
-    const { size, ...svgProps } = props;
+    const { size, className, ...svgProps } = props;
 
     const width = GRID_WIDTH_3D * size.cols;
     const height = GRID_HEIGHT_3D * size.rows;
@@ -13,7 +14,7 @@ export const ObjectStorageSVG3D = (props: ResourceSVG3DProps) => {
             y="-63"
             width={width}
             height={height}
-            overflow="visible"
+            className={cn('overflow-visible', className)}
             {...svgProps}
         >
             <path

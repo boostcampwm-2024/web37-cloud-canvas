@@ -2,6 +2,7 @@ import type { SVGProps } from 'react';
 
 import { GRID_HEIGHT_3D, GRID_WIDTH_3D } from '@/shared/config/canvas';
 import { generateBlockFaces } from '@/shared/lib/canvas/geometry';
+import { cn } from '@/shared/lib/shadcn/utils';
 import type { GridSize3D } from '@/shared/types/canvas';
 
 import { Polygon } from '../common/polygon';
@@ -11,7 +12,7 @@ interface ServerSVG3DProps extends SVGProps<SVGSVGElement> {
 }
 
 export const ServerSVG3D = (props: ServerSVG3DProps) => {
-    const { size, ...svgProps } = props;
+    const { size, className, ...svgProps } = props;
 
     const { top, left, right } = generateBlockFaces(size);
 
@@ -23,7 +24,7 @@ export const ServerSVG3D = (props: ServerSVG3DProps) => {
         <svg
             width={width}
             height={height}
-            style={{ overflow: 'visible' }}
+            className={cn('overflow-visible', className)}
             {...svgProps}
         >
             <Polygon points={top} fill="#ececed" stroke="#83838a" />
