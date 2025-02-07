@@ -8,16 +8,13 @@ import { useNodeStore } from '@/entities/node/model/node.store';
 import { GRID_SIZE_2D, GRID_WIDTH_3D } from '@/shared/config/canvas';
 import { gridToCoordPoint } from '@/shared/lib/canvas/point';
 
-export const useControlsPoint = (nodeId: string | null, gap: number) => {
+export const useControlsPoint = (nodeId: string, gap: number) => {
     const nodes = useNodeStore.use.nodes();
     const viewMode = useCanvasStore.use.viewMode();
 
+    const node = nodes[nodeId];
+    const cols = node.size[viewMode].cols;
     return useMemo(() => {
-        if (!nodeId) return null;
-
-        const node = nodes[nodeId];
-        const cols = node.size[viewMode].cols;
-
         const width =
             viewMode === '2d' ? GRID_SIZE_2D * cols : GRID_WIDTH_3D * cols;
 
@@ -30,5 +27,5 @@ export const useControlsPoint = (nodeId: string | null, gap: number) => {
             x: pixels.x + margin + gap,
             y: pixels.y,
         };
-    }, [nodeId, nodes, viewMode, gap]);
+    }, [viewMode, cols, node.point, gap]);
 };

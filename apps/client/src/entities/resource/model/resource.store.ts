@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 import { createSelectors } from '@/shared/lib/zustand/selector';
 
@@ -11,18 +12,25 @@ interface ResourceState {
 
 interface ResourceActions {
     addResource: (resource: Resource) => void;
+    removeResource: (...ids: Array<string>) => void;
 }
 
 const initialState: ResourceState = {
     resources: {},
 };
 
-const store = create<ResourceState & ResourceActions>((set) => ({
-    ...initialState,
-    addResource: (resource) =>
-        set((state) => ({
-            resources: { ...state.resources, [resource.id]: resource },
-        })),
-}));
+const store = create<ResourceState & ResourceActions>()(
+    devtools((set) => ({
+        ...initialState,
+        addResource: (resource) =>
+            set((state) => ({
+                resources: { ...state.resources, [resource.id]: resource },
+            })),
+        removeResource: (ids) =>
+            set((state) => ({
+                resources: _.omit(state.resources, ids),
+            })),
+    })),
+);
 
 export const useResourceStore = createSelectors(store);

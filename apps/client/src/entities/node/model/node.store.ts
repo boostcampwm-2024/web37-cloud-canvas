@@ -16,6 +16,7 @@ interface NodeStates {
 
 interface NodeActions {
     addNode: (node: Node) => void;
+    removeNode: (id: string) => Array<string> | null;
     moveNode: (id: string, offset: GridPoint) => void;
     addChildNode: (parentId: string, childId: string) => void;
     removeChildNode: (parentId: string, childId: string) => void;
@@ -32,10 +33,31 @@ const initialState: NodeStates = {
     nodes: {},
 };
 
-const store = create<NodeStates & NodeActions>((set) => ({
+const store = create<NodeStates & NodeActions>((set, get) => ({
     ...initialState,
     addNode: (node) =>
         set((state) => ({ nodes: { ...state.nodes, [node.id]: node } })),
+    removeNode: (id) => {
+        const node = get().nodes[id];
+        if (!node) return null;
+        const { nodes } = get();
+
+        const removedNodes = [id, ...(node.children ?? [])];
+        const updatedNodes = _.omitBy(nodes, (node) =>
+            removedNodes.includes(node.id),
+        );
+        if (node.parent) {
+            const parentNode = nodes[node.parent];
+            updatedNodes[parentNode.id] = {
+                ...parentNode,
+                children: _.without(parentNode.children, node.id),
+            };
+        }
+
+        set({ nodes: updatedNodes });
+
+        return removedNodes;
+    },
     moveNode: (id, offset) =>
         set((state) => {
             const node = state.nodes[id];

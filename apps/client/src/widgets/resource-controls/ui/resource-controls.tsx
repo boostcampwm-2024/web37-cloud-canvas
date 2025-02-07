@@ -3,6 +3,8 @@ import { Link, Trash2Icon } from 'lucide-react';
 import { useSelectStore } from '@/features/select/model/select.store';
 
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
+import { useNodeStore } from '@/entities/node/model/node.store';
+import { useResourceStore } from '@/entities/resource/model/resource.store';
 
 import { useControlsPoint } from '../hooks/use-controls-point';
 
@@ -10,21 +12,41 @@ import { ActionButton } from './action-button';
 
 const GAP = 30;
 
-export const ResourceControls = () => {
-    const selectedNodeId = useSelectStore.use.selectedNodeId();
+interface ResourceControlsProps {
+    selectedId: string;
+}
+
+export const ResourceControls = (props: ResourceControlsProps) => {
+    const { selectedId } = props;
+
     const currentZoom = useCanvasStore.use.zoomFactor();
+
+    const deselect = useSelectStore.use.deselect();
+    const removeResource = useResourceStore.use.removeResource();
+    const removeNode = useNodeStore.use.removeNode();
+
     const ratio = currentZoom < 1 ? 1 : currentZoom;
 
-    const controlsPoint = useControlsPoint(selectedNodeId, GAP * ratio);
+    const controlsPoint = useControlsPoint(selectedId, GAP * ratio);
 
-    if (!controlsPoint) return null;
+    const handleRemoveAction = () => {
+        if (!selectedId) return;
+        const removedNodes = removeNode(selectedId);
+        removeResource(...(removedNodes ?? []));
+        deselect();
+    };
 
     return (
         <g
             transform={`translate(${controlsPoint.x},${controlsPoint.y}) scale(${ratio})`}
         >
             <ActionButton label="connect" icon={Link} y={-25} />
-            <ActionButton label="delete" icon={Trash2Icon} y={25} />
+            <ActionButton
+                label="remove"
+                icon={Trash2Icon}
+                y={25}
+                onAction={handleRemoveAction}
+            />
         </g>
     );
 };

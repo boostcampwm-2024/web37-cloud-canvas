@@ -6,10 +6,13 @@ import { ResourceControls } from '@/widgets/resource-controls/ui/resource-contro
 import { ResourceNode } from '@/widgets/resource-node/ui/resource-node';
 import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
+import { useSelectStore } from '@/features/select/model/select.store';
+
 import { useNodeStore } from '@/entities/node/model/node.store';
 
 export default function Page() {
     const nodes = useNodeStore.use.nodes();
+    const selectedNodeId = useSelectStore.use.selectedNodeId();
 
     return (
         <div className="flex h-screen w-screen overflow-hidden">
@@ -26,7 +29,9 @@ export default function Page() {
                             droppable={node.droppable}
                         />
                     ))}
-                    <ResourceControls />
+                    {selectedNodeId && (
+                        <ResourceControls selectedId={selectedNodeId} />
+                    )}
                 </CloudCanvas>
             </div>
         </div>
