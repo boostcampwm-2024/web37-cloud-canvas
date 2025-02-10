@@ -1,7 +1,7 @@
 import { ApiKeyCredentials } from './types';
 import { VpcApi } from './VpcApi';
 import * as process from 'node:process';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 

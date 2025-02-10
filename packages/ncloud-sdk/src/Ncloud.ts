@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 import { ApiKeyCredentials } from './types';
 
 export class Ncloud {
@@ -44,12 +44,18 @@ export class Ncloud {
         }
 
         if (
-            process.env['NCLOUD_ACCESS_KEY'] &&
-            process.env['NCLOUD_SECRET_KEY']
+            (process.env['NCLOUD_ACCESS_KEY'] ||
+                process.env['NCLOUD_ACCESS_KEY_ID']) &&
+            (process.env['NCLOUD_SECRET_KEY'] ||
+                process.env['NCLOUD_SECRET_ACCESS_KEY'])
         ) {
             return {
-                accessKey: process.env['NCLOUD_ACCESS_KEY'],
-                secretKey: process.env['NCLOUD_SECRET_KEY'],
+                accessKey:
+                    process.env['NCLOUD_ACCESS_KEY'] ||
+                    process.env['NCLOUD_ACCESS_KEY_ID'],
+                secretKey:
+                    process.env['NCLOUD_SECRET_KEY'] ||
+                    process.env['NCLOUD_SECRET_ACCESS_KEY'],
             };
         }
 
