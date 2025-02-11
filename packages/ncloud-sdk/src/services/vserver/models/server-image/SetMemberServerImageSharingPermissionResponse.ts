@@ -24,7 +24,7 @@
  *   ]
  * }
  */
-type SetMemberServerImageSharingPermissionResponse = {
+export type SetMemberServerImageSharingPermissionResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

@@ -2,7 +2,7 @@
  * 초기화 스크립트 삭제 요청 파라미터
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-initscript-deleteinitscripts}
  */
-type DeleteInitScriptsRequest = {
+export type DeleteInitScriptsRequest = {
     /**
      * 리전 코드
      * 삭제할 초기화 스크립트의 리전(Region) 결정 가능

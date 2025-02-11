@@ -1,93 +1,92 @@
 /**
- * 블록 스토리지 인스턴스 생성 응답 타입
- * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-storage-createblockstorageinstance}
- * @example
- * ```json
- * {
- *   "requestId": "89254a11-97e3-41d6-9ed2-e9249ebcec7a",
- *   "returnCode": "0",
- *   "returnMessage": "success",
- *   "totalRows": 1,
- *   "blockStorageInstanceList": [
- *     {
- *       "blockStorageInstanceNo": "***7746",
- *       "serverInstanceNo": "***4299",
- *       "blockStorageName": "test-***",
- *       "blockStorageType": {
- *         "code": "SVRBS",
- *         "codeName": "Server BS"
- *       },
- *       "blockStorageSize": 53687091200,
- *       "deviceName": "",
- *       "blockStorageProductCode": "SPBSTBSTAD000006",
- *       "blockStorageInstanceStatus": {
- *         "code": "INIT",
- *         "codeName": "Block storage INIT state"
- *       },
- *       "blockStorageInstanceOperation": {
- *         "code": "NULL",
- *         "codeName": "Block Storage NULLOP"
- *       },
- *       "blockStorageInstanceStatusName": "initialized",
- *       "createDate": "2020-08-24T22:25:35+0900",
- *       "blockStorageDescription": "",
- *       "blockStorageDiskType": {
- *         "code": "NET",
- *         "codeName": "Network Storage"
- *       },
- *       "blockStorageDiskDetailType": {
- *         "code": "SSD",
- *         "codeName": "SSD"
- *       },
- *       "maxIopsThroughput": 4000,
- *       "isEncryptedVolume": false,
- *       "zoneCode": "KR-1",
- *       "regionCode": "KR",
- *       "isReturnProtection": false
- *     }
- *   ]
- * }
- * ```
+ * 블록 스토리지 속성 변경 응답 타입
+ * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-storage-changeblockstorageinstance}
  */
-export type CreateBlockStorageInstanceResponse = {
+export type ChangeBlockStorageInstanceResponse = {
+    /** 요청 ID */
     requestId: string;
+
+    /** 반환 코드 */
     returnCode: string;
+
+    /** 반환 메시지 */
     returnMessage: string;
+
+    /** 총 행 개수 */
     totalRows: number;
-    blockStorageInstanceList: Array<{
-        blockStorageInstanceNo: string;
-        serverInstanceNo: string;
-        blockStorageName: string;
-        blockStorageType: {
-            code: string;
-            codeName: string;
+
+    /** 블록 스토리지 인스턴스 목록 */
+    blockStorageInstanceList: {
+        /** 블록 스토리지 인스턴스 정보 */
+        blockStorageInstance: {
+            /** 블록 스토리지 인스턴스 번호 */
+            blockStorageInstanceNo: string;
+
+            /** 서버 인스턴스 번호 */
+            serverInstanceNo: string;
+
+            /** 블록 스토리지 이름 */
+            blockStorageName: string;
+
+            /** 블록 스토리지 타입 */
+            blockStorageType: {
+                code: string;
+                codeName: string;
+            };
+
+            /** 블록 스토리지 크기 (바이트) */
+            blockStorageSize: number;
+
+            /** 디바이스 이름 */
+            deviceName: string;
+
+            /** 블록 스토리지 상품 코드 */
+            blockStorageProductCode: string;
+
+            /** 블록 스토리지 인스턴스 상태 */
+            blockStorageInstanceStatus: {
+                code: string;
+                codeName: string;
+            };
+
+            /** 블록 스토리지 인스턴스 작업 */
+            blockStorageInstanceOperation: {
+                code: string;
+                codeName: string;
+            };
+
+            /** 블록 스토리지 인스턴스 상태 이름 */
+            blockStorageInstanceStatusName: string;
+
+            /** 생성 일자 */
+            createDate: string;
+
+            /** 블록 스토리지 설명 */
+            blockStorageDescription: string;
+
+            /** 블록 스토리지 디스크 타입 */
+            blockStorageDiskType: {
+                code: string;
+                codeName: string;
+            };
+
+            /** 블록 스토리지 디스크 상세 타입 */
+            blockStorageDiskDetailType: {
+                code: string;
+                codeName: string;
+            };
+
+            /** 최대 IOPS 처리량 */
+            maxIopsThroughput: number;
+
+            /** 볼륨 암호화 여부 */
+            isEncryptedVolume: boolean;
+
+            /** ZONE 코드 */
+            zoneCode: string;
+
+            /** 리전 코드 */
+            regionCode: string;
         };
-        blockStorageSize: number;
-        deviceName: string;
-        blockStorageProductCode: string;
-        blockStorageInstanceStatus: {
-            code: string;
-            codeName: string;
-        };
-        blockStorageInstanceOperation: {
-            code: string;
-            codeName: string;
-        };
-        blockStorageInstanceStatusName: string;
-        createDate: string;
-        blockStorageDescription: string;
-        blockStorageDiskType: {
-            code: string;
-            codeName: string;
-        };
-        blockStorageDiskDetailType: {
-            code: string;
-            codeName: string;
-        };
-        maxIopsThroughput: number;
-        isEncryptedVolume: boolean;
-        zoneCode: string;
-        regionCode: string;
-        isReturnProtection: boolean;
-    }>;
+    }[];
 };

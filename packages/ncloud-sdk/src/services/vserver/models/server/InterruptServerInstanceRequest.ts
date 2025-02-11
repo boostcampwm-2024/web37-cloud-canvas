@@ -1,4 +1,4 @@
-type InterruptServerInstanceRequest = {
+export type InterruptServerInstanceRequest = {
     /**
      * 리전 코드
      * 인터럽트를 실행할 서버 인스턴스의 리전(Region) 결정 가능

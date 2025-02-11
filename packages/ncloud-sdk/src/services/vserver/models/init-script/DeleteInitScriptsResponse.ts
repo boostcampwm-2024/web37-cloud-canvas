@@ -19,7 +19,7 @@
  * }
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-initscript-deleteinitscripts}
  */
-type DeleteInitScriptsResponse = {
+export type DeleteInitScriptsResponse = {
     returnCode: number;
     returnMessage: string;
     totalRows: number;

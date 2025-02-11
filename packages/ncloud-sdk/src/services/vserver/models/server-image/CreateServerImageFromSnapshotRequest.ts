@@ -1,4 +1,4 @@
-type CreateServerImageFromSnapshotRequest = {
+export type CreateServerImageFromSnapshotRequest = {
     /**
      * 리전 코드
      * 서버 이미지 리스트가 조회될 리전(Region) 결정 가능

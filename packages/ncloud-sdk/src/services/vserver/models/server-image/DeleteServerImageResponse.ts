@@ -19,7 +19,7 @@
  *   ]
  * }
  */
-type DeleteServerImageResponse = {
+export type DeleteServerImageResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

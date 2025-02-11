@@ -24,7 +24,7 @@
  *   ]
  * }
  */
-type AddMemberServerImageSharingPermissionResponse = {
+export type AddMemberServerImageSharingPermissionResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

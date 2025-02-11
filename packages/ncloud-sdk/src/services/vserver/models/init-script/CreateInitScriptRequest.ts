@@ -2,7 +2,7 @@
  * 초기화 스크립트 생성 요청 파라미터
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-initscript-createinitscript}
  */
-type CreateInitScriptRequest = {
+export type CreateInitScriptRequest = {
     /**
      * 리전 코드
      * 초기화 스크립트가 생성될 리전(Region) 결정 가능

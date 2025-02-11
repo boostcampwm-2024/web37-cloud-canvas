@@ -23,7 +23,7 @@
  *   ]
  * }
  */
-type StopServerInstancesResponse = {
+export type StopServerInstancesResponse = {
     returnCode: number;
     returnMessage: string;
     totalRows: number;

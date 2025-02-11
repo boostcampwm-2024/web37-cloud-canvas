@@ -20,7 +20,7 @@
  *   ]
  * }
  */
-type AddPlacementGroupServerInstanceResponse = {
+export type AddPlacementGroupServerInstanceResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

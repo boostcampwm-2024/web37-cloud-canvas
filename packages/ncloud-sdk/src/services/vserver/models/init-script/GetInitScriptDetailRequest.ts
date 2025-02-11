@@ -2,7 +2,7 @@
  * 초기화 스크립트 상세 정보 조회 요청 파라미터
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-initscript-getinitscriptdetail}
  */
-type GetInitScriptDetailRequest = {
+export type GetInitScriptDetailRequest = {
     /**
      * 리전 코드
      * 초기화 스크립트 상세 정보가 조회될 리전(Region) 결정 가능

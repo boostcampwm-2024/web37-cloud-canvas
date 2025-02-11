@@ -1,4 +1,4 @@
-type ChangeServerInstanceSpecRequest = {
+export type ChangeServerInstanceSpecRequest = {
     /**
      * 리전 코드
      * 스펙을 변경할 서버 인스턴스의 리전(Region) 결정 가능

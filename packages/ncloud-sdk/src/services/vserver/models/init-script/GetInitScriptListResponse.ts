@@ -19,7 +19,7 @@
  * }
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-initscript-getinitscriptlist}
  */
-type GetInitScriptListResponse = {
+export type GetInitScriptListResponse = {
     returnCode: number;
     returnMessage: string;
     totalRows: number;

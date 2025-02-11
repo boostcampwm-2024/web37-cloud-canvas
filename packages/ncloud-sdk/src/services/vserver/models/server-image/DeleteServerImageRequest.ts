@@ -1,4 +1,4 @@
-type DeleteServerImageRequest = {
+export type DeleteServerImageRequest = {
     /**
      * 리전 코드
      * 삭제할 서버 이미지의 리전(Region) 결정 가능

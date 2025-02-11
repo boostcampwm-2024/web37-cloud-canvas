@@ -27,7 +27,7 @@
  *   ]
  * }
  */
-type GetServerImageDetailResponse = {
+export type GetServerImageDetailResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

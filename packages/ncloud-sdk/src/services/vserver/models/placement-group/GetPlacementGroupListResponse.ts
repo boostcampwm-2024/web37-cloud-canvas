@@ -19,7 +19,7 @@
  *   ]
  * }
  */
-type GetPlacementGroupListResponse = {
+export type GetPlacementGroupListResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

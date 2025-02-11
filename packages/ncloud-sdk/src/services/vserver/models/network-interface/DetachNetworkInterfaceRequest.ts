@@ -3,7 +3,7 @@
  * 서버 인스턴스에 할당된 네트워크 인터페이스를 해제합니다. 서버 인스턴스의 기본 네트워크 인터페이스는 해제할 수 없습니다.
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-detachnetworkinterface}
  */
-type DetachNetworkInterfaceRequest = {
+export type DetachNetworkInterfaceRequest = {
     /**
      * 리전 코드
      * 해제할 네트워크 인터페이스의 리전(Region) 결정 가능

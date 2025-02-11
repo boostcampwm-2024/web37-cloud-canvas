@@ -15,7 +15,7 @@
  *   ]
  * }
  */
-type GetRootPasswordServerInstanceListResponse = {
+export type GetRootPasswordServerInstanceListResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

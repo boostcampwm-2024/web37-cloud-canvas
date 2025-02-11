@@ -1,4 +1,4 @@
-type DeleteLoginKeysRequest = {
+export type DeleteLoginKeysRequest = {
     /**
      * 삭제할 키 이름 리스트
      * keyName은 getLoginKeyList 액션을 통해 획득 가능

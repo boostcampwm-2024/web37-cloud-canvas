@@ -2,7 +2,7 @@
  * 사용자가 생성한 초기화 스크립트 리스트를 조회하는 요청 파라미터
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-initscript-getinitscriptlist}
  */
-type GetInitScriptListRequest = {
+export type GetInitScriptListRequest = {
     /**
      * 리전 코드
      * 초기화 스크립트 리스트가 조회될 리전(Region) 결정 가능

@@ -1,4 +1,4 @@
-type StopServerInstancesRequest = {
+export type StopServerInstancesRequest = {
     /**
      * 리전 코드
      * 정지할 서버 인스턴스의 리전(Region) 결정 가능

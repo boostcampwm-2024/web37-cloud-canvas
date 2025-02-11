@@ -1,4 +1,4 @@
-type GetServerInstanceListRequest = {
+export type GetServerInstanceListRequest = {
     /**
      * 리전 코드
      * 서버 인스턴스 리스트가 조회될 리전(Region) 결정 가능

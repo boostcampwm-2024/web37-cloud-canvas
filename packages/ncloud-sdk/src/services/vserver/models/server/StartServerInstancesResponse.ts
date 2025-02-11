@@ -23,7 +23,7 @@
  *   ]
  * }
  */
-type StartServerInstancesResponse = {
+export type StartServerInstancesResponse = {
     returnCode: number;
     returnMessage: string;
     totalRows: number;

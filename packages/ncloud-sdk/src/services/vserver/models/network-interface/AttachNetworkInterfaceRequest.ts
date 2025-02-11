@@ -3,7 +3,7 @@
  * 서버 인스턴스에 네트워크 인터페이스를 할당합니다. 서버 인스턴스의 기본 네트워크 인터페이스를 포함하여 최대 3개의 네트워크 인터페이스를 할당할 수 있습니다.
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-attachnetworkinterface}
  */
-type AttachNetworkInterfaceRequest = {
+export type AttachNetworkInterfaceRequest = {
     /**
      * 리전 코드
      * 할당할 네트워크 인터페이스의 리전(Region) 결정 가능

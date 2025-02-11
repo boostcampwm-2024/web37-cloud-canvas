@@ -22,7 +22,7 @@
  *   ]
  * }
  */
-type CreateMemberServerImageInstanceResponse = {
+export type CreateMemberServerImageInstanceResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

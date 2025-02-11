@@ -1,73 +1,105 @@
 /**
- * 블록 스토리지 인스턴스 생성 요청 타입
+ * 블록 스토리지 인스턴스 생성 응답 타입
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-storage-createblockstorageinstance}
  */
-export type CreateBlockStorageInstanceRequest = {
-    /**
-     * 리전 코드
-     * @link https://api.ncloud-docs.com/docs/compute-vserver-server-common-getregionlist 액션을 통해 획득 가능
-     * Default : getRegionList 조회 결과의 첫 번째 리전을 선택
-     */
-    regionCode?: string;
+export type CreateBlockStorageInstanceResponse = {
+    /** 요청 ID */
+    requestId: string;
 
-    /**
-     * ZONE 코드
-     * @link https://api.ncloud-docs.com/docs/compute-vserver-server-common-getzonelist 액션을 통해 획득 가능
-     * KVM 블록 스토리지인 경우 필수
-     */
-    zoneCode?: string;
+    /** 반환 코드 */
+    returnCode: string;
 
-    /**
-     * 블록 스토리지 이름
-     * Min : 3, Max : 30
-     * 영어, 숫자, "-"의 특수문자만 허용하며 영어로 시작해야 함
-     * 영어 또는 숫자로 끝나야 함
-     */
-    blockStorageName?: string;
+    /** 반환 메시지 */
+    returnMessage: string;
 
-    /**
-     * 블록 스토리지 디스크 상세 유형 코드
-     * XEN 블록 스토리지만 유효
-     * Options : SSD | HDD
-     * Default : SSD
-     */
-    blockStorageDiskDetailTypeCode?: 'SSD' | 'HDD';
+    /** 총 행 개수 */
+    totalRows: number;
 
-    /**
-     * 블록 스토리지 볼륨타입 코드
-     * KVM 블록 스토리지는 필수
-     * Options : SSD | HDD | FB1 | CB1
-     */
-    blockStorageVolumeTypeCode?: 'SSD' | 'HDD' | 'FB1' | 'CB1';
+    /** 블록 스토리지 인스턴스 목록 */
+    blockStorageInstanceList: {
+        /** 블록 스토리지 인스턴스 정보 */
+        blockStorageInstance: {
+            /** 블록 스토리지 인스턴스 번호 */
+            blockStorageInstanceNo: string;
 
-    /**
-     * 서버 인스턴스 번호
-     * XEN 블록 스토리지인 경우 필수
-     * @link https://api.ncloud-docs.com/docs/compute-vserver-server-getserverinstancelist 액션을 통해 획득 가능
-     */
-    serverInstanceNo?: string;
+            /** 서버 인스턴스 번호 */
+            serverInstanceNo: string;
 
-    /** 블록 스토리지 스냅샷 인스턴스 번호 */
-    blockStorageSnapshotInstanceNo?: string;
+            /** 블록 스토리지 이름 */
+            blockStorageName: string;
 
-    /**
-     * 블록 스토리지 사이즈
-     * XEN : Min 10, Max 2000 GB
-     * KVM : Min 10, Max 16380 GB
-     * 10GB 단위 입력
-     */
-    blockStorageSize?: number;
+            /** 블록 스토리지 타입 */
+            blockStorageType: {
+                /** 코드 */
+                code: string;
+                /** 코드명 */
+                codeName: string;
+            };
 
-    /** 생성할 블록 스토리지에 대한 설명 */
-    blockStorageDescription?: string;
+            /** 블록 스토리지 크기 (바이트) */
+            blockStorageSize: number;
 
-    /**
-     * 반납 보호 여부
-     * Options : true | false
-     * Default : false
-     */
-    isReturnProtection?: boolean;
+            /** 디바이스 이름 */
+            deviceName: string;
 
-    /** 응답 포맷 */
-    responseFormatType?: 'xml' | 'json';
+            /** 블록 스토리지 상품 코드 */
+            blockStorageProductCode: string;
+
+            /** 블록 스토리지 인스턴스 상태 */
+            blockStorageInstanceStatus: {
+                /** 코드 */
+                code: string;
+                /** 코드명 */
+                codeName: string;
+            };
+
+            /** 블록 스토리지 인스턴스 작업 */
+            blockStorageInstanceOperation: {
+                /** 코드 */
+                code: string;
+                /** 코드명 */
+                codeName: string;
+            };
+
+            /** 블록 스토리지 인스턴스 상태 이름 */
+            blockStorageInstanceStatusName: string;
+
+            /** 생성 일자 */
+            createDate: string;
+
+            /** 블록 스토리지 설명 */
+            blockStorageDescription: string;
+
+            /** 블록 스토리지 디스크 타입 */
+            blockStorageDiskType: {
+                /** 코드 */
+                code: string;
+                /** 코드명 */
+                codeName: string;
+            };
+
+            /** 블록 스토리지 디스크 상세 타입 */
+            blockStorageDiskDetailType: {
+                /** 코드 */
+                code: string;
+                /** 코드명 */
+                codeName: string;
+            };
+
+            /** 최대 IOPS 처리량 */
+            maxIopsThroughput: number;
+
+            /** 볼륨 암호화 여부 */
+            isEncryptedVolume: boolean;
+
+            /** ZONE 코드 */
+            zoneCode: string;
+
+            /** 리전 코드 */
+            regionCode: string;
+
+            /** 반납 보호 여부 */
+            isReturnProtection: boolean;
+        };
+    }[];
 };

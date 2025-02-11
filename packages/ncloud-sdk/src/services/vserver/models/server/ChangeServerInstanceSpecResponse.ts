@@ -25,7 +25,7 @@
  *   ]
  * }
  */
-type ChangeServerInstanceSpecResponse = {
+export type ChangeServerInstanceSpecResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

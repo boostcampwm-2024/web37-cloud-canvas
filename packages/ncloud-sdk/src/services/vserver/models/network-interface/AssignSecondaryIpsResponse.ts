@@ -31,7 +31,7 @@
  * }
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-assignsecondaryips}
  */
-type AssignSecondaryIpsResponse = {
+export type AssignSecondaryIpsResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

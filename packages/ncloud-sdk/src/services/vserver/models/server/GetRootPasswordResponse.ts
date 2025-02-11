@@ -9,7 +9,7 @@
  *   "rootPassword": "P3e7fLnd6=***"
  * }
  */
-type GetRootPasswordResponse = {
+export type GetRootPasswordResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

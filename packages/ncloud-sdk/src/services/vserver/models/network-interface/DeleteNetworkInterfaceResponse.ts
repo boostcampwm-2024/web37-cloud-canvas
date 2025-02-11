@@ -31,7 +31,7 @@
  * }
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-deletenetworkinterface}
  */
-type DeleteNetworkInterfaceResponse = {
+export type DeleteNetworkInterfaceResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

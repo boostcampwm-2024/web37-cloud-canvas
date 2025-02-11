@@ -31,7 +31,7 @@
  * }
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-attachnetworkinterface}
  */
-type AttachNetworkInterfaceResponse = {
+export type AttachNetworkInterfaceResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

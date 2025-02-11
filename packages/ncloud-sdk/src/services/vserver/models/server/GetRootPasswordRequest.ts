@@ -1,4 +1,4 @@
-type GetRootPasswordRequest = {
+export type GetRootPasswordRequest = {
     /**
      * 리전 코드
      * root 계정의 비밀번호를 조회할 서버 인스턴스의 리전(Region) 결정

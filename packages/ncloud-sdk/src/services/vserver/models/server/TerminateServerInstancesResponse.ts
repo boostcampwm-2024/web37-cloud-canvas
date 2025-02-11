@@ -23,7 +23,7 @@
  *   ]
  * }
  */
-type TerminateServerInstancesResponse = {
+export type TerminateServerInstancesResponse = {
     returnCode: number;
     returnMessage: string;
     totalRows: number;

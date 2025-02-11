@@ -27,7 +27,7 @@
  *   ]
  * }
  */
-type GetMemberServerImageInstanceListResponse = {
+export type GetMemberServerImageInstanceListResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

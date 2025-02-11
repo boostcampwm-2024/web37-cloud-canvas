@@ -31,7 +31,7 @@
  * }
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-getnetworkinterfacedetail}
  */
-type GetNetworkInterfaceDetailResponse = {
+export type GetNetworkInterfaceDetailResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

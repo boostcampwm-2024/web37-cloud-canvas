@@ -1,4 +1,4 @@
-type RemovePlacementGroupServerInstanceRequest = {
+export type RemovePlacementGroupServerInstanceRequest = {
     /**
      * 리전 코드
      * 서버 인스턴스가 제거될 물리 배치 그룹의 리전(Region) 결정 가능

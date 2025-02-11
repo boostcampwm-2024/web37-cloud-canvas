@@ -1,4 +1,4 @@
-type DeleteMemberServerImageInstancesRequest = {
+export type DeleteMemberServerImageInstancesRequest = {
     /**
      * 리전 코드
      * 삭제할 회원 서버 이미지 인스턴스의 리전(Region) 결정 가능

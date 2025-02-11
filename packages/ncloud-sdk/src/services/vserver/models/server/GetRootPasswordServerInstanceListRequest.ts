@@ -1,4 +1,4 @@
-type GetRootPasswordServerInstanceList = {
+export type GetRootPasswordServerInstanceList = {
     /**
      * 리전 코드
      * root 계정의 비밀번호를 조회할 서버 인스턴스 리스트의 리전(Region) 결정

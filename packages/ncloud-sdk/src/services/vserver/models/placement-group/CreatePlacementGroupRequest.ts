@@ -1,4 +1,4 @@
-type CreatePlacementGroupRequest = {
+export type CreatePlacementGroupRequest = {
     /**
      * 리전 코드
      * 물리 배치 그룹이 생성될 리전(Region) 결정 가능

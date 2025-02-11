@@ -2,7 +2,7 @@
  * 네트워크 인터페이스 생성 요청 파라미터
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-createnetworkinterface}
  */
-type CreateNetworkInterfaceRequest = {
+export type CreateNetworkInterfaceRequest = {
     /**
      * 리전 코드
      * 네트워크 인터페이스가 생성될 리전(Region) 결정 가능

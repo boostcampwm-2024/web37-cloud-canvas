@@ -20,7 +20,7 @@
  *   ]
  * }
  */
-type RemovePlacementGroupServerInstanceResponse = {
+export type RemovePlacementGroupServerInstanceResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

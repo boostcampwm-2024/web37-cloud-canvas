@@ -1,4 +1,4 @@
-type RebootServerInstancesRequest = {
+export type RebootServerInstancesRequest = {
     /**
      * 리전 코드
      * 재시작할 서버 인스턴스의 리전(Region) 결정 가능

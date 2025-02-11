@@ -1,4 +1,4 @@
-type SetProtectServerTerminationRequest = {
+export type SetProtectServerTerminationRequest = {
     /**
      * 리전 코드
      * 반납 보호 여부를 설정할 서버 인스턴스의 리전(Region) 결정 가능

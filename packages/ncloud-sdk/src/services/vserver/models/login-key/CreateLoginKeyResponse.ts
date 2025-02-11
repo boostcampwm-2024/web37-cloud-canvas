@@ -10,7 +10,7 @@
  *   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\n..."
  * }
  */
-type CreateLoginKeyResponse = {
+export type CreateLoginKeyResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

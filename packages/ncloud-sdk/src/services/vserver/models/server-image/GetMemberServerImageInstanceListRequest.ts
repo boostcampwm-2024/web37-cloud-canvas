@@ -1,4 +1,4 @@
-type GetMemberServerImageInstanceListRequest = {
+export type GetMemberServerImageInstanceListRequest = {
     /**
      * 리전 코드
      * 회원 서버 이미지 인스턴스 리스트가 조회될 리전(Region) 결정 가능

@@ -31,7 +31,7 @@
  * }
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-unassignsecondaryips}
  */
-type UnassignSecondaryIpsResponse = {
+export type UnassignSecondaryIpsResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

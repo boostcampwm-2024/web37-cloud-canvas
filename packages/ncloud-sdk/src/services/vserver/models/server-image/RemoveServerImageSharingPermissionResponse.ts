@@ -20,7 +20,7 @@
  *   ]
  * }
  */
-type RemoveServerImageSharingPermissionResponse = {
+export type RemoveServerImageSharingPermissionResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

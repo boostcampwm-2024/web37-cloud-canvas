@@ -24,7 +24,7 @@
  *   ]
  * }
  */
-type GetServerInstanceListResponse = {
+export type GetServerInstanceListResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

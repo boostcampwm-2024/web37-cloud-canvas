@@ -21,7 +21,7 @@
  *   ]
  * }
  */
-type CreateServerInstancesResponse = {
+export type CreateServerInstancesResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

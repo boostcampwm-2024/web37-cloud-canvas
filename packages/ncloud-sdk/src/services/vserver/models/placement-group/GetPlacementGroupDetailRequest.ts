@@ -1,4 +1,4 @@
-type GetPlacementGroupDetailRequest = {
+export type GetPlacementGroupDetailRequest = {
     /**
      * 리전 코드
      * 물리 배치 그룹 상세 정보가 조회될 리전(Region) 결정 가능

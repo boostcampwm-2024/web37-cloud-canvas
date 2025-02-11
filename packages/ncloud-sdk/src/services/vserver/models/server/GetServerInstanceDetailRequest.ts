@@ -1,4 +1,4 @@
-type GetServerInstanceDetailRequest = {
+export type GetServerInstanceDetailRequest = {
     /**
      * 리전 코드
      * 서버 인스턴스 상세 정보가 조회될 리전(Region)을 결정 가능

@@ -1,4 +1,4 @@
-type CreateServerImageRequest = {
+export type CreateServerImageRequest = {
     /**
      * 리전 코드
      * 서버 이미지가 생성될 리전(Region) 결정 가능

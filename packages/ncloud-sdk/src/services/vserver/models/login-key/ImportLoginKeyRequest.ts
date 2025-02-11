@@ -1,4 +1,4 @@
-type ImportLoginKeyRequest = {
+export type ImportLoginKeyRequest = {
     /**
      * 생성할 키 이름
      * Default : NAVER Cloud Platform가 자동으로 부여

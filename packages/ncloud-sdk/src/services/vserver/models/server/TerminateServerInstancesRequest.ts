@@ -1,4 +1,4 @@
-type TerminateServerInstancesRequest = {
+export type TerminateServerInstancesRequest = {
     /**
      * 리전 코드
      * 반납할 서버 인스턴스의 리전(Region) 결정 가능

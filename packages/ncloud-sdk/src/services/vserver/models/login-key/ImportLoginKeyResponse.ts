@@ -16,7 +16,7 @@
  *   ]
  * }
  */
-type ImportLoginKeyResponse = {
+export type ImportLoginKeyResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

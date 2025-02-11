@@ -2,7 +2,7 @@
  * 네트워크 인터페이스에 보조 IP 할당 요청 파라미터
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-assignsecondaryips}
  */
-type AssignSecondaryIpsRequest = {
+export type AssignSecondaryIpsRequest = {
     /**
      * 리전 코드
      * 보조 IP를 할당할 네트워크 인터페이스의 리전(Region) 결정 가능

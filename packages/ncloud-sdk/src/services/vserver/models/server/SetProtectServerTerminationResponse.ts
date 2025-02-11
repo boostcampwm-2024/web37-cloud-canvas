@@ -15,7 +15,7 @@
  *   ]
  * }
  */
-type SetProtectServerTerminationResponse = {
+export type SetProtectServerTerminationResponse = {
     returnCode: number;
     returnMessage: string;
     totalRows: number;

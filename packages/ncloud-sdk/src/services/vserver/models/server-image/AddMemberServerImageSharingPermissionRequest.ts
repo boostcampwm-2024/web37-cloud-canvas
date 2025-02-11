@@ -1,4 +1,4 @@
-type AddMemberServerImageSharingPermissionRequest = {
+export type AddMemberServerImageSharingPermissionRequest = {
     /**
      * 리전 코드
      * 공유 권한을 추가할 회원 서버 이미지 인스턴스의 리전(Region) 결정 가능

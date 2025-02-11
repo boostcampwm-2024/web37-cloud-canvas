@@ -24,7 +24,7 @@
  *   ]
  * }
  */
-type CreateServerImageResponse = {
+export type CreateServerImageResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

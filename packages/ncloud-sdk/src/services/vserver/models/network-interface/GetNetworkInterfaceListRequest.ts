@@ -2,7 +2,7 @@
  * 네트워크 인터페이스 리스트 조회 요청 파라미터
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-getnetworkinterfacelist}
  */
-type GetNetworkInterfaceListRequest = {
+export type GetNetworkInterfaceListRequest = {
     /**
      * 리전 코드
      * 네트워크 인터페이스 리스트가 조회될 리전(Region) 결정 가능

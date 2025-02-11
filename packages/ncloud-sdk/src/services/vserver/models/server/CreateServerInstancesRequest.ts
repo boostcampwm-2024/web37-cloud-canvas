@@ -1,4 +1,4 @@
-type CreateServerInstancesRequest = {
+export type CreateServerInstancesRequest = {
     /**
      * 리전 코드
      * 서버 인스턴스가 생성될 리전(Region) 결정 가능

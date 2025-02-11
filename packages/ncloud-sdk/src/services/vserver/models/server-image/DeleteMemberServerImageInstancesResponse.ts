@@ -26,7 +26,7 @@
  *   ]
  * }
  */
-type DeleteMemberServerImageInstancesResponse = {
+export type DeleteMemberServerImageInstancesResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

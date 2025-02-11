@@ -24,7 +24,7 @@
  *   ]
  * }
  */
-type CreateServerImageFromSnapshotResponse = {
+export type CreateServerImageFromSnapshotResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

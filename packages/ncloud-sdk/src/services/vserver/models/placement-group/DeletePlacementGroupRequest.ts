@@ -1,4 +1,4 @@
-type DeletePlacementGroupRequest = {
+export type DeletePlacementGroupRequest = {
     /**
      * 리전 코드
      * 삭제할 물리 배치 그룹의 리전(Region) 결정 가능

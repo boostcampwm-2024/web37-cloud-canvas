@@ -8,7 +8,7 @@
  *   "returnMessage": "success"
  * }
  */
-type DeleteLoginKeysResponse = {
+export type DeleteLoginKeysResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

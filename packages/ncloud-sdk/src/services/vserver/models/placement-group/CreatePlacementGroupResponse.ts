@@ -19,7 +19,7 @@
  *   ]
  * }
  */
-type CreatePlacementGroupResponse = {
+export type CreatePlacementGroupResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

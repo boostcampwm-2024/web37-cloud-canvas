@@ -21,7 +21,7 @@
  *   ]
  * }
  */
-type GetServerImageListResponse = {
+export type GetServerImageListResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

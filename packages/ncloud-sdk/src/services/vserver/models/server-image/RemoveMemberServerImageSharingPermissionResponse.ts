@@ -24,7 +24,7 @@
  *   ]
  * }
  */
-type RemoveMemberServerImageSharingPermissionResponse = {
+export type RemoveMemberServerImageSharingPermissionResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

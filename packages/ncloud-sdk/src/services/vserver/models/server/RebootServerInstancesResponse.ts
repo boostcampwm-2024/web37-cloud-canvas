@@ -23,7 +23,7 @@
  *   ]
  * }
  */
-type RebootServerInstancesResponse = {
+export type RebootServerInstancesResponse = {
     returnCode: number;
     returnMessage: string;
     totalRows: number;

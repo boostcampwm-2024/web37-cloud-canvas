@@ -31,7 +31,7 @@
  * }
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-detachnetworkinterface}
  */
-type DetachNetworkInterfaceResponse = {
+export type DetachNetworkInterfaceResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

@@ -19,7 +19,7 @@
  *   ]
  * }
  */
-type DeletePlacementGroupResponse = {
+export type DeletePlacementGroupResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

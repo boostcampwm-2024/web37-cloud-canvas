@@ -1,4 +1,4 @@
-type CreateMemberServerImageInstanceRequest = {
+export type CreateMemberServerImageInstanceRequest = {
     /**
      * 리전 코드
      * 회원 서버 이미지 인스턴스가 생성될 리전(Region) 결정 가능

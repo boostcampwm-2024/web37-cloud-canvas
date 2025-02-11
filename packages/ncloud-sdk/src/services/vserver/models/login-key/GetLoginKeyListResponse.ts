@@ -16,7 +16,7 @@
  *   ]
  * }
  */
-type GetLoginKeyListResponse = {
+export type GetLoginKeyListResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

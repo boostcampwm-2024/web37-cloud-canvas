@@ -2,7 +2,7 @@
  * 네트워크 인터페이스에 할당된 보조 IP 해제 요청 파라미터
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-unassignsecondaryips}
  */
-type UnassignSecondaryIpsRequest = {
+export type UnassignSecondaryIpsRequest = {
     /**
      * 리전 코드
      * 보조 IP를 할당 해제할 네트워크 인터페이스의 리전(Region) 결정 가능

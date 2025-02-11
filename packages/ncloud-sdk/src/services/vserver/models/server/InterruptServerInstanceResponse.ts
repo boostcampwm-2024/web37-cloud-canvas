@@ -23,7 +23,7 @@
  *   ]
  * }
  */
-type InterruptServerInstanceResponse = {
+export type InterruptServerInstanceResponse = {
     returnCode: number;
     returnMessage: string;
     totalRows: number;

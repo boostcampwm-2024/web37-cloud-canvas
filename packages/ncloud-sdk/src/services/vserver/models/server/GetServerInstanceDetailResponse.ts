@@ -28,7 +28,7 @@
  *   ]
  * }
  */
-type GetServerInstanceDetailResponse = {
+export type GetServerInstanceDetailResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;

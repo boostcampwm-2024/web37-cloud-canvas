@@ -31,7 +31,7 @@
  * }
  * @see {@link https://api.ncloud-docs.com/docs/compute-vserver-networkinterface-createnetworkinterface}
  */
-type CreateNetworkInterfaceResponse = {
+export type CreateNetworkInterfaceResponse = {
     requestId: string;
     returnCode: number;
     returnMessage: string;
