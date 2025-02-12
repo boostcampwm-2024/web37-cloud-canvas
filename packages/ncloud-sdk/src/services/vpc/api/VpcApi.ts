@@ -1,16 +1,16 @@
 import { VpcApiClient } from '../VpcApiClient';
 import { ApiKeyCredentials } from '../../../types';
-import { CreateVpcRequest } from '../models/CreateVpcRequest';
-import { CreateVpcResponse } from '../models/CreateVpcResponse';
-import { DeleteVpcRequest } from '../models/DeleteVpcRequest';
-import { DeleteVpcResponse } from '../models/DeleteVpcResponse';
-import { GetVpcListRequest } from '../models/GetVpcListRequest';
-import { GetVpcListResponse } from '../models/GetVpcListResponse';
-import { GetVpcDetailRequest } from '../models/GetVpcDetailRequest';
-import { GetVpcDetailResponse } from '../models/GetVpcDetailResponse';
+import { CreateVpcRequest } from '../models/vpc-management/CreateVpcRequest';
+import { CreateVpcResponse } from '../models/vpc-management/CreateVpcResponse';
+import { DeleteVpcRequest } from '../models/vpc-management/DeleteVpcRequest';
+import { DeleteVpcResponse } from '../models/vpc-management/DeleteVpcResponse';
+import { GetVpcListRequest } from '../models/vpc-management/GetVpcListRequest';
+import { GetVpcListResponse } from '../models/vpc-management/GetVpcListResponse';
+import { GetVpcDetailRequest } from '../models/vpc-management/GetVpcDetailRequest';
+import { GetVpcDetailResponse } from '../models/vpc-management/GetVpcDetailResponse';
 import { CreateVpcPeeringInstanceRequest } from '../models/vpc-peering/CreateVpcPeeringInstanceRequest';
 import { CreateVpcPeeringInstanceResponse } from '../models/vpc-peering/CreateVpcPeeringResponse';
-import { AcceptOrRejectVpcPeeringRequest } from '../models/vpc-peering/AcceptOrRejetVpcPeeringRequest';
+import { AcceptOrRejectVpcPeeringRequest } from '../models/vpc-peering/AcceptOrRejectVpcPeeringRequest';
 import { AcceptOrRejectVpcPeeringResponse } from '../models/vpc-peering/AcceptOrRejectVpcPeeringResponse';
 import { GetVpcPeeringInstanceListRequest } from '../models/vpc-peering/GetVpcPeeringInstanceListRequest';
 import { GetVpcPeeringInstanceListResponse } from '../models/vpc-peering/GetVpcPeeringInstanceListResponse';
@@ -20,6 +20,14 @@ import { DeleteVpcPeeringInstanceRequest } from '../models/vpc-peering/DeleteVpc
 import { DeleteVpcPeeringInstanceResponse } from '../models/vpc-peering/DeleteVpcPeeringInstanceResponse';
 import { SetVpcPeeringDescriptionRequest } from '../models/vpc-peering/SetVpcPeeringDescriptionRequest';
 import { SetVpcPeeringDescriptionResponse } from '../models/vpc-peering/SetVpcPeeringDescriptionResponse';
+import { DeleteSubnetResponse } from '../models/subnet-management/DeleteSubnetResponse';
+import { DeleteSubnetRequest } from '../models/subnet-management/DeleteSubnetRequest';
+import { GetSubnetDetailRequest } from '../models/subnet-management/GetSubnetDetailRequest';
+import { GetSubnetDetailResponse } from '../models/subnet-management/GetSubnetDetailResponse';
+import { GetSubnetListRequest } from '../models/subnet-management/GetSubnetListRequest';
+import { GetSubnetListResponse } from '../models/subnet-management/GetSubnetListResponse';
+import { CreateSubnetRequest } from '../models/subnet-management/CreateSubnetRequest';
+import { CreateSubnetResponse } from '../models/subnet-management/CreateSubnetResponse';
 
 /**
  * 네이버 클라우드 플랫폼의 VPC(Virtual Private Cloud) API를 처리하는 클래스
@@ -139,7 +147,7 @@ export class VpcApi {
      * });
      */
     async createVpcPeeringInstance(
-        params: CreateVpcPeeringInstanceRequest
+        params: CreateVpcPeeringInstanceRequest,
     ): Promise<CreateVpcPeeringInstanceResponse> {
         return await this.client.request({
             method: 'POST',
@@ -161,7 +169,7 @@ export class VpcApi {
      * });
      */
     async acceptOrRejectVpcPeering(
-        params: AcceptOrRejectVpcPeeringRequest
+        params: AcceptOrRejectVpcPeeringRequest,
     ): Promise<AcceptOrRejectVpcPeeringResponse> {
         return await this.client.request({
             method: 'POST',
@@ -181,7 +189,7 @@ export class VpcApi {
      * });
      */
     async getVpcPeeringInstanceList(
-        params: GetVpcPeeringInstanceListRequest
+        params: GetVpcPeeringInstanceListRequest,
     ): Promise<GetVpcPeeringInstanceListResponse> {
         return await this.client.request({
             method: 'GET',
@@ -202,7 +210,7 @@ export class VpcApi {
      * });
      */
     async getVpcPeeringInstanceDetail(
-        params: GetVpcPeeringInstanceDetailRequest
+        params: GetVpcPeeringInstanceDetailRequest,
     ): Promise<GetVpcPeeringInstanceDetailResponse> {
         return await this.client.request({
             method: 'GET',
@@ -223,7 +231,7 @@ export class VpcApi {
      * });
      */
     async deleteVpcPeeringInstance(
-        params: DeleteVpcPeeringInstanceRequest
+        params: DeleteVpcPeeringInstanceRequest,
     ): Promise<DeleteVpcPeeringInstanceResponse> {
         return await this.client.request({
             method: 'POST',
@@ -245,11 +253,99 @@ export class VpcApi {
      * });
      */
     async setVpcPeeringDescription(
-        params: SetVpcPeeringDescriptionRequest
+        params: SetVpcPeeringDescriptionRequest,
     ): Promise<SetVpcPeeringDescriptionResponse> {
         return await this.client.request({
             method: 'POST',
             url: `${this.resourcePath}/setVpcPeeringDescription`,
+            params,
+        });
+    }
+
+    /**
+     * 새로운 Subnet을 생성합니다.
+     * @param {CreateSubnetRequest} params - Subnet 생성 요청 파라미터
+     * @returns {Promise<CreateSubnetResponse>} Subnet 생성 결과
+     *
+     * @example
+     * const response = await vpcApi.createSubnet({
+     *   regionCode: 'KR',
+     *   zoneCode: 'KR-1',
+     *   vpcNo: 'vpc-123',
+     *   subnet: '10.0.1.0/24',
+     *   networkAclNo: 'acl-123',
+     *   subnetTypeCode: 'PUBLIC'
+     * });
+     */
+    async createSubnet(
+        params: CreateSubnetRequest,
+    ): Promise<CreateSubnetResponse> {
+        return await this.client.request({
+            method: 'POST',
+            url: `${this.resourcePath}/createSubnet`,
+            params,
+        });
+    }
+
+    /**
+     * Subnet 목록을 조회합니다.
+     * @param {GetSubnetListRequest} params - Subnet 목록 조회 요청 파라미터
+     * @returns {Promise<GetSubnetListResponse>} Subnet 목록 조회 결과
+     *
+     * @example
+     * const response = await vpcApi.getSubnetList({
+     *   regionCode: 'KR',
+     *   vpcNo: 'vpc-123'
+     * });
+     */
+    async getSubnetList(
+        params: GetSubnetListRequest,
+    ): Promise<GetSubnetListResponse> {
+        return await this.client.request({
+            method: 'GET',
+            url: `${this.resourcePath}/getSubnetList`,
+            params,
+        });
+    }
+
+    /**
+     * 특정 Subnet의 상세 정보를 조회합니다.
+     * @param {GetSubnetDetailRequest} params - Subnet 상세 정보 조회 요청 파라미터
+     * @returns {Promise<GetSubnetDetailResponse>} Subnet 상세 정보 조회 결과
+     *
+     * @example
+     * const response = await vpcApi.getSubnetDetail({
+     *   regionCode: 'KR',
+     *   subnetNo: 'subnet-123'
+     * });
+     */
+    async getSubnetDetail(
+        params: GetSubnetDetailRequest,
+    ): Promise<GetSubnetDetailResponse> {
+        return await this.client.request({
+            method: 'GET',
+            url: `${this.resourcePath}/getSubnetDetail`,
+            params,
+        });
+    }
+
+    /**
+     * Subnet을 삭제합니다.
+     * @param {DeleteSubnetRequest} params - Subnet 삭제 요청 파라미터
+     * @returns {Promise<DeleteSubnetResponse>} Subnet 삭제 결과
+     *
+     * @example
+     * const response = await vpcApi.deleteSubnet({
+     *   regionCode: 'KR',
+     *   subnetNo: 'subnet-123'
+     * });
+     */
+    async deleteSubnet(
+        params: DeleteSubnetRequest,
+    ): Promise<DeleteSubnetResponse> {
+        return await this.client.request({
+            method: 'POST',
+            url: `${this.resourcePath}/deleteSubnet`,
             params,
         });
     }
