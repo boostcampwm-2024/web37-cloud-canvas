@@ -1,4 +1,4 @@
-import { CommonResponse } from './CommonResponse';
+import { CommonResponse } from '../CommonResponse';
 
 /**
  * VPC 생성 API 응답

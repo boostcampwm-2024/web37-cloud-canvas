@@ -32,4 +32,3 @@ export type AcceptOrRejectVpcPeeringRequest = {
      */
     responseFormatType?: 'xml' | 'json';
 };
-

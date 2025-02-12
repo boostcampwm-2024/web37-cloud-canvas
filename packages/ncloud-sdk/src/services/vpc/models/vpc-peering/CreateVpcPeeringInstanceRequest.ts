@@ -57,4 +57,3 @@ export type CreateVpcPeeringInstanceRequest = {
      */
     responseFormatType?: 'xml' | 'json';
 };
-

@@ -1,4 +1,4 @@
-import { CommonResponse } from './CommonResponse';
+import { CommonResponse } from '../CommonResponse';
 
 /**
  * VPC 목록 조회 API 응답

@@ -1,4 +1,4 @@
-import { CommonResponse } from './CommonResponse';
+import { CommonResponse } from '../CommonResponse';
 
 /**
  * VPC 삭제 API 응답
