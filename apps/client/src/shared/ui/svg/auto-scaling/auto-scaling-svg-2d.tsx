@@ -9,7 +9,7 @@ export const AutoScalingSVG2D = (props: ResourceSVG2DProps) => {
             <polygon
                 points="0 0, 180 0, 180 90, 0 90"
                 fill="none"
-                stroke-width="45"
+                strokeWidth="45"
                 stroke="#f5b720"
                 opacity="1"
             ></polygon>

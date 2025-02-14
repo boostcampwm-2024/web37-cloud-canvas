@@ -17,6 +17,7 @@ export const useDrop = (nodeId: string) => {
         return DROP_OPTIONS[dropZoneResource.properties.type];
     };
 
+    //TODO: 너무 이벤트가 많이 발생할 수 있기 때문에 throttle을 줘야할것같음
     const leaveDropZone = () => {
         if (!draggedId) return;
 
