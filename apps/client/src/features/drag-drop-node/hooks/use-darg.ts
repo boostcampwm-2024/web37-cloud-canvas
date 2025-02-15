@@ -14,7 +14,7 @@ export const useDrag = (nodeId: string, $canvas: SVGSVGElement) => {
     const viewMode = useCanvasStore.use.viewMode();
     const nodes = useNodeStore.use.nodes();
     const setDraggedId = useDragStore.use.setDraggedId();
-    const moveNode = useNodeStore.use.moveNode();
+    const { moveNode } = useNodeStore.use.actions();
 
     const prevPointRef = useRef<CoordPoint | null>(null);
 

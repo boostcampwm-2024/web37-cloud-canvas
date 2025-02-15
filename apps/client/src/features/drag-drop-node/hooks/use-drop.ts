@@ -8,9 +8,8 @@ export const useDrop = (nodeId: string) => {
     const resources = useResourceStore.use.resources();
 
     const draggedId = useDragStore.use.draggedId();
-    const removeChildNode = useNodeStore.use.removeChildNode();
-    const addChildNode = useNodeStore.use.addChildNode();
-    const updateNodeLayout = useNodeStore.use.updateNodeLayout();
+    const { removeChildNode, addChildNode, updateNodeLayout } =
+        useNodeStore.use.actions();
 
     const getDropOption = () => {
         const dropZoneResource = resources[nodeId];
