@@ -22,7 +22,7 @@ export const ResourceControls = (props: ResourceControlsProps) => {
     const currentZoom = useCanvasStore.use.zoomFactor();
 
     const deselect = useSelectStore.use.deselect();
-    const removeResource = useResourceStore.use.removeResource();
+    const { removeResource } = useResourceStore.use.actions();
     const { removeNode } = useNodeStore.use.actions();
 
     const ratio = currentZoom < 1 ? 1 : currentZoom;

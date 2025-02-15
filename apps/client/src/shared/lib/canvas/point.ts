@@ -15,6 +15,7 @@ export const gridTo3DCoordPoint = (point: GridPoint) => {
         y: (col + row) * halfGridHeight,
     };
 };
+
 export const coordTo3DGridPoint = (point: CoordPoint) => {
     const { x, y } = point;
     const halfGridWidth = GRID_WIDTH_3D / 2;

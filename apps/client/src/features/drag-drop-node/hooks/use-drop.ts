@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import { useNodeStore } from '@/entities/node/model/node.store';
 import { useResourceStore } from '@/entities/resource/model/resource.store';
 
@@ -16,16 +18,17 @@ export const useDrop = (nodeId: string) => {
         return DROP_OPTIONS[dropZoneResource.properties.type];
     };
 
-    //TODO: 너무 이벤트가 많이 발생할 수 있기 때문에 throttle을 줘야할것같음
     const leaveDropZone = () => {
         if (!draggedId) return;
 
-        const options = getDropOption();
-        removeChildNode(nodeId, draggedId);
-        updateNodeLayout(nodeId, {
-            layoutType: options.layoutType,
-            padding: options.padding,
-        });
+        _.debounce(() => {
+            const options = getDropOption();
+            removeChildNode(nodeId, draggedId);
+            updateNodeLayout(nodeId, {
+                layoutType: options.layoutType,
+                padding: options.padding,
+            });
+        }, 500);
     };
 
     const dropDropZone = () => {
