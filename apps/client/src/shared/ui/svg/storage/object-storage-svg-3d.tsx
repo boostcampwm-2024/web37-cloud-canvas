@@ -47,7 +47,7 @@ export const ObjectStorageSVG3D = (props: ResourceSVG3DProps) => {
                 fill="none"
                 stroke="#000000"
                 d="M50.313 1.155 1.214 29.501l24.549 70.866 24.549 14.173 24.548-14.173 24.549-70.866z"
-                stroke-width="2"
+                strokeWidth="2"
             ></path>
         </svg>
     );
