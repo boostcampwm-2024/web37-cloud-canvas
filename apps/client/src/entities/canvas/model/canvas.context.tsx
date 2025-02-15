@@ -28,7 +28,7 @@ export const CanvasProvider = (props: CanvasProviderProps) => {
     const { children, initialViewbox } = props;
 
     const canvasRef = useRef<SVGSVGElement>(null);
-    const setViewbox = useCanvasStore.use.setViewbox();
+    const { setViewbox } = useCanvasStore.use.actions();
 
     const getCanvasEl = useCallback(
         () => canvasRef.current as SVGSVGElement,

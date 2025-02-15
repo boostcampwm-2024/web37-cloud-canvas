@@ -7,7 +7,7 @@ import type { CoordPoint } from '@/shared/types/canvas';
 
 export const usePan = ($canvas: SVGSVGElement) => {
     const viewbox = useCanvasStore.use.viewbox();
-    const setViewbox = useCanvasStore.use.setViewbox();
+    const { setViewbox } = useCanvasStore.use.actions();
 
     const startSvgPointRef = useRef<CoordPoint | null>(null);
 

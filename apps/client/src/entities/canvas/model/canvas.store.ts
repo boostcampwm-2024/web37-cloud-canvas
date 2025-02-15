@@ -18,6 +18,10 @@ interface CanvasActions {
     setZoomFactor: (factor: number) => void;
 }
 
+interface CanvasStore extends CanvasStates {
+    actions: CanvasActions;
+}
+
 const initialState: CanvasStates = {
     zoomFactor: 1,
     viewbox: {
@@ -29,18 +33,20 @@ const initialState: CanvasStates = {
     viewMode: '2d',
 };
 
-const store = create<CanvasStates & CanvasActions>((set) => ({
+const store = create<CanvasStore>((set) => ({
     ...initialState,
-    updateViewbox: (viewbox) =>
-        set((state) => ({
-            viewbox: {
-                ...state.viewbox,
-                ...viewbox,
-            },
-        })),
-    setViewbox: (viewbox) => set({ viewbox }),
-    setViewMode: (viewMode) => set({ viewMode }),
-    setZoomFactor: (factor) => set({ zoomFactor: factor }),
+    actions: {
+        updateViewbox: (viewbox) =>
+            set((state) => ({
+                viewbox: {
+                    ...state.viewbox,
+                    ...viewbox,
+                },
+            })),
+        setViewbox: (viewbox) => set({ viewbox }),
+        setViewMode: (viewMode) => set({ viewMode }),
+        setZoomFactor: (factor) => set({ zoomFactor: factor }),
+    },
 }));
 
 export const useCanvasStore = createSelectors(store);

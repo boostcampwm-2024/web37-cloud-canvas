@@ -8,8 +8,7 @@ import { MAX_ZOOM, MIN_ZOOM, SCALE_STEP } from '../config/zoom';
 export const useZoom = ($canvas: SVGSVGElement) => {
     const zoomFactor = useCanvasStore.use.zoomFactor();
     const viewbox = useCanvasStore.use.viewbox();
-    const setViewbox = useCanvasStore.use.setViewbox();
-    const setZoomFactor = useCanvasStore.use.setZoomFactor();
+    const { setViewbox, setZoomFactor } = useCanvasStore.use.actions();
 
     const validateZoomFactor = (zoomFactor: number): boolean => {
         if (zoomFactor < 1 && zoomFactor <= MIN_ZOOM) return false;

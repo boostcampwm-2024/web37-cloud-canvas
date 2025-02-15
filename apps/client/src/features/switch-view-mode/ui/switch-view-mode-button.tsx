@@ -4,7 +4,7 @@ import { Toggle } from '@/shared/ui/shadcn/toggle';
 
 export const SwitchViewModeButton = () => {
     const viewMode = useCanvasStore.use.viewMode();
-    const setViewMode = useCanvasStore.use.setViewMode();
+    const { setViewMode } = useCanvasStore.use.actions();
 
     const handleClick = () => setViewMode(viewMode === '2d' ? '3d' : '2d');
 
