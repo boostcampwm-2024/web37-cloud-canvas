@@ -3,7 +3,8 @@ import { NcloudResponse } from '../subnet-management/NcloudResponse';
 /**
  * Network ACL Deny-Allow 그룹 IP 리스트 설정 응답 타입
  */
-export interface SetNetworkAclDenyAllowGroupIpListResponse extends NcloudResponse {
+export interface SetNetworkAclDenyAllowGroupIpListResponse
+    extends NcloudResponse {
     /** Network ACL Deny-Allow 그룹 목록 정보 */
     networkAclDenyAllowGroupList: {
         networkAclDenyAllowGroup: {

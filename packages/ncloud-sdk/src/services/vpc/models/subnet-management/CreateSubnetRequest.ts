@@ -71,4 +71,3 @@ export type CreateSubnetRequest = {
      */
     responseFormatType?: 'xml' | 'json';
 };
-
