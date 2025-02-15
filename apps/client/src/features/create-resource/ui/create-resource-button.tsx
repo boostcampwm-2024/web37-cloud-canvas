@@ -17,7 +17,7 @@ interface CreateResourceButtonProps {
 export const CreateResourceButton = (props: CreateResourceButtonProps) => {
     const { type, title } = props;
     const { addNode } = useNodeStore.use.actions();
-    const addResource = useResourceStore.use.addResource();
+    const { addResource } = useResourceStore.use.actions();
 
     const handleClick = () => {
         const node = createNodeFactory(type);
