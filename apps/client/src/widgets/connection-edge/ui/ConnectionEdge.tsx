@@ -6,9 +6,11 @@ import { Edge } from '@/entities/edge/ui/Edge';
 
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
 
+interface ConnectionEdgeProps {}
+
 export const ConnectionEdge = () => {
-    const viewMode = useCanvasStore.use.viewMode();
     const { getCanvasEl } = useCanvasContext();
+    const viewMode = useCanvasStore.use.viewMode();
 
     const [target, setTarget] = useState({ x: 0, y: 0 });
 
