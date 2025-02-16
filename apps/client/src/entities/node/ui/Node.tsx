@@ -37,7 +37,7 @@ export const Node = (props: NodeProps) => {
     };
 
     return (
-        <g id={id} transform={transform} {...rest}>
+        <g id={id} transform={transform} data-canvas-type="node" {...rest}>
             <SVGComponent
                 viewMode={viewMode}
                 size={size}

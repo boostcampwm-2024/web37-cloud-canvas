@@ -12,13 +12,14 @@ interface DnDWrapperProps {
 export const DnDWrapper = (props: DnDWrapperProps) => {
     const { children, droppable } = props;
 
+    const id = children.props.id;
     if (droppable) {
         return (
-            <Droppable nodeId={children.props.id}>
-                <Draggable nodeId={children.props.id}>{children}</Draggable>
+            <Droppable nodeId={id}>
+                <Draggable nodeId={id}>{children}</Draggable>
             </Droppable>
         );
     }
 
-    return <Draggable nodeId={children.props.id}>{children}</Draggable>;
+    return <Draggable nodeId={id}>{children}</Draggable>;
 };
