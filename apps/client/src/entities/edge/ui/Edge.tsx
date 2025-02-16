@@ -4,32 +4,29 @@ import { useMemo } from 'react';
 
 interface EdgeProps {
     viewMode: ViewMode;
-    source: CoordPoint;
-    target: CoordPoint;
+    sourcePoint: CoordPoint;
+    targetPoint: CoordPoint;
 }
 
 export const Edge = (props: EdgeProps) => {
-    const { viewMode, source, target } = props;
+    const { viewMode, sourcePoint, targetPoint } = props;
 
     const transform = viewMode === '3d' ? IsoMatrix?.toString() : undefined;
 
     const transformedTarget = useMemo(() => {
-        if (viewMode !== '3d' || !IsoMatrix) return target;
+        if (viewMode !== '3d' || !IsoMatrix) return targetPoint;
 
-        // IsoMatrix의 역행렬을 구합니다
         const inverseMatrix = IsoMatrix.inverse();
 
-        // target point를 DOMPoint로 변환
-        const targetPoint = new DOMPoint(target.x, target.y);
+        const targetSVGPoint = new DOMPoint(targetPoint.x, targetPoint.y);
 
-        // 역변환을 적용
-        const transformedPoint = targetPoint.matrixTransform(inverseMatrix);
+        const transformedPoint = targetSVGPoint.matrixTransform(inverseMatrix);
 
         return {
             x: transformedPoint.x,
             y: transformedPoint.y,
         };
-    }, [viewMode, target]);
+    }, [viewMode, targetPoint]);
 
     return (
         <g transform={transform}>
@@ -48,8 +45,8 @@ export const Edge = (props: EdgeProps) => {
             </defs>
 
             <line
-                x1={source.x}
-                y1={source.y}
+                x1={sourcePoint.x}
+                y1={sourcePoint.y}
                 x2={transformedTarget.x}
                 y2={transformedTarget.y}
                 stroke="black"

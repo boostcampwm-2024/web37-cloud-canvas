@@ -1,9 +1,9 @@
-import type { GridPoint, SizeByViewMode } from '@/shared/types/canvas';
+import type { GridPoint } from '@/shared/types/canvas';
+import { ResourceSVGConfig } from '@/shared/types/resource';
 
-export interface Node {
+export interface Node extends ResourceSVGConfig {
     id: string;
     point: GridPoint;
-    size: SizeByViewMode;
     children?: string[];
     parent?: string;
     droppable?: boolean;

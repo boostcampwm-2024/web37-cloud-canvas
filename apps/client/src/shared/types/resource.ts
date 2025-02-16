@@ -1,10 +1,11 @@
 import type { SVGProps } from 'react';
 
 import type {
+    GridPoint,
     GridSize2D,
     GridSize3D,
-    SizeByViewMode,
     ViewMode,
+    ViewModeMap,
 } from './canvas';
 
 export type ResourceType =
@@ -16,7 +17,7 @@ export type ResourceType =
 
 export interface ResourceSVGProps extends SVGProps<SVGSVGElement> {
     viewMode: ViewMode;
-    size: SizeByViewMode;
+    size: ViewModeMap<GridSize2D, GridSize3D>;
 }
 
 export interface ResourceSVG2DProps extends SVGProps<SVGSVGElement> {
@@ -28,3 +29,13 @@ export interface ResourceSVG3DProps extends SVGProps<SVGSVGElement> {
 }
 
 export type DropLayoutType = 'square' | 'horizontal';
+
+export interface Connector {
+    direction: string;
+    point: GridPoint;
+}
+
+export interface ResourceSVGConfig {
+    size: ViewModeMap<GridSize2D, GridSize3D>;
+    connectors: ViewModeMap<Connector[], Connector[]>;
+}

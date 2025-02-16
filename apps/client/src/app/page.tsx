@@ -29,12 +29,13 @@ export default function Page() {
                             point={node.point}
                             size={node.size}
                             droppable={node.droppable}
+                            connectors={node.connectors}
                         />
                     ))}
                     {selectedNodeId && (
                         <ResourceControls selectedId={selectedNodeId} />
                     )}
-                    <ConnectionEdge />
+                    {/* <ConnectionEdge /> */}
                 </CloudCanvas>
             </div>
         </div>

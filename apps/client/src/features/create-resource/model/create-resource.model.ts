@@ -4,11 +4,11 @@ import type { Node } from '@/entities/node/model/node.types';
 import type { Resource } from '@/entities/resource/model/resource.types';
 
 import {
-    DefaultCloudFunctionSVGSize,
-    DefaultContainerSVGSize,
-    DefaultServerSVGSize,
-    DefaultAutoScalingSVGSize,
-    DefaultObjectStorageSVGSize,
+    DefaultCloudFunctionSVGConfig,
+    DefaultContainerSVGConfig,
+    DefaultServerSVGConfig,
+    DefaultAutoScalingSVGConfig,
+    DefaultObjectStorageSVGConfig,
 } from '@/shared/config/resource-svg';
 import type { ResourceType } from '@/shared/types/resource';
 
@@ -23,33 +23,33 @@ export const createNodeFactory = (type: ResourceType): Node => {
             return {
                 id,
                 point: defaultPoint,
-                size: DefaultServerSVGSize,
+                ...DefaultServerSVGConfig,
             };
         case 'container':
             return {
                 id,
                 point: defaultPoint,
-                size: DefaultContainerSVGSize,
+                ...DefaultContainerSVGConfig,
                 droppable: true,
             };
         case 'cloud-function':
             return {
                 id,
                 point: defaultPoint,
-                size: DefaultCloudFunctionSVGSize,
+                ...DefaultCloudFunctionSVGConfig,
             };
         case 'auto-scaling':
             return {
                 id,
                 point: defaultPoint,
-                size: DefaultAutoScalingSVGSize,
+                ...DefaultAutoScalingSVGConfig,
                 droppable: true,
             };
         case 'object-storage':
             return {
                 id,
                 point: defaultPoint,
-                size: DefaultObjectStorageSVGSize,
+                ...DefaultObjectStorageSVGConfig,
             };
     }
 };

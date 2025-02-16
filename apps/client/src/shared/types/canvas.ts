@@ -24,4 +24,9 @@ export interface SizeByViewMode {
     '3d': GridSize3D;
 }
 
+export interface ViewModeMap<T, K> {
+    '2d': T;
+    '3d': K;
+}
+
 export type GridBoundary = GridPoint & GridSize2D;
