@@ -1,22 +1,22 @@
 import { createSelectors } from '@/shared/lib/zustand/selector';
-import { CoordPoint } from '@/shared/types/canvas';
+import { GridPoint } from '@/shared/types/canvas';
 import { create } from 'zustand';
 
-type EndPoint = {
+interface EndPoint {
     id?: string;
-    point: CoordPoint;
-};
+    point: GridPoint;
+}
 
-type Edge = {
+interface Edge {
     sourceId: string;
     targetId: string;
     type: string;
-};
+}
 
-type Connection = {
+export interface Connection {
     source: EndPoint;
     target: EndPoint;
-};
+}
 
 interface EdgeStates {
     connection: Connection | null;
@@ -28,7 +28,7 @@ interface EdgeActions {
         source: Required<EndPoint>,
         target: Required<EndPoint>,
     ) => void;
-    progressConnection: (target: EndPoint) => void;
+    progressConnection: (target: EndPoint, source?: EndPoint) => void;
     endConnection: () => void;
 }
 
@@ -47,15 +47,20 @@ const store = create<EdgeStore>((set) => ({
                     target,
                 },
             }),
-        progressConnection: (target) =>
+        progressConnection: (target, source) =>
             set((state) => {
                 const connection = state.connection;
                 if (!connection) return state;
 
                 return {
                     connection: {
-                        ...connection,
-                        target,
+                        source: {
+                            ...(source ?? connection.source),
+                        },
+                        target: {
+                            ...connection.target,
+                            ...target,
+                        },
                     },
                 };
             }),

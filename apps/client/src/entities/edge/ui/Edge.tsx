@@ -1,11 +1,12 @@
 import { IsoMatrix } from '@/shared/config/canvas';
-import { CoordPoint, ViewMode } from '@/shared/types/canvas';
-import { useMemo } from 'react';
+import { gridToCoordPoint } from '@/shared/lib/canvas/point';
+import { GridPoint, ViewMode } from '@/shared/types/canvas';
+import { useCallback, useMemo } from 'react';
 
 interface EdgeProps {
     viewMode: ViewMode;
-    sourcePoint: CoordPoint;
-    targetPoint: CoordPoint;
+    sourcePoint: GridPoint;
+    targetPoint: GridPoint;
 }
 
 export const Edge = (props: EdgeProps) => {
@@ -13,20 +14,36 @@ export const Edge = (props: EdgeProps) => {
 
     const transform = viewMode === '3d' ? IsoMatrix?.toString() : undefined;
 
-    const transformedTarget = useMemo(() => {
-        if (viewMode !== '3d' || !IsoMatrix) return targetPoint;
+    const transformPoint = useCallback(
+        (point: GridPoint) => {
+            const coordPoint = gridToCoordPoint(point, viewMode);
 
-        const inverseMatrix = IsoMatrix.inverse();
+            if (viewMode !== '3d' || !IsoMatrix) {
+                return coordPoint;
+            }
 
-        const targetSVGPoint = new DOMPoint(targetPoint.x, targetPoint.y);
+            const domPoint = new DOMPoint(coordPoint.x, coordPoint.y);
+            const transformedPoint = domPoint.matrixTransform(
+                IsoMatrix.inverse(),
+            );
 
-        const transformedPoint = targetSVGPoint.matrixTransform(inverseMatrix);
+            return {
+                x: transformedPoint.x,
+                y: transformedPoint.y,
+            };
+        },
+        [viewMode],
+    );
 
-        return {
-            x: transformedPoint.x,
-            y: transformedPoint.y,
-        };
-    }, [viewMode, targetPoint]);
+    const transformedSource = useMemo(
+        () => transformPoint(sourcePoint),
+        [transformPoint, sourcePoint],
+    );
+
+    const transformedTarget = useMemo(
+        () => transformPoint(targetPoint),
+        [transformPoint, targetPoint],
+    );
 
     return (
         <g transform={transform}>
@@ -45,8 +62,8 @@ export const Edge = (props: EdgeProps) => {
             </defs>
 
             <line
-                x1={sourcePoint.x}
-                y1={sourcePoint.y}
+                x1={transformedSource.x}
+                y1={transformedSource.y}
                 x2={transformedTarget.x}
                 y2={transformedTarget.y}
                 stroke="black"
