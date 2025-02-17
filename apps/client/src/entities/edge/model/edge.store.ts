@@ -1,35 +1,17 @@
 import { createSelectors } from '@/shared/lib/zustand/selector';
-import { GridPoint } from '@/shared/types/canvas';
 import { create } from 'zustand';
-
-interface EndPoint {
-    id?: string;
-    point: GridPoint;
-}
-
-interface Edge {
-    sourceId: string;
-    targetId: string;
-    type: string;
-}
-
-export interface Connection {
-    source: EndPoint;
-    target: EndPoint;
-}
+import { DraftEdge, Edge } from './edge.type';
+import { nanoid } from 'nanoid';
 
 interface EdgeStates {
-    connection: Connection | null;
+    draftEdge: DraftEdge | null;
     edges: Record<string, Edge>;
 }
 
 interface EdgeActions {
-    startConnection: (
-        source: Required<EndPoint>,
-        target: Required<EndPoint>,
-    ) => void;
-    progressConnection: (target: EndPoint, source?: EndPoint) => void;
-    endConnection: () => void;
+    createDraftEdge: (sourceId: string) => void;
+    progressDraftEdge: (targetId?: string) => void;
+    finalizeDraftEdge: () => void;
 }
 
 interface EdgeStore extends EdgeStates {
@@ -38,36 +20,45 @@ interface EdgeStore extends EdgeStates {
 
 const store = create<EdgeStore>((set) => ({
     edges: {},
-    connection: null,
+    draftEdge: null,
     actions: {
-        startConnection: (source, target) =>
+        createDraftEdge: (sourceId) =>
             set({
-                connection: {
-                    source,
-                    target,
+                draftEdge: {
+                    sourceId,
                 },
             }),
-        progressConnection: (target, source) =>
+        progressDraftEdge: (targetId) =>
             set((state) => {
-                const connection = state.connection;
-                if (!connection) return state;
-
                 return {
-                    connection: {
-                        source: {
-                            ...(source ?? connection.source),
-                        },
-                        target: {
-                            ...connection.target,
-                            ...target,
-                        },
+                    draftEdge: {
+                        sourceId: state.draftEdge!.sourceId,
+                        targetId,
                     },
                 };
             }),
-        endConnection: () =>
+        finalizeDraftEdge: () =>
             set((state) => {
+                const { draftEdge } = state;
+                if (!draftEdge) return state;
+
+                if (draftEdge.sourceId && draftEdge.targetId) {
+                    const id = `edge-${nanoid()}`;
+                    return {
+                        draftEdge: null,
+                        edges: {
+                            ...state.edges,
+                            [id]: {
+                                id,
+                                sourceId: draftEdge.sourceId,
+                                targetId: draftEdge.targetId,
+                                type: 'line',
+                            },
+                        },
+                    };
+                }
                 return {
-                    connection: null,
+                    draftEdge: null,
                 };
             }),
     },

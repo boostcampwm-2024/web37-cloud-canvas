@@ -27,6 +27,7 @@ interface NodeActions {
             padding: number;
         },
     ) => void;
+    getNode: (id: string) => Node | null;
 }
 
 interface NodeStore extends NodeStates {
@@ -40,6 +41,7 @@ const initialState: NodeStates = {
 const store = create<NodeStore>((set, get) => ({
     ...initialState,
     actions: {
+        getNode: (id) => get().nodes[id],
         addNode: (node) =>
             set((state) => ({ nodes: { ...state.nodes, [node.id]: node } })),
         removeNode: (id) => {

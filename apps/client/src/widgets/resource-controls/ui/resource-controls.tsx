@@ -21,12 +21,11 @@ export const ResourceControls = (props: ResourceControlsProps) => {
     const { selectedId } = props;
 
     const currentZoom = useCanvasStore.use.zoomFactor();
-    const nodes = useNodeStore.use.nodes();
 
     const deselect = useSelectStore.use.deselect();
     const { removeResource } = useResourceStore.use.actions();
     const { removeNode } = useNodeStore.use.actions();
-    const { startConnection } = useEdgeStore.use.actions();
+    const { createDraftEdge } = useEdgeStore.use.actions();
 
     const ratio = currentZoom < 1 ? 1 : currentZoom;
 
@@ -39,16 +38,19 @@ export const ResourceControls = (props: ResourceControlsProps) => {
     };
 
     const handleConnectAction = () => {
-        const node = nodes[selectedId];
-        // console.log(node.connections);
-        // node point를 가져옴
+        createDraftEdge(selectedId);
     };
 
     return (
         <g
             transform={`translate(${controlsPoint.x},${controlsPoint.y}) scale(${ratio})`}
         >
-            <ActionButton label="connect" icon={Link} y={-25} />
+            <ActionButton
+                label="connect"
+                icon={Link}
+                y={-25}
+                onAction={handleConnectAction}
+            />
             <ActionButton
                 label="remove"
                 icon={Trash2Icon}

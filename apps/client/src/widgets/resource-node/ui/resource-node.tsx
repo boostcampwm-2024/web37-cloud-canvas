@@ -52,7 +52,6 @@ export const ResourceNode = (props: ResourceNodeProps) => {
                     isSelected={selectedNodeId === id}
                     svg={SVGComponent}
                     onSelect={handleSelect}
-                    data-canvas-type="node"
                     data-resource-type={resourceType}
                 />
             </DnDWrapper>
