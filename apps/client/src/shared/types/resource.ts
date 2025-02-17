@@ -30,8 +30,9 @@ export interface ResourceSVG3DProps extends SVGProps<SVGSVGElement> {
 
 export type DropLayoutType = 'square' | 'horizontal';
 
+export type Direction = 'top' | 'right' | 'bottom' | 'left';
 export interface Connector {
-    direction: string;
+    direction: Direction | string;
     point: GridPoint;
 }
 

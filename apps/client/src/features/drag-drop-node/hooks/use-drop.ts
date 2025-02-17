@@ -23,12 +23,13 @@ export const useDrop = (nodeId: string) => {
 
         _.debounce(() => {
             const options = getDropOption();
+            console.log(222);
             removeChildNode(nodeId, draggedId);
             updateNodeLayout(nodeId, {
                 layoutType: options.layoutType,
                 padding: options.padding,
             });
-        }, 500);
+        }, 100)();
     };
 
     const dropDropZone = () => {

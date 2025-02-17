@@ -46,7 +46,7 @@ export const DefaultServerSVGConfig: ResourceSVGConfig = {
                 point: { row: 0.5, col: 1.0 },
             },
             {
-                direction: 'left',
+                direction: 'bottom',
                 point: { row: 1, col: 0.5 },
             },
         ],
@@ -69,22 +69,39 @@ export const DefaultContainerSVGConfig: ResourceSVGConfig = {
         '2d': [
             {
                 direction: 'left',
-                point: { col: 0, row: 0.5 },
+                point: { col: 0, row: 1.5 },
             },
             {
                 direction: 'top',
-                point: { col: 0.5, row: 0 },
+                point: { col: 1.5, row: 0 },
             },
             {
                 direction: 'right',
-                point: { col: 1, row: 0.5 },
+                point: { col: 3, row: 1.5 },
             },
             {
-                direction: 'right',
-                point: { col: 1, row: 0.5 },
+                direction: 'bottom',
+                point: { col: 1.5, row: 3 },
             },
         ],
-        '3d': [],
+        '3d': [
+            {
+                direction: 'left',
+                point: { col: -0.25, row: 1.5 },
+            },
+            {
+                direction: 'top',
+                point: { col: 1.5, row: -0.25 },
+            },
+            {
+                direction: 'right',
+                point: { col: 3, row: 1.5 },
+            },
+            {
+                direction: 'bottom',
+                point: { col: 1.5, row: 3 },
+            },
+        ],
     },
 };
 
@@ -115,11 +132,29 @@ export const DefaultCloudFunctionSVGConfig: ResourceSVGConfig = {
                 point: { col: 1, row: 0.5 },
             },
             {
-                direction: 'right',
-                point: { col: 1, row: 0.5 },
+                direction: 'bottom',
+                point: { col: 0.5, row: 1 },
             },
         ],
-        '3d': [],
+        '3d': [
+            {
+                direction: 'left',
+                point: { row: 0.5, col: -0.25 },
+            },
+
+            {
+                direction: 'top',
+                point: { row: -0.25, col: 0.5 },
+            },
+            {
+                direction: 'right',
+                point: { row: 0.5, col: 1.0 },
+            },
+            {
+                direction: 'bottom',
+                point: { row: 1, col: 0.5 },
+            },
+        ],
     },
 };
 
@@ -138,23 +173,24 @@ export const DefaultAutoScalingSVGConfig: ResourceSVGConfig = {
     connectors: {
         '2d': [
             {
-                direction: 'left',
-                point: { col: 0, row: 0.5 },
-            },
-            {
                 direction: 'top',
-                point: { col: 0.5, row: 0 },
+                point: { col: 1, row: -0.25 },
             },
             {
-                direction: 'right',
-                point: { col: 1, row: 0.5 },
-            },
-            {
-                direction: 'right',
-                point: { col: 1, row: 0.5 },
+                direction: 'bottom',
+                point: { col: 1, row: 1.25 },
             },
         ],
-        '3d': [],
+        '3d': [
+            {
+                direction: 'top',
+                point: { col: 1, row: -0.25 },
+            },
+            {
+                direction: 'bottom',
+                point: { col: 1, row: 1.25 },
+            },
+        ],
     },
 };
 
@@ -185,10 +221,28 @@ export const DefaultObjectStorageSVGConfig: ResourceSVGConfig = {
                 point: { col: 1, row: 0.5 },
             },
             {
-                direction: 'right',
-                point: { col: 1, row: 0.5 },
+                direction: 'bottom',
+                point: { col: 0.5, row: 1 },
             },
         ],
-        '3d': [],
+        '3d': [
+            {
+                direction: 'left',
+                point: { row: 0.5, col: 0 },
+            },
+
+            {
+                direction: 'top',
+                point: { row: 0, col: 0.5 },
+            },
+            {
+                direction: 'right',
+                point: { row: 0.5, col: 0.75 },
+            },
+            {
+                direction: 'bottom',
+                point: { row: 0.75, col: 0.5 },
+            },
+        ],
     },
 };
