@@ -1,7 +1,7 @@
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { Edge } from '@/entities/edge/ui/Edge';
 import { useNodeStore } from '@/entities/node/model/node.store';
-import { findNearestConnector } from '@/shared/lib/canvas/connector';
+import { findNearestConnector } from '../lib/connector';
 
 interface ConnectionEdgeProps {
     id: string;
@@ -16,40 +16,23 @@ export const ConnectionEdge = (props: ConnectionEdgeProps) => {
     const targetNode = getNode(targetId)!;
     const sourceNode = getNode(sourceId)!;
 
-    const sourceConnectorsPoint = sourceNode.connectors[viewMode].map(
-        (connector) => {
-            return {
-                ...connector,
-                point: {
-                    col: sourceNode.point.col + connector.point.col,
-                    row: sourceNode.point.row + connector.point.row,
-                },
-            };
-        },
-    );
-
-    const targetConnectorsPoint = targetNode.connectors[viewMode].map(
-        (connector) => {
-            return {
-                ...connector,
-                point: {
-                    col: targetNode.point.col + connector.point.col,
-                    row: targetNode.point.row + connector.point.row,
-                },
-            };
-        },
-    );
-
     return (
         <Edge
+            id={id}
             viewMode={viewMode}
             sourcePoint={
-                findNearestConnector(sourceConnectorsPoint, targetNode.point)
-                    .point
+                findNearestConnector(
+                    sourceNode.connectors[viewMode],
+                    sourceNode.point,
+                    targetNode.point,
+                ).point
             }
             targetPoint={
-                findNearestConnector(targetConnectorsPoint, sourceNode.point)
-                    .point
+                findNearestConnector(
+                    targetNode.connectors[viewMode],
+                    targetNode.point,
+                    sourceNode.point,
+                ).point
             }
         />
     );

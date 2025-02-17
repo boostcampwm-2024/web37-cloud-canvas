@@ -1,13 +1,13 @@
 'use client';
 
 import { CloudCanvas } from '@/widgets/cloud-canvas/ui/cloud-canvas';
+import { ConnectionDraftEdge } from '@/widgets/connection-edge/ui/connection-draft-edge';
 import { ConnectionEdge } from '@/widgets/connection-edge/ui/connection-edge';
 import { Header } from '@/widgets/header/ui/header';
 import { ResourceControls } from '@/widgets/resource-controls/ui/resource-controls';
 import { ResourceNode } from '@/widgets/resource-node/ui/resource-node';
 import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
-import { DraftEdge } from '@/features/connect-edge/ui/draft-edge';
 import { useSelectStore } from '@/features/select/model/select.store';
 
 import { useEdgeStore } from '@/entities/edge/model/edge.store';
@@ -25,7 +25,7 @@ export default function Page() {
             <div className="relative h-full flex-1">
                 <Header />
                 <CloudCanvas>
-                    {draftEdge && <DraftEdge />}
+                    {draftEdge && <ConnectionDraftEdge />}
                     {edges &&
                         Object.values(edges).map((edge) => (
                             <ConnectionEdge key={edge.id} {...edge} />

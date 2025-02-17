@@ -4,13 +4,14 @@ import { GridPoint, ViewMode } from '@/shared/types/canvas';
 import { useCallback, useMemo } from 'react';
 
 interface EdgeProps {
+    id?: string;
     viewMode: ViewMode;
     sourcePoint: GridPoint;
     targetPoint: GridPoint;
 }
 
 export const Edge = (props: EdgeProps) => {
-    const { viewMode, sourcePoint, targetPoint } = props;
+    const { id, viewMode, sourcePoint, targetPoint } = props;
 
     const transform = viewMode === '3d' ? IsoMatrix?.toString() : undefined;
 
@@ -46,7 +47,7 @@ export const Edge = (props: EdgeProps) => {
     );
 
     return (
-        <g transform={transform}>
+        <g id={id} transform={transform}>
             <defs>
                 <marker
                     id="arrow"
@@ -67,7 +68,7 @@ export const Edge = (props: EdgeProps) => {
                 x2={transformedTarget.x}
                 y2={transformedTarget.y}
                 stroke="black"
-                marker-end="url(#arrow)"
+                markerEnd="url(#arrow)"
             />
         </g>
     );
