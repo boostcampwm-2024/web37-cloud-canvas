@@ -19,7 +19,6 @@ interface ResourceNodeProps {
     point: GridPoint;
     size: SizeByViewMode;
     droppable?: boolean;
-    connectors?: any;
 }
 
 export const ResourceNode = (props: ResourceNodeProps) => {
@@ -42,30 +41,17 @@ export const ResourceNode = (props: ResourceNodeProps) => {
     if (!SVGComponent) return null;
 
     return (
-        <>
-            <DnDWrapper droppable={droppable}>
-                <Node
-                    id={id}
-                    point={point}
-                    size={size}
-                    viewMode={viewMode}
-                    isSelected={selectedNodeId === id}
-                    svg={SVGComponent}
-                    onSelect={handleSelect}
-                    data-resource-type={resourceType}
-                />
-            </DnDWrapper>
-            {/* {connectors[viewMode].map((connector) => { */}
-            {/*     const coordPoint = gridToCoordPoint(connector.point, viewMode); */}
-            {/*     return ( */}
-            {/*         <circle */}
-            {/*             cx={coordPoint.x} */}
-            {/*             cy={coordPoint.y} */}
-            {/*             r={4} */}
-            {/*             stroke="#ff0000" */}
-            {/*         /> */}
-            {/*     ); */}
-            {/* })} */}
-        </>
+        <DnDWrapper droppable={droppable}>
+            <Node
+                id={id}
+                point={point}
+                size={size}
+                viewMode={viewMode}
+                isSelected={selectedNodeId === id}
+                svg={SVGComponent}
+                onSelect={handleSelect}
+                data-resource-type={resourceType}
+            />
+        </DnDWrapper>
     );
 };
