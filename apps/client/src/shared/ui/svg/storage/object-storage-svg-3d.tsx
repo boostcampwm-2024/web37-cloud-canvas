@@ -20,23 +20,23 @@ export const ObjectStorageSVG3D = (props: ResourceSVG3DProps) => {
             <path
                 fill="#4286c5"
                 d="M50.313 1.155v56.693L99.41 29.501z"
-                fill-rule="evenodd"
+                fillRule="evenodd"
             ></path>
             <path
                 fill="#26527b"
                 d="m1.215 29.501 49.098 28.347V1.155z"
-                fill-rule="evenodd"
+                fillRule="evenodd"
             ></path>
             <path fill="none" stroke="#020406" d="M50.313 1.155v56.693"></path>
             <path
                 fill="#26527b"
                 d="M50.313 57.847 99.41 29.501l-24.549 70.866-24.548 14.173z"
-                fill-rule="evenodd"
+                fillRule="evenodd"
             ></path>
             <path
                 fill="#326ca2"
                 d="m1.215 29.501 49.098 28.347v56.692l-24.55-14.173z"
-                fill-rule="evenodd"
+                fillRule="evenodd"
             ></path>
             <path
                 fill="none"
