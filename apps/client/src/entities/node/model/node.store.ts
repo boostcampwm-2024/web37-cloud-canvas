@@ -18,7 +18,7 @@ interface NodeStates {
 
 interface NodeActions {
     addNode: (node: Node) => void;
-    removeNode: (id: string) => Array<string> | null;
+    removeNode: (id: string) => Array<string>;
     moveNode: (id: string, offset: GridPoint) => void;
     addChildNode: (parentId: string, childId: string) => void;
     removeChildNode: (parentId: string, childId: string) => void;
@@ -60,6 +60,7 @@ const store = create<NodeStore>()(
                 );
                 if (node.parent) {
                     const parentNode = nodes[node.parent];
+
                     updatedNodes[parentNode.id] = {
                         ...parentNode,
                         children: _.without(parentNode.children, node.id),
@@ -146,6 +147,7 @@ const store = create<NodeStore>()(
                 set((state) => {
                     const node = state.nodes[id];
                     if (!node) return state;
+                    if (node.children?.length === 0) return state;
 
                     const children = (node.children ?? []).map(
                         (id) => state.nodes[id],

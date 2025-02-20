@@ -10,6 +10,7 @@ import { useControlsPoint } from '../hooks/use-controls-point';
 
 import { ActionButton } from './action-button';
 import { useEdgeStore } from '@/entities/edge/model/edge.store';
+import { DROP_OPTIONS } from '@/features/drag-drop-node/config/drop-resource';
 
 const GAP = 30;
 
@@ -23,8 +24,9 @@ export const ResourceControls = (props: ResourceControlsProps) => {
     const currentZoom = useCanvasStore.use.zoomFactor();
 
     const deselect = useSelectStore.use.deselect();
-    const { removeResource } = useResourceStore.use.actions();
-    const { removeNode } = useNodeStore.use.actions();
+    const { getResource, removeResource } = useResourceStore.use.actions();
+    const { getNode, removeNode, updateNodeLayout } =
+        useNodeStore.use.actions();
     const { createDraftEdge } = useEdgeStore.use.actions();
 
     const ratio = currentZoom < 1 ? 1 : currentZoom;
@@ -32,7 +34,16 @@ export const ResourceControls = (props: ResourceControlsProps) => {
     const controlsPoint = useControlsPoint(selectedId, GAP * ratio);
 
     const handleRemoveAction = () => {
+        const node = getNode(selectedId);
         const removedNodes = removeNode(selectedId);
+        if (node?.parent) {
+            const resource = getResource(node.parent);
+            const dropOptions = DROP_OPTIONS[resource.properties.type];
+            updateNodeLayout(node.parent, {
+                layoutType: dropOptions.layoutType,
+                padding: dropOptions.padding,
+            });
+        }
         removeResource(...(removedNodes ?? []));
         deselect();
     };

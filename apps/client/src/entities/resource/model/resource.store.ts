@@ -11,6 +11,7 @@ interface ResourceState {
 }
 
 interface ResourceActions {
+    getResource: (id: string) => Resource;
     addResource: (resource: Resource) => void;
     removeResource: (...ids: Array<string>) => void;
 }
@@ -24,9 +25,10 @@ const initialState: ResourceState = {
 };
 
 const store = create<ResourceStore>()(
-    devtools((set) => ({
+    devtools((set, get) => ({
         ...initialState,
         actions: {
+            getResource: (id) => get().resources[id],
             addResource: (resource) =>
                 set((state) => ({
                     resources: { ...state.resources, [resource.id]: resource },
