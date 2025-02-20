@@ -101,8 +101,8 @@ const store = create<NodeStore>()(
                         return state;
 
                     const children = _.uniq([
-                        childId,
                         ...(parent.children ?? []),
+                        childId,
                     ]).map((id) => state.nodes[id]);
 
                     return {

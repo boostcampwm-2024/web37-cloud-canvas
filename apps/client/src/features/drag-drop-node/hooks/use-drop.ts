@@ -28,7 +28,7 @@ export const useDrop = (nodeId: string) => {
                 layoutType: options.layoutType,
                 padding: options.padding,
             });
-        }, 500);
+        }, 100)();
     };
 
     const dropDropZone = () => {
