@@ -4,6 +4,7 @@ import { CloudCanvas } from '@/widgets/cloud-canvas/ui/cloud-canvas';
 import { ConnectionDraftEdge } from '@/widgets/connection-edge/ui/connection-draft-edge';
 import { ConnectionEdge } from '@/widgets/connection-edge/ui/connection-edge';
 import { Header } from '@/widgets/header/ui/header';
+import { NetworkConfig } from '@/widgets/network-config/ui/network-config';
 import { ResourceControls } from '@/widgets/resource-controls/ui/resource-controls';
 import { ResourceNode } from '@/widgets/resource-node/ui/resource-node';
 import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
@@ -43,6 +44,7 @@ export default function Page() {
                         <ResourceControls selectedId={selectedNodeId} />
                     )}
                 </CloudCanvas>
+                <NetworkConfig />
             </div>
         </div>
     );
