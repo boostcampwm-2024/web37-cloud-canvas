@@ -22,7 +22,7 @@ export const CloudCanvas = (props: CanvasProps) => {
     const { getCanvasEl } = useCanvasContext();
     const $canvas = getCanvasEl();
 
-    const deselect = useSelectStore.use.deselect();
+    const { deselect } = useSelectStore.use.actions();
 
     const { zoomIn, zoomOut } = useZoom($canvas);
     const { startPan, movePan, stopPan } = usePan($canvas);

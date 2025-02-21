@@ -27,7 +27,7 @@ export const ResourceNode = (props: ResourceNodeProps) => {
     const resources = useResourceStore.use.resources();
     const viewMode = useCanvasStore.use.viewMode();
     const selectedNodeId = useSelectStore.use.selectedNodeId();
-    const select = useSelectStore.use.select();
+    const { select } = useSelectStore.use.actions();
 
     const resourceType = resources[id].properties.type as ResourceType;
 
