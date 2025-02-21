@@ -3,7 +3,7 @@ import {
     GRID_SIZE_2D,
     GRID_WIDTH_3D,
 } from '@/shared/config/canvas';
-import type { GridPoint, CoordPoint, ViewMode } from '@/shared/types/canvas';
+import type { CoordPoint, GridPoint, ViewMode } from '@/shared/types/canvas';
 
 export const gridTo3DCoordPoint = (point: GridPoint) => {
     const { col, row } = point;

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 import { createSelectors } from '@/shared/lib/zustand/selector';
 
@@ -16,20 +17,22 @@ interface SelectStore extends SelectStates {
     actions: SelectActions;
 }
 
-const store = create<SelectStore>((set) => ({
-    selectedNodeId: null,
-    selectedEdgeId: null,
-    actions: {
-        select: (id, type) =>
-            set(() => {
-                if (type === 'node') {
-                    return { selectedNodeId: id, selectedEdgeId: null };
-                } else {
-                    return { selectedNodeId: null, selectedEdgeId: id };
-                }
-            }),
-        deselect: () => set({ selectedNodeId: null, selectedEdgeId: null }),
-    },
-}));
+const store = create<SelectStore>()(
+    devtools((set) => ({
+        selectedNodeId: null,
+        selectedEdgeId: null,
+        actions: {
+            select: (id, type) =>
+                set(() => {
+                    if (type === 'node') {
+                        return { selectedNodeId: id, selectedEdgeId: null };
+                    } else {
+                        return { selectedNodeId: null, selectedEdgeId: id };
+                    }
+                }),
+            deselect: () => set({ selectedNodeId: null, selectedEdgeId: null }),
+        },
+    })),
+);
 
 export const useSelectStore = createSelectors(store);

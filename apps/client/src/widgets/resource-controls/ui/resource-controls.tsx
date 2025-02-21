@@ -1,16 +1,16 @@
 import { Link, Trash2Icon } from 'lucide-react';
 
+import { DROP_OPTIONS } from '@/features/drag-drop-node/config/drop-resource';
 import { useSelectStore } from '@/features/select/model/select.store';
 
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
+import { useEdgeStore } from '@/entities/edge/model/edge.store';
 import { useNodeStore } from '@/entities/node/model/node.store';
 import { useResourceStore } from '@/entities/resource/model/resource.store';
 
 import { useControlsPoint } from '../hooks/use-controls-point';
 
 import { ActionButton } from './action-button';
-import { useEdgeStore } from '@/entities/edge/model/edge.store';
-import { DROP_OPTIONS } from '@/features/drag-drop-node/config/drop-resource';
 
 const GAP = 30;
 
@@ -23,7 +23,7 @@ export const ResourceControls = (props: ResourceControlsProps) => {
 
     const currentZoom = useCanvasStore.use.zoomFactor();
 
-    const deselect = useSelectStore.use.deselect();
+    const { deselect } = useSelectStore.use.actions();
     const { getResource, removeResource } = useResourceStore.use.actions();
     const { getNode, removeNode, updateNodeLayout } =
         useNodeStore.use.actions();

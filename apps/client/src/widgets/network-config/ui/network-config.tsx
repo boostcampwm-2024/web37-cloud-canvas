@@ -12,7 +12,7 @@ import { Separator } from '@/shared/ui/shadcn/separator';
 import { RegionSelect } from './region-select';
 
 interface NetworkConfigProps extends React.HTMLAttributes<HTMLDivElement> {
-    className: string;
+    className?: string;
 }
 
 export const NetworkConfig = (props: NetworkConfigProps) => {

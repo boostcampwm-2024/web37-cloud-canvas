@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 import { createSelectors } from '@/shared/lib/zustand/selector';
 import type { GridPoint } from '@/shared/types/canvas';
 import type { Connector, DropLayoutType } from '@/shared/types/resource';
 
+import { updateConnectorPosition } from '../lib/connector';
 import { calcChildrenPoints, calcParentSizeByChildren } from '../lib/layout';
 import { sortNode } from '../lib/sort';
 
-import { devtools } from 'zustand/middleware';
-import { updateConnectorPosition } from '../lib/connector';
 import type { Node } from './node.types';
 
 interface NodeStates {
