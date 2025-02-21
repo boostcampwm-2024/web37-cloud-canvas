@@ -21,7 +21,10 @@ export default function Page() {
     const selectedNodeId = useSelectStore.use.selectedNodeId();
 
     return (
-        <div className="flex h-screen w-screen overflow-hidden">
+        <div
+            className="flex h-screen w-screen overflow-hidden"
+            onContextMenu={(e) => e.preventDefault()}
+        >
             <Sidebar />
             <div className="relative h-full flex-1">
                 <Header />
