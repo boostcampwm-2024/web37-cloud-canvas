@@ -1,7 +1,10 @@
-import { createSelectors } from '@/shared/lib/zustand/selector';
-import { create } from 'zustand';
-import { DraftEdge, Edge } from './edge.type';
 import { nanoid } from 'nanoid';
+import { create } from 'zustand';
+
+import { createSelectors } from '@/shared/lib/zustand/selector';
+import type { GridPoint } from '@/shared/types/canvas';
+
+import type { DraftEdge, Edge } from './edge.type';
 
 interface EdgeStates {
     draftEdge: DraftEdge | null;
@@ -12,6 +15,7 @@ interface EdgeActions {
     createDraftEdge: (sourceId: string) => void;
     progressDraftEdge: (targetId?: string) => void;
     finalizeDraftEdge: () => void;
+    splitEdge: (id: string, beizerPoint: GridPoint) => void;
 }
 
 interface EdgeStore extends EdgeStates {
@@ -53,12 +57,28 @@ const store = create<EdgeStore>((set) => ({
                                 sourceId: draftEdge.sourceId,
                                 targetId: draftEdge.targetId,
                                 type: 'line',
+                                beizerPoints: [],
                             },
                         },
                     };
                 }
                 return {
                     draftEdge: null,
+                };
+            }),
+        splitEdge: (id, beizerPoint) =>
+            set((state) => {
+                return {
+                    edges: {
+                        ...state.edges,
+                        [id]: {
+                            ...state.edges[id],
+                            beizerPoints: [
+                                ...state.edges[id].beizerPoints,
+                                beizerPoint,
+                            ],
+                        },
+                    },
                 };
             }),
     },
