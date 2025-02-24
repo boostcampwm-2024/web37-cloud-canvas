@@ -49,14 +49,14 @@ export const ConnectionEdge = (props: ConnectionEdgeProps) => {
                     findNearestConnector(
                         sourceNode.connectors[viewMode],
                         sourceNode.point,
-                        targetNode.point,
+                        beizerPoints.at(0) ?? sourceNode.point,
                     ).point
                 }
                 targetPoint={
                     findNearestConnector(
                         targetNode.connectors[viewMode],
                         targetNode.point,
-                        sourceNode.point,
+                        beizerPoints.at(-1) ?? targetNode.point,
                     ).point
                 }
                 bezierPoints={beizerPoints}
