@@ -6,11 +6,13 @@ import { useEdgeStore } from '@/entities/edge/model/edge.store';
 import { Edge } from '@/entities/edge/ui/Edge';
 import { useNodeStore } from '@/entities/node/model/node.store';
 
-import { coordToGridPoint, gridToCoordPoint } from '@/shared/lib/canvas/point';
+import { coordToGridPoint } from '@/shared/lib/canvas/point';
 import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
 import type { GridPoint } from '@/shared/types/canvas';
 
 import { findNearestConnector } from '../lib/connector';
+
+import { BeizerPoint } from './beizer-point';
 
 interface ConnectionEdgeProps {
     id: string;
@@ -63,18 +65,9 @@ export const ConnectionEdge = (props: ConnectionEdgeProps) => {
                 onSelect={() => select(id, 'edge')}
                 onSplit={handleSplit}
             />
-            {beizerPoints.map((point, idx) => {
-                const coordPoint = gridToCoordPoint(point, viewMode);
-                return (
-                    <circle
-                        key={idx}
-                        cx={coordPoint.x}
-                        cy={coordPoint.y}
-                        r={5}
-                        fill="black"
-                    />
-                );
-            })}
+            {beizerPoints.map((point, idx) => (
+                <BeizerPoint key={`beizer-${id}-${idx}`} point={point} />
+            ))}
         </>
     );
 };
