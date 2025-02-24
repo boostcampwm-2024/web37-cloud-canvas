@@ -107,6 +107,7 @@ export const ConnectionDraftEdge = () => {
             viewMode={viewMode}
             sourcePoint={edgePoints.source}
             targetPoint={edgePoints.target}
+            bezierPoints={[]}
         />
     );
 };

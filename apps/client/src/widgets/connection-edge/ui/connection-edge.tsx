@@ -11,7 +11,6 @@ import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
 import type { GridPoint } from '@/shared/types/canvas';
 
 import { findNearestConnector } from '../lib/connector';
-import { transformInversePoint } from '../lib/point';
 
 interface ConnectionEdgeProps {
     id: string;
@@ -37,7 +36,6 @@ export const ConnectionEdge = (props: ConnectionEdgeProps) => {
             y: clientY,
         });
 
-        const mousePoint = transformInversePoint(svgPoint, viewMode);
         const beizerPoint = coordToGridPoint(svgPoint, viewMode);
         splitEdge(id, beizerPoint);
     };
@@ -61,6 +59,7 @@ export const ConnectionEdge = (props: ConnectionEdgeProps) => {
                         sourceNode.point,
                     ).point
                 }
+                bezierPoints={beizerPoints}
                 onSelect={() => select(id, 'edge')}
                 onSplit={handleSplit}
             />

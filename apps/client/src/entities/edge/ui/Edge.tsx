@@ -9,12 +9,21 @@ interface EdgeProps {
     viewMode: ViewMode;
     sourcePoint: GridPoint;
     targetPoint: GridPoint;
+    bezierPoints?: Array<GridPoint>;
     onSelect?: () => void;
     onSplit?: (event: React.MouseEvent) => void;
 }
 
 export const Edge = (props: EdgeProps) => {
-    const { id, viewMode, sourcePoint, targetPoint, onSelect, onSplit } = props;
+    const {
+        id,
+        viewMode,
+        sourcePoint,
+        targetPoint,
+        bezierPoints = [],
+        onSelect,
+        onSplit,
+    } = props;
 
     const transform = viewMode === '3d' ? IsoMatrix?.toString() : undefined;
 
@@ -39,22 +48,17 @@ export const Edge = (props: EdgeProps) => {
         [viewMode],
     );
 
-    const transformedSource = useMemo(
-        () => transformPoint(sourcePoint),
-        [transformPoint, sourcePoint],
-    );
-
-    const transformedTarget = useMemo(
-        () => transformPoint(targetPoint),
-        [transformPoint, targetPoint],
-    );
-
     const handleClick = (event: React.MouseEvent) => {
         onSelect?.();
         if (event.shiftKey) {
             onSplit?.(event);
         }
     };
+
+    const points = useMemo(() => {
+        const gridPoints = [sourcePoint, ...bezierPoints, targetPoint];
+        return gridPoints.map((point) => transformPoint(point));
+    }, [sourcePoint, bezierPoints, targetPoint, transformPoint]);
 
     return (
         <g id={id} transform={transform}>
@@ -72,17 +76,24 @@ export const Edge = (props: EdgeProps) => {
                 </marker>
             </defs>
 
-            <line
-                x1={transformedSource.x}
-                y1={transformedSource.y}
-                x2={transformedTarget.x}
-                y2={transformedTarget.y}
-                stroke="black"
-                strokeWidth={3}
-                markerEnd="url(#arrow)"
-                className="cursor-pointer"
-                onClick={handleClick}
-            />
+            {points.slice(0, -1).map((source, idx) => {
+                const target = points[idx + 1];
+                const isLast = idx === points.length - 2;
+                return (
+                    <line
+                        key={`${id}-${idx}`}
+                        x1={source.x}
+                        y1={source.y}
+                        x2={target.x}
+                        y2={target.y}
+                        stroke="black"
+                        strokeWidth={3}
+                        markerEnd={isLast ? 'url(#arrow)' : undefined}
+                        className="cursor-pointer"
+                        onClick={handleClick}
+                    />
+                );
+            })}
         </g>
     );
 };
