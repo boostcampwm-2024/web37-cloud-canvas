@@ -11,7 +11,7 @@ interface EdgeProps {
     targetPoint: GridPoint;
     bezierPoints?: Array<GridPoint>;
     onSelect?: () => void;
-    onSplit?: (event: React.MouseEvent) => void;
+    onSplit?: (event: React.MouseEvent, idx: number) => void;
 }
 
 export const Edge = (props: EdgeProps) => {
@@ -48,10 +48,10 @@ export const Edge = (props: EdgeProps) => {
         [viewMode],
     );
 
-    const handleClick = (event: React.MouseEvent) => {
+    const handleClick = (event: React.MouseEvent, idx: number) => {
         onSelect?.();
         if (event.shiftKey) {
-            onSplit?.(event);
+            onSplit?.(event, idx);
         }
     };
 
@@ -90,7 +90,7 @@ export const Edge = (props: EdgeProps) => {
                         strokeWidth={3}
                         markerEnd={isLast ? 'url(#arrow)' : undefined}
                         className="cursor-pointer"
-                        onClick={handleClick}
+                        onClick={(event) => handleClick(event, idx)}
                     />
                 );
             })}

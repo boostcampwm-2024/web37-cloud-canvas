@@ -29,7 +29,7 @@ export const ConnectionEdge = (props: ConnectionEdgeProps) => {
     const targetNode = getNode(targetId)!;
     const sourceNode = getNode(sourceId)!;
 
-    const handleSplit = (event: React.MouseEvent) => {
+    const handleSplit = (event: React.MouseEvent, idx: number) => {
         const { clientX, clientY } = event;
         const svgPoint = screenToSvgPoint(getCanvasEl(), {
             x: clientX,
@@ -37,7 +37,7 @@ export const ConnectionEdge = (props: ConnectionEdgeProps) => {
         });
 
         const beizerPoint = coordToGridPoint(svgPoint, viewMode);
-        splitEdge(id, beizerPoint);
+        splitEdge(id, idx, beizerPoint);
     };
 
     return (
@@ -71,7 +71,7 @@ export const ConnectionEdge = (props: ConnectionEdgeProps) => {
                         cx={coordPoint.x}
                         cy={coordPoint.y}
                         r={5}
-                        fill="red"
+                        fill="black"
                     />
                 );
             })}
