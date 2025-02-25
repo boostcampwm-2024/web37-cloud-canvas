@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { useEdgeStore } from '@/entities/edge/model/edge.store';
-import { Edge } from '@/entities/edge/ui/Edge';
+import { Edge } from '@/entities/edge/ui/edge';
 import { useNodeStore } from '@/entities/node/model/node.store';
 
 import { coordToGridPoint } from '@/shared/lib/canvas/point';
