@@ -31,6 +31,7 @@ export const BeizerPoint = (props: BeizerPointProps) => {
     }, [point, viewMode]);
 
     const transform = viewMode === '3d' ? IsoMatrix?.toString() : '';
+
     return (
         <circle
             cx={transformPoint.x}

@@ -66,7 +66,6 @@ export const ConnectionDraftEdge = () => {
                 sourceNode.point,
                 targetPoint,
             ).point;
-            console.log(sourcePoint);
 
             setEdgePoints({
                 source: sourcePoint,

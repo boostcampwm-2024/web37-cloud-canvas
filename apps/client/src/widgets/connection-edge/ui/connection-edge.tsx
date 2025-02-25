@@ -1,3 +1,4 @@
+import { Draggable } from '@/features/drag-beizer-point/ui/draggable';
 import { useSelectStore } from '@/features/select/model/select.store';
 
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
@@ -66,7 +67,13 @@ export const ConnectionEdge = (props: ConnectionEdgeProps) => {
                 onSplit={handleSplit}
             />
             {beizerPoints.map((point, idx) => (
-                <BeizerPoint key={`beizer-${id}-${idx}`} point={point} />
+                <Draggable
+                    key={`beizer-${id}-${idx}`}
+                    edgeId={id}
+                    bezierIdx={idx}
+                >
+                    <BeizerPoint point={point} />
+                </Draggable>
             ))}
         </>
     );
