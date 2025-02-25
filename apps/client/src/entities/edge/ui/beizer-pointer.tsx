@@ -6,11 +6,11 @@ import { IsoMatrix } from '@/shared/config/canvas';
 import { gridToCoordPoint } from '@/shared/lib/canvas/point';
 import type { GridPoint } from '@/shared/types/canvas';
 
-interface BeizerPointProps {
+export interface BezierPointerProps {
     point: GridPoint;
 }
 
-export const BeizerPoint = (props: BeizerPointProps) => {
+export const BezierPointer = (props: BezierPointerProps) => {
     const { point } = props;
     const viewMode = useCanvasStore.use.viewMode();
 

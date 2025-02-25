@@ -1,17 +1,18 @@
-import type { ReactNode } from 'react';
-
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
+import {
+    BezierPointer,
+    type BezierPointerProps,
+} from '@/entities/edge/ui/beizer-pointer';
 
 import { useDrag } from '../hooks/use-drag';
 
-interface Draggable {
+interface DraggableBezierPointerProps extends BezierPointerProps {
     edgeId: string;
     bezierIdx: number;
-    children: ReactNode;
 }
 
-export const Draggable = (props: Draggable) => {
-    const { edgeId, bezierIdx, children } = props;
+export const DraggableBezierPointer = (props: DraggableBezierPointerProps) => {
+    const { edgeId, bezierIdx, point } = props;
 
     const { getCanvasEl } = useCanvasContext();
     const $canvas = getCanvasEl();
@@ -40,5 +41,9 @@ export const Draggable = (props: Draggable) => {
         $canvas.addEventListener('mouseup', handleMouseUp);
     };
 
-    return <g onMouseDown={handleMouseDown}>{children}</g>;
+    return (
+        <g onMouseDown={handleMouseDown}>
+            <BezierPointer point={point} />
+        </g>
+    );
 };

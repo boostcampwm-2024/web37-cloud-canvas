@@ -1,4 +1,4 @@
-import { Draggable } from '@/features/drag-beizer-point/ui/draggable';
+import { DraggableBezierPointer } from '@/features/drag-beizer-point/ui/draggable-bezier-pointer';
 import { useSelectStore } from '@/features/select/model/select.store';
 
 import { useCanvasContext } from '@/entities/canvas/model/canvas.context';
@@ -12,8 +12,6 @@ import { screenToSvgPoint } from '@/shared/lib/canvas/svg';
 import type { GridPoint } from '@/shared/types/canvas';
 
 import { findNearestConnector } from '../lib/connector';
-
-import { BeizerPoint } from './beizer-point';
 
 interface ConnectionEdgeProps {
     id: string;
@@ -67,13 +65,12 @@ export const ConnectionEdge = (props: ConnectionEdgeProps) => {
                 onSplit={handleSplit}
             />
             {beizerPoints.map((point, idx) => (
-                <Draggable
+                <DraggableBezierPointer
                     key={`beizer-${id}-${idx}`}
                     edgeId={id}
                     bezierIdx={idx}
-                >
-                    <BeizerPoint point={point} />
-                </Draggable>
+                    point={point}
+                />
             ))}
         </>
     );
