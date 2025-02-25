@@ -19,6 +19,7 @@ export const Draggable = (props: Draggable) => {
 
     const handleMouseDown = (event: React.MouseEvent) => {
         event.stopPropagation();
+        getCanvasEl().style.cursor = 'grabbing';
         startDrag({ x: event.clientX, y: event.clientY });
 
         const handleMouseMove = (e: MouseEvent) => {
@@ -29,6 +30,7 @@ export const Draggable = (props: Draggable) => {
             stopDrag();
             $canvas.removeEventListener('mousemove', handleMouseMove);
             $canvas.removeEventListener('mouseup', handleMouseUp);
+            getCanvasEl().style.cursor = 'default';
         };
 
         $canvas.addEventListener('mousemove', handleMouseMove);

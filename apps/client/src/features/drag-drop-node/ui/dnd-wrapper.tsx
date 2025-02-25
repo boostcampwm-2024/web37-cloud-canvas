@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import type { NodeProps } from '@/entities/node/ui/Node';
+import type { NodeProps } from '@/entities/node/ui/node';
 
 import { Draggable } from './draggable';
 import { Droppable } from './droppable';

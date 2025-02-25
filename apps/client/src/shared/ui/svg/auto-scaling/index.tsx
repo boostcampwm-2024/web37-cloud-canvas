@@ -2,6 +2,7 @@ import { GRID_SIZE_2D, IsoMatrix } from '@/shared/config/canvas';
 import type { ResourceSVGProps } from '@/shared/types/resource';
 
 import { Polygon } from '../common/polygon';
+
 export const AutoScalingSVG = (props: ResourceSVGProps) => {
     const { viewMode, size, ...svgProps } = props;
 
@@ -31,7 +32,7 @@ export const AutoScalingSVG = (props: ResourceSVGProps) => {
                     fill="#f5b720"
                     stroke="#f5b720"
                 />
-                <g cursor="nwse-resize">
+                <g>
                     <Polygon
                         points={[
                             { x: 45, y: 0 },
