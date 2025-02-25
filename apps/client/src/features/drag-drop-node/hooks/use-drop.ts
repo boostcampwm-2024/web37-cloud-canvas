@@ -7,22 +7,24 @@ import { DROP_OPTIONS } from '../config/drop-resource';
 import { useDragStore } from '../model/drag.store';
 
 export const useDrop = (nodeId: string) => {
-    const resources = useResourceStore.use.resources();
+    const { getResource } = useResourceStore.use.actions();
 
     const draggedId = useDragStore.use.draggedId();
     const { removeChildNode, addChildNode, updateNodeLayout } =
         useNodeStore.use.actions();
 
     const getDropOption = () => {
-        const dropZoneResource = resources[nodeId];
+        const dropZoneResource = getResource(nodeId);
         return DROP_OPTIONS[dropZoneResource.properties.type];
     };
 
     const leaveDropZone = () => {
         if (!draggedId) return;
+        const options = getDropOption();
+        const draggedResource = getResource(draggedId);
+        if (!options.accepts.includes(draggedResource.properties.type)) return;
 
         _.debounce(() => {
-            const options = getDropOption();
             removeChildNode(nodeId, draggedId);
             updateNodeLayout(nodeId, {
                 layoutType: options.layoutType,
@@ -35,7 +37,7 @@ export const useDrop = (nodeId: string) => {
         if (!draggedId) return;
 
         const options = getDropOption();
-        const resource = resources[draggedId];
+        const resource = getResource(draggedId);
 
         if (options.accepts.includes(resource.properties.type)) {
             addChildNode(nodeId, draggedId);
