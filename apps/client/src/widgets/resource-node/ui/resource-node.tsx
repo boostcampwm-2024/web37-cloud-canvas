@@ -6,7 +6,7 @@ import { DnDWrapper } from '@/features/drag-drop-node/ui/dnd-wrapper';
 import { useSelectStore } from '@/features/select/model/select.store';
 
 import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
-import { Node } from '@/entities/node/ui/Node';
+import { Node } from '@/entities/node/ui/node';
 import { useResourceStore } from '@/entities/resource/model/resource.store';
 
 import type { GridPoint, SizeByViewMode } from '@/shared/types/canvas';

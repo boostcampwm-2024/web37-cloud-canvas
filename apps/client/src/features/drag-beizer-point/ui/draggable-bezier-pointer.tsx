@@ -42,7 +42,7 @@ export const DraggableBezierPointer = (props: DraggableBezierPointerProps) => {
     };
 
     return (
-        <g onMouseDown={handleMouseDown}>
+        <g onMouseDown={handleMouseDown} className="cursor-pointer">
             <BezierPointer point={point} />
         </g>
     );
