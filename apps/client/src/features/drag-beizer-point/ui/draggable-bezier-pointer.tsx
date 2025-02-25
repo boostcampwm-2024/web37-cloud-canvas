@@ -25,7 +25,8 @@ export const DraggableBezierPointer = (props: DraggableBezierPointerProps) => {
 
     const handleMouseDown = (event: React.MouseEvent) => {
         event.stopPropagation();
-        startDrag({ x: event.clientX, y: event.clientY });
+        getCanvasEl().style.cursor = 'grabbing';
+        startDrag();
 
         const handleMouseMove = (e: MouseEvent) => {
             processDrag({ x: e.clientX, y: e.clientY });
@@ -35,6 +36,7 @@ export const DraggableBezierPointer = (props: DraggableBezierPointerProps) => {
             stopDrag();
             $canvas.removeEventListener('mousemove', handleMouseMove);
             $canvas.removeEventListener('mouseup', handleMouseUp);
+            getCanvasEl().style.cursor = 'default';
         };
 
         $canvas.addEventListener('mousemove', handleMouseMove);

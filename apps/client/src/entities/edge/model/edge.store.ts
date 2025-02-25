@@ -16,7 +16,7 @@ interface EdgeActions {
     progressDraftEdge: (targetId?: string) => void;
     finalizeDraftEdge: () => void;
     splitEdge: (id: string, idx: number, beizerPoint: GridPoint) => void;
-    moveBeizerPoint: (id: string, idx: number, offset: GridPoint) => void;
+    moveBeizerPoint: (id: string, idx: number, point: GridPoint) => void;
 }
 
 interface EdgeStore extends EdgeStates {
@@ -81,7 +81,7 @@ const store = create<EdgeStore>((set) => ({
                     },
                 };
             }),
-        moveBeizerPoint: (id, idx, offset) =>
+        moveBeizerPoint: (id, idx, point) =>
             set((state) => {
                 return {
                     edges: {
@@ -90,14 +90,7 @@ const store = create<EdgeStore>((set) => ({
                             ...state.edges[id],
                             beizerPoints: state.edges[
                                 id
-                            ].beizerPoints.toSpliced(idx, 1, {
-                                col:
-                                    state.edges[id].beizerPoints[idx].col +
-                                    offset.col,
-                                row:
-                                    state.edges[id].beizerPoints[idx].row +
-                                    offset.row,
-                            }),
+                            ].beizerPoints.toSpliced(idx, 1, point),
                         },
                     },
                 };
