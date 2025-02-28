@@ -21,6 +21,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/shared/ui/shadcn/select';
+import { useGroupStore } from '@/entities/group/model/group.store';
+import { nanoid } from 'nanoid';
 
 const vpcFormSchema = z.object({
     name: z.string().min(3, {
@@ -46,6 +48,8 @@ interface VpcFormProps {
 export const VpcForm = (props: VpcFormProps) => {
     const { onOpenChangeSheet } = props;
 
+    const { createGroup } = useGroupStore.use.actions();
+
     const form = useForm<VpcFormValues>({
         resolver: zodResolver(vpcFormSchema),
         defaultValues: {
@@ -58,9 +62,15 @@ export const VpcForm = (props: VpcFormProps) => {
     });
 
     const onSubmit = (values: VpcFormValues) => {
-        console.log(values);
+        const { name } = values;
+        if (!name) return;
+
+        createGroup({
+            id: nanoid(),
+            children: [],
+            name,
+        });
         onOpenChangeSheet?.(false);
-        // 여기에 VPC 생성 로직 추가
     };
 
     return (

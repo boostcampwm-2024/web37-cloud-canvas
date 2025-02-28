@@ -11,15 +11,20 @@ import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
 import { useSelectStore } from '@/features/select/model/select.store';
 
+import { useCanvasStore } from '@/entities/canvas/model/canvas.store';
 import { useEdgeStore } from '@/entities/edge/model/edge.store';
+import { useGroupStore } from '@/entities/group/model/group.store';
+import { Group } from '@/entities/group/ui/group';
 import { useNodeStore } from '@/entities/node/model/node.store';
 
 export default function Page() {
     const nodes = useNodeStore.use.nodes();
     const draftEdge = useEdgeStore.use.draftEdge();
     const edges = useEdgeStore.use.edges();
+    const groups = useGroupStore.use.groups();
     const selectedNodeId = useSelectStore.use.selectedNodeId();
 
+    const viewMode = useCanvasStore.use.viewMode();
     return (
         <div
             className="flex h-screen w-screen overflow-hidden"
@@ -46,6 +51,10 @@ export default function Page() {
                     {selectedNodeId && (
                         <ResourceControls selectedId={selectedNodeId} />
                     )}
+
+                    {Object.values(groups).map((group) => (
+                        <Group key={group.id} points={[]} viewMode={viewMode} />
+                    ))}
                 </CloudCanvas>
                 <NetworkConfig />
             </div>
