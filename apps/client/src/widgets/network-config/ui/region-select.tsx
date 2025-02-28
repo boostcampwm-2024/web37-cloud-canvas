@@ -14,15 +14,16 @@ import {
     SelectItem,
 } from '@/shared/ui/shadcn/select';
 
-const Regions = [
+const REGIONS = [
     { id: 'korea', value: 'kr', label: 'Korea' },
     { id: 'japan', value: 'jp', label: 'Japan' },
     { id: 'singapore', value: 'sg', label: 'Singapore' },
 ];
+
 export const RegionSelect = () => {
     const form = useForm<any>({
         defaultValues: {
-            region: Regions[0].value,
+            region: REGIONS[0].value,
         },
     });
 
@@ -52,7 +53,7 @@ export const RegionSelect = () => {
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        {Regions.map((region) => (
+                                        {REGIONS.map((region) => (
                                             <SelectItem
                                                 key={region.id}
                                                 value={region.value}
