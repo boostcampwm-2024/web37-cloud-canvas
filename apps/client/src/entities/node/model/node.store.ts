@@ -30,6 +30,8 @@ interface NodeActions {
         },
     ) => void;
     getNode: (id: string) => Node | null;
+    getNodes: (ids: Array<string>) => Array<Node>;
+    addParentGroup: (nodeId: string, groupId: string) => void;
 }
 
 interface NodeStore extends NodeStates {
@@ -45,10 +47,26 @@ const store = create<NodeStore>()(
         ...initialState,
         actions: {
             getNode: (id) => get().nodes[id],
+            getNodes: (ids) =>
+                _.values(get().nodes).filter((node) => ids.includes(node.id)),
             addNode: (node) =>
                 set((state) => ({
                     nodes: { ...state.nodes, [node.id]: node },
                 })),
+            addParentGroup: (nodeId, groupId) => {
+                const node = get().nodes[nodeId];
+                if (!node) return;
+
+                set((state) => ({
+                    nodes: {
+                        ...state.nodes,
+                        [nodeId]: {
+                            ...node,
+                            parentGroup: groupId,
+                        },
+                    },
+                }));
+            },
             removeNode: (id) => {
                 const node = get().nodes[id];
                 if (!node) return null;

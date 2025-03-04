@@ -28,7 +28,8 @@ const REGIONS = [
 
 export const RegionSelect = () => {
     const selectedNodeId = useSelectStore.use.selectedNodeId();
-    const { createGroup } = useGroupStore.use.actions();
+    const { isGroupExist, createGroup, addNodeToGroup } =
+        useGroupStore.use.actions();
     const { getResource, setResourceNetwork } = useResourceStore.use.actions();
 
     const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
@@ -42,11 +43,15 @@ export const RegionSelect = () => {
 
         setSelectedRegion(value);
 
-        createGroup({
-            id: value,
-            nodeIds: [selectedNodeId],
-            name: REGIONS.find((region) => region.value === value)?.label,
-        });
+        if (isGroupExist(value)) {
+            addNodeToGroup(selectedNodeId, value);
+        } else {
+            createGroup({
+                id: value,
+                nodeIds: [selectedNodeId],
+                name: REGIONS.find((region) => region.value === value)?.label,
+            });
+        }
         setResourceNetwork(selectedNodeId, 'region', value);
     };
 

@@ -4,7 +4,7 @@ import { devtools } from 'zustand/middleware';
 
 import { createSelectors } from '@/shared/lib/zustand/selector';
 
-import type { Resource } from './resource.types';
+import type { NetworkType, Resource } from './resource.types';
 
 interface ResourceState {
     resources: Record<string, Resource>;
@@ -14,6 +14,8 @@ interface ResourceActions {
     getResource: (id: string) => Resource;
     addResource: (resource: Resource) => void;
     removeResource: (...ids: Array<string>) => void;
+    setResourceNetwork: (id: string, key: NetworkType, value: any) => void;
+    setResourceProperty: (id: string, key: string, value: any) => void;
 }
 
 interface ResourceStore extends ResourceState {
@@ -36,6 +38,32 @@ const store = create<ResourceStore>()(
             removeResource: (ids) =>
                 set((state) => ({
                     resources: _.omit(state.resources, ids),
+                })),
+            setResourceNetwork: (id, key, value) =>
+                set((state) => ({
+                    resources: {
+                        ...state.resources,
+                        [id]: {
+                            ...state.resources[id],
+                            networks: {
+                                ...state.resources[id].networks,
+                                [key]: value,
+                            },
+                        },
+                    },
+                })),
+            setResourceProperty: (id, key, value) =>
+                set((state) => ({
+                    resources: {
+                        ...state.resources,
+                        [id]: {
+                            ...state.resources[id],
+                            properties: {
+                                ...state.resources[id].properties,
+                                [key]: value,
+                            },
+                        },
+                    },
                 })),
         },
     })),

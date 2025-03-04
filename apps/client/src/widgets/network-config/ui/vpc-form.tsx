@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@radix-ui/react-label';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { set, z } from 'zod';
 
 import { Button } from '@/shared/ui/shadcn/button';
 import {
@@ -23,6 +23,8 @@ import {
 } from '@/shared/ui/shadcn/select';
 import { useGroupStore } from '@/entities/group/model/group.store';
 import { nanoid } from 'nanoid';
+import { useSelectStore } from '@/features/select/model/select.store';
+import { useResourceStore } from '@/entities/resource/model/resource.store';
 
 const vpcFormSchema = z.object({
     name: z.string().min(3, {
@@ -48,7 +50,9 @@ interface VpcFormProps {
 export const VpcForm = (props: VpcFormProps) => {
     const { onOpenChangeSheet } = props;
 
+    const selectedNodeId = useSelectStore.use.selectedNodeId();
     const { createGroup } = useGroupStore.use.actions();
+    const { getResource, setResourceNetwork } = useResourceStore.use.actions();
 
     const form = useForm<VpcFormValues>({
         resolver: zodResolver(vpcFormSchema),
@@ -63,13 +67,14 @@ export const VpcForm = (props: VpcFormProps) => {
 
     const onSubmit = (values: VpcFormValues) => {
         const { name } = values;
-        if (!name) return;
+        if (!name || !selectedNodeId) return;
 
         createGroup({
             id: nanoid(),
-            children: [],
+            nodeIds: [selectedNodeId],
             name,
         });
+        setResourceNetwork(selectedNodeId, 'vpc', values);
         onOpenChangeSheet?.(false);
     };
 

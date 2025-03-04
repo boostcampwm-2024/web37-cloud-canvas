@@ -14,6 +14,8 @@ interface GroupActions {
     removeGroup: (groupId: string) => void;
     addNodeToGroup: (nodeId: string, groupId: string) => void;
     removeNodeFromGroup: (nodeId: string, groupId: string) => void;
+    isGroupExist: (groupId: string) => boolean;
+    getGroups: (groupIds: Array<string>) => Group[];
 }
 
 interface GroupStore extends GroupStates {
@@ -28,17 +30,22 @@ const store = create<GroupStore>()(
     devtools((set, get) => ({
         ...initialState,
         actions: {
+            isGroupExist: (groupId) => get().groups[groupId],
+            getGroups: (groupIds) => {
+                return groupIds.map((id) => get().groups[id]);
+            },
             createGroup: (group: Group) => {
-                set((state) => ({
-                    ...state,
-                    groups: {
-                        ...state.groups,
-                        [group.id]: {
-                            ...group,
-                            children: [],
+                set((state) => {
+                    return {
+                        ...state,
+                        groups: {
+                            ...state.groups,
+                            [group.id]: {
+                                ...group,
+                            },
                         },
-                    },
-                }));
+                    };
+                });
             },
             removeGroup: (groupId: string) => {
                 set((state) => ({
@@ -56,10 +63,7 @@ const store = create<GroupStore>()(
                         ...state.groups,
                         [groupId]: {
                             ...state.groups[groupId],
-                            children: [
-                                ...state.groups[groupId].children,
-                                nodeId,
-                            ],
+                            nodeIds: [...state.groups[groupId].nodeIds, nodeId],
                         },
                     },
                 }));
@@ -70,8 +74,8 @@ const store = create<GroupStore>()(
                         ...state.groups,
                         [groupId]: {
                             ...state.groups[groupId],
-                            children: _.without(
-                                state.groups[groupId].children,
+                            nodeIds: _.without(
+                                state.groups[groupId].nodeIds,
                                 nodeId,
                             ),
                         },

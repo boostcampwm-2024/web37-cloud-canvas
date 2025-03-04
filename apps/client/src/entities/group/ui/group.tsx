@@ -6,11 +6,11 @@ import { Polygon } from '@/shared/ui/svg/common/polygon';
 interface GroupProps {
     points: Array<GridPoint>;
     viewMode: ViewMode;
-    padding?: number;
+    strokeColor: string;
 }
 
 export const Group = (props: GroupProps) => {
-    const { viewMode, points } = props;
+    const { viewMode, points, strokeColor } = props;
     const transform = viewMode === '3d' ? IsoMatrix?.toString() : undefined;
 
     const coordPoints = points.map((point) => {
@@ -22,7 +22,7 @@ export const Group = (props: GroupProps) => {
             transform={transform}
             points={coordPoints}
             fill="none"
-            stroke="black"
+            stroke={strokeColor}
             strokeWidth={3}
         />
     );

@@ -7,4 +7,5 @@ export interface Node extends ResourceSVGConfig {
     children?: string[];
     parent?: string;
     droppable?: boolean;
+    parentGroup: string;
 }
