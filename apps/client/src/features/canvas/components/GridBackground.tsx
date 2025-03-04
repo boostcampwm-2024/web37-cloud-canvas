@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { useCanvasStore } from '../model/canvas.store';
+import { useCanvasState } from '../model/canvas.context';
 
 interface GridBackgroundProps {
     gridColor?: string;
@@ -9,7 +9,7 @@ interface GridBackgroundProps {
 
 export const GridBackground = memo((props: GridBackgroundProps) => {
     const { gridColor = '#cbd5e1', gridSize = 50, gridThickness = 0.5 } = props;
-    const { viewbox, viewMode } = useCanvasStore();
+    const { viewbox, viewMode } = useCanvasState();
 
     const gridConfig = useMemo(() => {
         return viewMode === '2d'

@@ -5,20 +5,30 @@ import {
     createContext,
     useCallback,
     useContext,
-    useEffect,
-    useLayoutEffect,
-    useRef,
     useState,
+    useRef,
+    useEffect,
+    useMemo,
 } from 'react';
 
-import { useCanvasStore } from './canvas.store';
-import type { Viewbox } from './canvas.types';
+import type { Viewbox, ViewMode } from '../model/canvas.types';
 
-interface CanvasContext {
+interface CanvasStateContextProps {
     canvasRef: RefObject<SVGSVGElement | null>;
+    viewbox: Viewbox;
+    viewMode: ViewMode;
 }
 
-const CanvasContext = createContext<CanvasContext | null>(null);
+const CanvasStateContext = createContext<CanvasStateContextProps | null>(null);
+
+interface CanvasActionContextProps {
+    updateViewbox: (viewbox: Partial<Viewbox>) => void;
+    updateViewMode: (viewMode: ViewMode) => void;
+}
+
+const CanvasActionContext = createContext<CanvasActionContextProps | null>(
+    null,
+);
 
 interface CanvasProviderProps {
     children: ReactNode;
@@ -28,79 +38,99 @@ interface CanvasProviderProps {
 export const CanvasProvider = (props: CanvasProviderProps) => {
     const { children, initialViewbox } = props;
 
-    const canvasRef = useRef<SVGSVGElement>(null); // 초기값을 null로 유지
-    const { setViewbox } = useCanvasStore.use.actions();
-    const [isInitialized, setIsInitialized] = useState(false);
-
-    const initializeViewbox = useCallback(
-        ($canvas: SVGSVGElement) => {
-            const { clientWidth, clientHeight } = $canvas;
-            const initialWidth = initialViewbox?.width || clientWidth;
-            const initialHeight = initialViewbox?.height || clientHeight;
-            const initialX = initialViewbox?.x || -initialWidth / 2;
-            const initialY = initialViewbox?.y || -initialHeight / 2;
-
-            setViewbox({
-                x: initialX,
-                y: initialY,
-                width: initialWidth,
-                height: initialHeight,
-            });
-            setIsInitialized(true);
+    const canvasRef = useRef<SVGSVGElement>(null);
+    const [viewMode, setViewMode] = useState<ViewMode>('3d');
+    const [viewbox, setViewbox] = useState<Viewbox>(
+        initialViewbox ?? {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0,
         },
-        [initialViewbox, setViewbox],
     );
 
-    useLayoutEffect(() => {
-        if (!canvasRef.current) {
-            console.error('Canvas element is not available yet.');
-            return;
-        }
+    const updateViewbox = useCallback(
+        (viewbox: Partial<Viewbox>) => {
+            setViewbox((prevState) => ({
+                ...prevState,
+                ...viewbox,
+            }));
+        },
+        [setViewbox],
+    );
 
-        initializeViewbox(canvasRef.current);
-    }, [initializeViewbox, canvasRef.current]);
+    const updateViewMode = useCallback(
+        (viewMode: ViewMode) => {
+            setViewMode(viewMode);
+        },
+        [setViewMode],
+    );
 
-    useLayoutEffect(() => {
-        if (!canvasRef.current) return;
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            setViewbox({
+                x: -width / 2,
+                y: -height / 2,
+                width,
+                height,
+            });
+        };
 
-        const resizeObserver = new ResizeObserver((entries) => {
-            if (!entries || !entries.length) {
-                return;
-            }
+        handleResize();
 
-            const { clientWidth, clientHeight } = entries[0]
-                .target as SVGSVGElement;
-            if (
-                canvasRef.current?.clientWidth !== clientWidth ||
-                canvasRef.current?.clientHeight !== clientHeight
-            ) {
-                setViewbox({
-                    x: -clientWidth / 2,
-                    y: -clientHeight / 2,
-                    width: clientWidth,
-                    height: clientHeight,
-                });
-            }
-        });
+        window.addEventListener('resize', handleResize);
 
-        resizeObserver.observe(canvasRef.current);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
-        return () => resizeObserver.disconnect();
-    }, [setViewbox]);
+    const stateContextValue = useMemo<CanvasStateContextProps>(
+        () => ({
+            canvasRef,
+            viewMode,
+            viewbox,
+        }),
+        [canvasRef, viewMode, viewbox],
+    );
+
+    const actionContextValue = useMemo<CanvasActionContextProps>(
+        () => ({
+            updateViewMode,
+            updateViewbox,
+        }),
+        [updateViewMode, updateViewbox],
+    );
 
     return (
-        <CanvasContext.Provider value={{ canvasRef }}>
-            {children}
-        </CanvasContext.Provider>
+        <CanvasStateContext.Provider value={stateContextValue}>
+            <CanvasActionContext.Provider value={actionContextValue}>
+                {children}
+            </CanvasActionContext.Provider>
+        </CanvasStateContext.Provider>
     );
 };
 
-export const useCanvasContext = () => {
-    const context = useContext(CanvasContext);
+export const useCanvasState = () => {
+    const context = useContext(CanvasStateContext);
 
     if (!context) {
         throw new Error(
-            'useCanvasContext: CanvasProvider가 제공되지 않았습니다.',
+            'useCanvasState: CanvasProvider가 제공되지 않았습니다.',
+        );
+    }
+
+    return context;
+};
+
+export const useCanvasActions = () => {
+    const context = useContext(CanvasActionContext);
+
+    if (!context) {
+        throw new Error(
+            'useCanvasActions: CanvasProvider가 제공되지 않았습니다.',
         );
     }
 

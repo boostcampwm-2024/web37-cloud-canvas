@@ -4,8 +4,10 @@ import { Header } from '@/widgets/header/ui/header';
 import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
 import { Canvas } from '@/features/canvas/components/Canvas';
+import { useCanvasStore } from '@/features/canvas/model/canvas.store';
 
 export default function Page() {
+    const nodes = useCanvasStore.use.nodes();
     return (
         <div
             className="flex h-screen w-screen overflow-hidden"
