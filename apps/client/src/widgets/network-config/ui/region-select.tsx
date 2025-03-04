@@ -1,4 +1,10 @@
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
+import { useSelectStore } from '@/features/select/model/select.store';
+
+import { useGroupStore } from '@/entities/group/model/group.store';
+import { useResourceStore } from '@/entities/resource/model/resource.store';
 
 import {
     Form,
@@ -15,21 +21,44 @@ import {
 } from '@/shared/ui/shadcn/select';
 
 const REGIONS = [
-    { id: 'korea', value: 'kr', label: 'Korea' },
-    { id: 'japan', value: 'jp', label: 'Japan' },
-    { id: 'singapore', value: 'sg', label: 'Singapore' },
+    { value: 'kr', label: 'Korea' },
+    { value: 'jp', label: 'Japan' },
+    { value: 'sg', label: 'Singapore' },
 ];
 
 export const RegionSelect = () => {
-    const form = useForm<any>({
-        defaultValues: {
-            region: REGIONS[0].value,
-        },
-    });
+    const selectedNodeId = useSelectStore.use.selectedNodeId();
+    const { createGroup } = useGroupStore.use.actions();
+    const { getResource, setResourceNetwork } = useResourceStore.use.actions();
+
+    const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
+        undefined,
+    );
+
+    const form = useForm<any>();
 
     const handleRegionChange = (value: string) => {
-        console.log('Region changed to:', value);
+        if (!selectedNodeId) return;
+
+        setSelectedRegion(value);
+
+        createGroup({
+            id: value,
+            nodeIds: [selectedNodeId],
+            name: REGIONS.find((region) => region.value === value)?.label,
+        });
+        setResourceNetwork(selectedNodeId, 'region', value);
     };
+
+    useEffect(() => {
+        if (!selectedNodeId) {
+            setSelectedRegion(undefined);
+            return;
+        }
+
+        const nodeRegion = getResource(selectedNodeId)?.networks.region;
+        setSelectedRegion(nodeRegion);
+    }, [selectedNodeId, getResource]);
 
     return (
         <div className="flex flex-col">
@@ -41,11 +70,11 @@ export const RegionSelect = () => {
                     <FormField
                         control={form.control}
                         name="region"
-                        render={({ field }) => (
+                        render={() => (
                             <FormItem>
                                 <Select
                                     onValueChange={handleRegionChange}
-                                    defaultValue={field.value}
+                                    value={selectedRegion}
                                 >
                                     <FormControl>
                                         <SelectTrigger className="border-none shadow-none hover:bg-accent focus:ring-0 [&>svg]:hidden">
@@ -55,7 +84,7 @@ export const RegionSelect = () => {
                                     <SelectContent>
                                         {REGIONS.map((region) => (
                                             <SelectItem
-                                                key={region.id}
+                                                key={region.value}
                                                 value={region.value}
                                             >
                                                 {region.label}
