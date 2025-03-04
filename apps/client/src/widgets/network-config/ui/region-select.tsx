@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useSelectStore } from '@/features/select/model/select.store';
 
 import { useGroupStore } from '@/entities/group/model/group.store';
+import { useNodeStore } from '@/entities/node/model/node.store';
 import { useResourceStore } from '@/entities/resource/model/resource.store';
 
 import {
@@ -14,10 +15,10 @@ import {
 } from '@/shared/ui/shadcn/form';
 import {
     Select,
-    SelectTrigger,
-    SelectValue,
     SelectContent,
     SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from '@/shared/ui/shadcn/select';
 
 const REGIONS = [
@@ -28,6 +29,7 @@ const REGIONS = [
 
 export const RegionSelect = () => {
     const selectedNodeId = useSelectStore.use.selectedNodeId();
+    const { addNodeParentGroup } = useNodeStore.use.actions();
     const { isGroupExist, createGroup, addNodeToGroup } =
         useGroupStore.use.actions();
     const { getResource, setResourceNetwork } = useResourceStore.use.actions();
@@ -53,6 +55,7 @@ export const RegionSelect = () => {
             });
         }
         setResourceNetwork(selectedNodeId, 'region', value);
+        addNodeParentGroup(selectedNodeId, value);
     };
 
     useEffect(() => {

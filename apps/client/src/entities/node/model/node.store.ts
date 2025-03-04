@@ -31,7 +31,7 @@ interface NodeActions {
     ) => void;
     getNode: (id: string) => Node | null;
     getNodes: (ids: Array<string>) => Array<Node>;
-    addParentGroup: (nodeId: string, groupId: string) => void;
+    addNodeParentGroup: (nodeId: string, groupId: string) => void;
 }
 
 interface NodeStore extends NodeStates {
@@ -53,7 +53,7 @@ const store = create<NodeStore>()(
                 set((state) => ({
                     nodes: { ...state.nodes, [node.id]: node },
                 })),
-            addParentGroup: (nodeId, groupId) => {
+            addNodeParentGroup: (nodeId, groupId) => {
                 const node = get().nodes[nodeId];
                 if (!node) return;
 
