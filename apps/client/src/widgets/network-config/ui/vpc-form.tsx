@@ -25,6 +25,7 @@ import { useGroupStore } from '@/entities/group/model/group.store';
 import { nanoid } from 'nanoid';
 import { useSelectStore } from '@/features/select/model/select.store';
 import { useResourceStore } from '@/entities/resource/model/resource.store';
+import { useNodeStore } from '@/entities/node/model/node.store';
 
 const vpcFormSchema = z.object({
     name: z.string().min(3, {
@@ -51,7 +52,9 @@ export const VpcForm = (props: VpcFormProps) => {
     const { onOpenChangeSheet } = props;
 
     const selectedNodeId = useSelectStore.use.selectedNodeId();
-    const { createGroup } = useGroupStore.use.actions();
+    const { addNodeParentGroup } = useNodeStore.use.actions();
+    const { isGroupExist, createGroup, addNodeToGroup } =
+        useGroupStore.use.actions();
     const { getResource, setResourceNetwork } = useResourceStore.use.actions();
 
     const form = useForm<VpcFormValues>({
@@ -69,12 +72,18 @@ export const VpcForm = (props: VpcFormProps) => {
         const { name } = values;
         if (!name || !selectedNodeId) return;
 
-        createGroup({
-            id: nanoid(),
-            nodeIds: [selectedNodeId],
-            name,
-        });
+        const id = `vpc-${nanoid()}`;
+        if (isGroupExist(id)) {
+            addNodeToGroup(selectedNodeId, id);
+        } else {
+            createGroup({
+                id,
+                nodeIds: [selectedNodeId],
+                name,
+            });
+        }
         setResourceNetwork(selectedNodeId, 'vpc', values);
+        addNodeParentGroup(selectedNodeId, id);
         onOpenChangeSheet?.(false);
     };
 

@@ -51,7 +51,11 @@ export default function Page() {
                     )}
 
                     {Object.values(groups).map((group) => (
-                        <NetworkGroup key={group.id} nodeIds={group.nodeIds} />
+                        <NetworkGroup
+                            key={group.id}
+                            id={group.id}
+                            nodeIds={group.nodeIds}
+                        />
                     ))}
                 </CloudCanvas>
                 <NetworkConfig />

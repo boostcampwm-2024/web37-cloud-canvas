@@ -1,5 +1,4 @@
 import { CirclePlusIcon } from 'lucide-react';
-import { useState } from 'react';
 
 import { useSelectStore } from '@/features/select/model/select.store';
 
@@ -79,7 +78,9 @@ export const NetworkConfig = (props: NetworkConfigProps) => {
                                     </Button>
                                 }
                                 renderForm={({ onOpenChangeSheet }) => (
-                                    <VpcForm />
+                                    <VpcForm
+                                        onOpenChangeSheet={onOpenChangeSheet}
+                                    />
                                 )}
                             />
                         </div>
