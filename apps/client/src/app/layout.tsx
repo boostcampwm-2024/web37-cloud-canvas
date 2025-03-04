@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import { CanvasProvider } from '@/entities/canvas/model/canvas.context';
-
 import './global.css';
+import { CanvasProvider } from '@/features/canvas/model/canvas.context';
+
 import { SidebarProvider } from '@/shared/ui/shadcn/sidebar';
 
 const geistSans = Geist({

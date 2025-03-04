@@ -4,8 +4,7 @@ import React from 'react';
 
 import { useCanvasContext } from '../model/canvas.context';
 import { useCanvasStore } from '../model/canvas.store';
-
-import { GridBackground } from './grid-background';
+import { GridBackground } from './GridBackground';
 
 interface CanvasProps {
     children: React.ReactNode;
@@ -15,6 +14,8 @@ interface CanvasProps {
 export const Canvas = (props: CanvasProps) => {
     const { children, className } = props;
     const { canvasRef } = useCanvasContext();
+    console.log(canvasRef);
+
     const viewbox = useCanvasStore.use.viewbox();
     const isInitialized = viewbox.width !== 0 && viewbox.height !== 0;
 
