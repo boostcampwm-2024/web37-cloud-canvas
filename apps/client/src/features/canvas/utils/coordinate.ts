@@ -1,20 +1,20 @@
 // src/features/canvas/utils/coordinate.ts
 
-import type { Coord, GridPoint, ViewMode } from '@/shared/types/canvas';
+import { CoordPosition, GridPosition, ViewMode } from '../model/canvas.types';
 
 /**
  * 그리드 좌표를 3D 좌표로 변환합니다.
- * @param point 그리드 좌표
+ * @param position 그리드 좌표
  * @param gridWidth 3D 그리드 가로 크기
  * @param gridHeight 3D 그리드 세로 크기
  * @returns 3D 좌표
  */
 export const gridTo3DCoord = (
-    point: GridPoint,
+    position: GridPosition,
     gridWidth: number,
     gridHeight: number,
-): Coord => {
-    const { col, row } = point;
+): CoordPosition => {
+    const { col, row } = position;
     const halfGridWidth = gridWidth / 2;
     const halfGridHeight = gridHeight / 2;
 
@@ -26,17 +26,17 @@ export const gridTo3DCoord = (
 
 /**
  * 3D 좌표를 그리드 좌표로 변환합니다.
- * @param point 3D 좌표
+ * @param position 3D 좌표
  * @param gridWidth 3D 그리드 가로 크기
  * @param gridHeight 3D 그리드 세로 크기
  * @returns 그리드 좌표
  */
 export const coordTo3DGrid = (
-    point: Coord,
+    position: CoordPosition,
     gridWidth: number,
     gridHeight: number,
-): GridPoint => {
-    const { x, y } = point;
+): GridPosition => {
+    const { x, y } = position;
     const halfGridWidth = gridWidth / 2;
     const halfGridHeight = gridHeight / 2;
 
@@ -48,12 +48,15 @@ export const coordTo3DGrid = (
 
 /**
  * 그리드 좌표를 2D 좌표로 변환합니다.
- * @param point 그리드 좌표
+ * @param position 그리드 좌표
  * @param gridSize 2D 그리드 크기
  * @returns 2D 좌표
  */
-export const gridTo2DCoord = (point: GridPoint, gridSize: number): Coord => {
-    const { col, row } = point;
+export const gridTo2DCoord = (
+    position: GridPosition,
+    gridSize: number,
+): CoordPosition => {
+    const { col, row } = position;
     return {
         x: col * gridSize,
         y: row * gridSize,
@@ -62,12 +65,15 @@ export const gridTo2DCoord = (point: GridPoint, gridSize: number): Coord => {
 
 /**
  * 2D 좌표를 그리드 좌표로 변환합니다.
- * @param point 2D 좌표
+ * @param position 2D 좌표
  * @param gridSize 2D 그리드 크기
  * @returns 그리드 좌표
  */
-export const coordTo2DGrid = (point: Coord, gridSize: number): GridPoint => {
-    const { x, y } = point;
+export const coordTo2DGrid = (
+    position: CoordPosition,
+    gridSize: number,
+): GridPosition => {
+    const { x, y } = position;
     return {
         col: x / gridSize,
         row: y / gridSize,
@@ -76,7 +82,7 @@ export const coordTo2DGrid = (point: Coord, gridSize: number): GridPoint => {
 
 /**
  * 그리드 좌표를 좌표로 변환합니다.
- * @param point 그리드 좌표
+ * @param position 그리드 좌표
  * @param viewMode 뷰 모드
  * @param gridWidth 3D 그리드 가로 크기 (3D 모드인 경우)
  * @param gridHeight 3D 그리드 세로 크기 (3D 모드인 경우)
@@ -84,22 +90,22 @@ export const coordTo2DGrid = (point: Coord, gridSize: number): GridPoint => {
  * @returns 좌표
  */
 export const gridToCoord = (
-    point: GridPoint,
+    position: GridPosition,
     viewMode: ViewMode,
     gridWidth: number,
     gridHeight: number,
     gridSize: number,
-): Coord => {
+): CoordPosition => {
     if (viewMode === '3d') {
-        return gridTo3DCoord(point, gridWidth, gridHeight);
+        return gridTo3DCoord(position, gridWidth, gridHeight);
     } else {
-        return gridTo2DCoord(point, gridSize);
+        return gridTo2DCoord(position, gridSize);
     }
 };
 
 /**
  * 좌표를 그리드 좌표로 변환합니다.
- * @param point 좌표
+ * @param position 좌표
  * @param viewMode 뷰 모드
  * @param gridWidth 3D 그리드 가로 크기 (3D 모드인 경우)
  * @param gridHeight 3D 그리드 세로 크기 (3D 모드인 경우)
@@ -107,26 +113,26 @@ export const gridToCoord = (
  * @returns 그리드 좌표
  */
 export const coordToGrid = (
-    point: Coord,
+    position: CoordPosition,
     viewMode: ViewMode,
     gridWidth: number,
     gridHeight: number,
     gridSize: number,
-): GridPoint => {
+): GridPosition => {
     if (viewMode === '3d') {
-        return coordTo3DGrid(point, gridWidth, gridHeight);
+        return coordTo3DGrid(position, gridWidth, gridHeight);
     } else {
-        return coordTo2DGrid(point, gridSize);
+        return coordTo2DGrid(position, gridSize);
     }
 };
 
 interface SnapPointResult {
-    coord: Coord;
+    coord: CoordPosition;
 }
 
 /**
  * 좌표를 그리드에 스냅합니다.
- * @param point 좌표
+ * @param position 좌표
  * @param viewMode 뷰 모드
  * @param gridWidth 3D 그리드 가로 크기 (3D 모드인 경우)
  * @param gridHeight 3D 그리드 세로 크기 (3D 모드인 경우)
@@ -135,7 +141,7 @@ interface SnapPointResult {
  * @returns 스냅된 좌표
  */
 export const snapPoint = (
-    point: Coord,
+    position: CoordPosition,
     viewMode: ViewMode,
     gridWidth: number,
     gridHeight: number,
@@ -143,7 +149,7 @@ export const snapPoint = (
     denominator: number = 4,
 ): SnapPointResult => {
     const gridPoint = coordToGrid(
-        point,
+        position,
         viewMode,
         gridWidth,
         gridHeight,
