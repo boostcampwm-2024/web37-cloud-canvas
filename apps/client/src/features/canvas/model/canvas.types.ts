@@ -2,6 +2,11 @@ import { NetworkType } from '@/entities/resource/model/resource.types';
 import { ResourceType } from '@/shared/types/resource';
 import { SVGProps } from 'react';
 
+export interface Size {
+    width: number;
+    height: number;
+}
+
 export interface Viewbox {
     x: number;
     y: number;

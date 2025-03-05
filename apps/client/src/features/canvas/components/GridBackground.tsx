@@ -1,31 +1,46 @@
-import { memo, useMemo } from 'react';
+import { GRID_SIZE_2D } from '@/shared/config/canvas';
+import { memo } from 'react';
+import {
+    ISO_TRANSFORM_X_FACTOR,
+    ISO_TRANSFORM_Y_FACTOR,
+} from '../config/constants';
 import { useCanvasState } from '../model/canvas.context';
+import { calc3DGridSizeFrom2D } from '../utils/isometric';
 
 interface GridBackgroundProps {
     gridColor?: string;
-    gridSize?: number;
+    size2D?: number;
     gridThickness?: number;
 }
 
 export const GridBackground = memo((props: GridBackgroundProps) => {
-    const { gridColor = '#cbd5e1', gridSize = 50, gridThickness = 0.5 } = props;
+    const {
+        gridColor = '#cbd5e1',
+        size2D = GRID_SIZE_2D,
+        gridThickness = 0.5,
+    } = props;
     const { viewbox, viewMode } = useCanvasState();
 
-    const gridConfig = useMemo(() => {
-        return viewMode === '2d'
+    const size3D = calc3DGridSizeFrom2D(
+        size2D,
+        ISO_TRANSFORM_X_FACTOR,
+        ISO_TRANSFORM_Y_FACTOR,
+    );
+
+    const gridConfig =
+        viewMode === '2d'
             ? {
-                  width: gridSize,
-                  height: gridSize,
-                  subPath: `M 0 ${gridSize / 2} h ${gridSize} M ${gridSize / 2} 0 v ${gridSize}`,
-                  mainPath: `M 0 0 h ${gridSize} v ${gridSize} h ${-gridSize} v ${-gridSize}`,
+                  width: size2D,
+                  height: size2D,
+                  subPath: `M 0 ${size2D / 2} h ${size2D} M ${size2D / 2} 0 v ${size2D}`,
+                  mainPath: `M 0 0 h ${size2D} v ${size2D} h ${-size2D} v ${-size2D}`,
               }
             : {
-                  width: gridSize * 2, // Isometric Grid Width
-                  height: gridSize, // Isometric Grid Height
-                  subPath: `M ${gridSize} 0 l ${gridSize} ${gridSize / 2} l ${-gridSize} ${gridSize / 2} l ${-gridSize} ${-gridSize / 2}  z`,
-                  mainPath: `M 0 0 l ${gridSize * 2} ${gridSize} M ${gridSize * 2} 0 l ${-gridSize * 2} ${gridSize}`,
+                  width: size3D.width,
+                  height: size3D.height,
+                  subPath: `M ${size3D.width / 2} 0 l ${size3D.width / 2} ${size3D.height / 2} l ${-size3D.width / 2} ${size3D.height / 2} l ${-size3D.width / 2} ${-size3D.height / 2}  z`,
+                  mainPath: `M 0 0 l ${size3D.width} ${size3D.height} M ${size3D.width} 0 l ${-size3D.width} ${size3D.height}`,
               };
-    }, [gridSize, viewMode]);
 
     return (
         <g>
