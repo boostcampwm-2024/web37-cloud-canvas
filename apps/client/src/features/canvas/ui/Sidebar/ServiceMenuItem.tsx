@@ -1,21 +1,22 @@
 import { ChevronRight } from 'lucide-react';
 
-import { CreateResourceButton } from '@/features/create-resource/ui/create-resource-button';
-
-import type { ResourceType } from '@/shared/types/resource';
+import { Button } from '@/shared/ui/shadcn/button';
 import {
     Collapsible,
-    CollapsibleTrigger,
     CollapsibleContent,
+    CollapsibleTrigger,
 } from '@/shared/ui/shadcn/collapsible';
 import {
-    SidebarMenuItem,
     SidebarMenuButton,
+    SidebarMenuItem,
     SidebarMenuSub,
-    SidebarMenuSubItem,
     SidebarMenuSubButton,
+    SidebarMenuSubItem,
 } from '@/shared/ui/shadcn/sidebar';
-import { ResourceCategory } from '../config/resource-categories';
+import { ResourceCategory } from '../../config/sidebar';
+import { useCanvasStore } from '../../model/canvas.store';
+import { createResourceNode } from '../../model/node.model';
+import { ResourceType } from '../../model/resource.types';
 
 interface ServeiceMenuItemProps {
     category: ResourceCategory;
@@ -23,6 +24,13 @@ interface ServeiceMenuItemProps {
 
 export const ServiceMenuItem = (props: ServeiceMenuItemProps) => {
     const { category } = props;
+
+    const { addNode } = useCanvasStore.use.nodeActions();
+
+    const handleCreateResourceNode = (type: ResourceType) => {
+        const resourceNode = createResourceNode(type as any);
+        addNode(resourceNode);
+    };
 
     return (
         <Collapsible
@@ -43,11 +51,17 @@ export const ServiceMenuItem = (props: ServeiceMenuItemProps) => {
                         {category.resources.map((resource) => (
                             <SidebarMenuSubItem key={resource.title}>
                                 <SidebarMenuSubButton asChild>
-                                    <CreateResourceButton
-                                        key={resource.type}
-                                        title={resource.title}
-                                        type={resource.type as ResourceType}
-                                    />
+                                    <Button
+                                        variant="ghost"
+                                        className="w-full justify-start"
+                                        onClick={() =>
+                                            handleCreateResourceNode(
+                                                resource.type,
+                                            )
+                                        }
+                                    >
+                                        {resource.title}
+                                    </Button>
                                 </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                         ))}

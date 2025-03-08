@@ -1,5 +1,6 @@
-import { SVGProps as ReactSVGProps } from 'react';
-import { GridSize, ViewMode, ViewModeMap } from './canvas.types';
+import type { SVGProps } from 'react';
+
+import type { GridSize } from './canvas.types';
 
 export type ResourceType =
     | 'server'
@@ -8,11 +9,8 @@ export type ResourceType =
     | 'auto-scaling'
     | 'object-storage';
 
-export interface ResourceSVGProps extends ReactSVGProps<SVGSVGElement> {
-    viewMode: ViewMode;
-    size: ViewModeMap<GridSize>;
-}
-
-export type SVGProps = { size: GridSize } & ReactSVGProps<SVGSVGElement>;
+export type ResourceSVGProps = {
+    size: GridSize;
+} & SVGProps<SVGSVGElement>;
 
 export type NetworkType = 'vpc' | 'subnet' | 'securityGroup';

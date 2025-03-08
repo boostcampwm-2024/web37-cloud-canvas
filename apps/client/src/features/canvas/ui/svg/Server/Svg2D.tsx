@@ -1,14 +1,14 @@
-import { GRID_SIZE_2D } from '@/features/canvas/config/constants';
-import type { SVGProps } from '@/features/canvas/model/resource.types';
+import { GRID_SIZE_2D } from '../../../config/constants';
+import type { ResourceSVGProps } from '../../../model/resource.types';
 
-export const ServerSVG2D = (props: SVGProps) => {
-    const { size } = props;
+const Svg2D = (props: ResourceSVGProps) => {
+    const { size, ...svgProps } = props;
 
     const width = GRID_SIZE_2D * size.cols;
     const height = GRID_SIZE_2D * size.rows;
 
     return (
-        <svg width={width} height={height}>
+        <svg width={width} height={height} {...svgProps}>
             <path
                 fill="#d86613"
                 d="M80.402 80.402H9.599V9.599h70.803zm-67.137-3.667h63.47v-63.47h-63.47Z"
@@ -25,3 +25,5 @@ export const ServerSVG2D = (props: SVGProps) => {
         </svg>
     );
 };
+
+export default Svg2D;

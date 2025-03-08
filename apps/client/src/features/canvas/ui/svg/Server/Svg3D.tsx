@@ -1,17 +1,13 @@
-import {
-    GRID_HEIGHT_3D,
-    GRID_WIDTH_3D,
-} from '@/features/canvas/config/constants';
-import { generateBlockFaces } from '@/features/canvas/lib/geometry';
-import type { GridSize } from '@/features/canvas/model/canvas.types';
-import type { SVGProps } from '@/features/canvas/model/resource.types';
-
 import { cn } from '@/shared/lib/shadcn/utils';
 
-import { Polygon } from '../common/Polygon';
+import { GRID_HEIGHT_3D, GRID_WIDTH_3D } from '../../../config/constants';
+import { generateBlockFaces } from '../../../lib/geometry';
+import type { GridSize } from '../../../model/canvas.types';
+import type { ResourceSVGProps } from '../../../model/resource.types';
+import { Polygon } from '../Polygon';
 
-export const ServerSVG3D = (props: SVGProps) => {
-    const { size } = props;
+const Svg3D = (props: ResourceSVGProps) => {
+    const { size, className } = props;
 
     const { top, left, right } = generateBlockFaces(size as Required<GridSize>);
 
@@ -20,7 +16,11 @@ export const ServerSVG3D = (props: SVGProps) => {
 
     const strokePoints = [top[0], top[1], right[3], right[2], left[1], left[0]];
     return (
-        <svg width={width} height={height} className={cn('overflow-visible')}>
+        <svg
+            width={width}
+            height={height}
+            className={cn('overflow-visible', className)}
+        >
             <Polygon positions={top} fill="#ececed" stroke="#83838a" />
             <Polygon positions={left} fill="#d2d2d4" stroke="#83838a" />
             <Polygon positions={right} fill="#b8b8bb" stroke="#83838a" />
@@ -33,3 +33,5 @@ export const ServerSVG3D = (props: SVGProps) => {
         </svg>
     );
 };
+
+export default Svg3D;

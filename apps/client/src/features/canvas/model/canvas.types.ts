@@ -1,6 +1,7 @@
 import { NetworkType } from '@/entities/resource/model/resource.types';
 import { ResourceType } from '@/shared/types/resource';
-import { SVGProps } from 'react';
+import { ComponentType, SVGProps } from 'react';
+import { ResourceSVGProps } from './resource.types';
 
 export interface Size {
     width: number;
@@ -50,8 +51,8 @@ export interface Node {
     size: ViewModeMap<GridSize>;
     connectors: ViewModeMap<Array<Connector>>;
     groupIds: string[];
-    svg2D: React.FC<SVGProps<SVGSVGElement>>;
-    svg3D: React.FC<SVGProps<SVGSVGElement>>;
+    svg2D: ComponentType<ResourceSVGProps>;
+    svg3D: ComponentType<ResourceSVGProps>;
     properties: { [key: string]: any };
     droppable?: boolean; // dropzone 기능 여부
     childNodeIds?: string[]; // 포함된 노드 ID 목록 (드롭존인 경우)
