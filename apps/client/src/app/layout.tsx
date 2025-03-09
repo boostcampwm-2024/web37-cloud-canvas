@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 import './global.css';
-import { CanvasProvider } from '@/features/canvas/model/canvas.context';
 
-import { SidebarProvider } from '@/shared/ui/shadcn/sidebar';
+import { CanvasProvider } from '@/features/canvas/model/context';
+
+import { SidebarProvider } from '@/shared/shadcn/ui/sidebar';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',

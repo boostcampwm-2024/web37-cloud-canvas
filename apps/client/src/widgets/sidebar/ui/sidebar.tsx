@@ -1,11 +1,11 @@
+import { RESOURCE_CATEGRIES } from '@/entities/resource/model/constants';
+
 import {
     Sidebar as ShadcnSidebar,
     SidebarContent,
     SidebarGroup,
     SidebarMenu,
-} from '@/shared/ui/shadcn/sidebar';
-
-import { RESOURCE_CATEGRIES } from '../config/resource-categories';
+} from '@/shared/shadcn/ui/sidebar';
 
 import { ServiceMenuItem } from './service-menu-item';
 

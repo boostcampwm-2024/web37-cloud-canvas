@@ -1,14 +1,10 @@
 'use client';
 
-import { Header } from '@/widgets/header/ui/header';
-
-import { Canvas } from '@/features/canvas/components/Canvas';
-import { useCanvasStore } from '@/features/canvas/model/canvas.store';
-import { ResourceNode } from '@/features/canvas/ui/ResourceNode';
-import { Sidebar } from '@/features/canvas/ui/Sidebar';
+import { Canvas } from '@/widgets/canvas/ui/canvas';
+import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
 export default function Page() {
-    const nodes = useCanvasStore.use.nodes();
+    // const nodes = useCanvasStore.use.nodes();
     return (
         <div
             className="flex h-screen w-screen overflow-hidden"
@@ -16,11 +12,12 @@ export default function Page() {
         >
             <Sidebar />
             <div className="relative h-full flex-1">
-                <Header />
+                {/* <Header /> */}
                 <Canvas>
-                    {Object.values(nodes).map((node) => (
-                        <ResourceNode key={node.id} node={node} />
-                    ))}
+                    <rect x={0} y={0} width={100} height={100} fill="red" />
+                    {/*     {Object.values(nodes).map((node) => ( */}
+                    {/*         <ResourceNode key={node.id} node={node} /> */}
+                    {/*     ))} */}
                 </Canvas>
             </div>
         </div>
