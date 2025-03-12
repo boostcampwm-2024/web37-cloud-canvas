@@ -17,6 +17,7 @@ interface CanvasStateContextProps {
     canvasRef: RefObject<SVGSVGElement | null>;
     viewbox: Viewbox;
     viewMode: ViewMode;
+    zoomFactor: number;
 }
 
 const CanvasStateContext = createContext<CanvasStateContextProps | null>(null);
@@ -24,6 +25,7 @@ const CanvasStateContext = createContext<CanvasStateContextProps | null>(null);
 interface CanvasActionContextProps {
     updateViewbox: (viewbox: Partial<Viewbox>) => void;
     updateViewMode: (viewMode: ViewMode) => void;
+    updateZoomFactor: (zoomFactor: number) => void;
 }
 
 const CanvasActionContext = createContext<CanvasActionContextProps | null>(
@@ -48,6 +50,7 @@ export const CanvasProvider = (props: CanvasProviderProps) => {
             height: 0,
         },
     );
+    const [zoomFactor, setZoomFactor] = useState<number>(1);
 
     const updateViewbox = useCallback(
         (viewbox: Partial<Viewbox>) => {
@@ -64,6 +67,13 @@ export const CanvasProvider = (props: CanvasProviderProps) => {
             setViewMode(viewMode);
         },
         [setViewMode],
+    );
+
+    const updateZoomFactor = useCallback(
+        (zoomFactor: number) => {
+            setZoomFactor(zoomFactor);
+        },
+        [setZoomFactor],
     );
 
     useEffect(() => {
@@ -92,6 +102,7 @@ export const CanvasProvider = (props: CanvasProviderProps) => {
             canvasRef,
             viewMode,
             viewbox,
+            zoomFactor,
         }),
         [canvasRef, viewMode, viewbox],
     );
@@ -100,8 +111,9 @@ export const CanvasProvider = (props: CanvasProviderProps) => {
         () => ({
             updateViewMode,
             updateViewbox,
+            updateZoomFactor,
         }),
-        [updateViewMode, updateViewbox],
+        [updateViewMode, updateViewbox, updateZoomFactor],
     );
 
     return (
