@@ -5,10 +5,12 @@ import { immer } from 'zustand/middleware/immer';
 import { createSelectors } from '@/shared/zustand/lib';
 
 import { createNodeSlice, type NodeSlice } from './slices/node';
+import { createSelectionSlice, type SelectionSlice } from './slices/selection';
 
-const store = create<NodeSlice>()(
+const store = create<SelectionSlice & NodeSlice>()(
     devtools(
         immer((...args) => ({
+            ...createSelectionSlice(...args),
             ...createNodeSlice(...args),
         })),
     ),

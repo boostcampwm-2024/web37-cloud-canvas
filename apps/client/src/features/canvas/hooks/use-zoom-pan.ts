@@ -9,7 +9,7 @@ export const SCALE_STEP = 0.1;
 export const MIN_ZOOM = 0.1;
 export const MAX_ZOOM = 8;
 
-export const useZoom = ($canvas: SVGSVGElement | null) => {
+export const useZoom = (canvasEl: SVGSVGElement | null) => {
     const { zoomFactor, viewbox } = useCanvasState();
     const { updateViewbox, updateZoomFactor } = useCanvasActions();
 
@@ -27,14 +27,14 @@ export const useZoom = ($canvas: SVGSVGElement | null) => {
     };
 
     const zoom = (position: CoordPosition, zoomStep: number) => {
-        if (!$canvas) return;
+        if (!canvasEl) return;
 
         const newZoomFactor = calcZoomFactor(zoomFactor, zoomStep);
 
         if (!validateZoomFactor(newZoomFactor)) return;
         updateZoomFactor(newZoomFactor);
 
-        const svgPosition = screenToSvgPosition($canvas, position);
+        const svgPosition = screenToSvgPosition(canvasEl, position);
 
         const newViewbox = {
             x: viewbox.x + (svgPosition.x - viewbox.x) * (1 - zoomStep),
@@ -54,15 +54,15 @@ export const useZoom = ($canvas: SVGSVGElement | null) => {
     };
 
     const startPan = (position: CoordPosition) => {
-        if (!$canvas) return;
+        if (!canvasEl) return;
 
-        startSvgPositionRef.current = screenToSvgPosition($canvas, position);
+        startSvgPositionRef.current = screenToSvgPosition(canvasEl, position);
     };
 
     const movePan = (position: CoordPosition) => {
-        if (!startSvgPositionRef.current || !$canvas) return;
+        if (!startSvgPositionRef.current || !canvasEl) return;
 
-        const curSvgPoint = screenToSvgPosition($canvas, position);
+        const curSvgPoint = screenToSvgPosition(canvasEl, position);
 
         const dx = startSvgPositionRef.current.x - curSvgPoint.x;
         const dy = startSvgPositionRef.current.y - curSvgPoint.y;
