@@ -3,8 +3,14 @@
 import { Canvas } from '@/widgets/canvas/ui/canvas';
 import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
+import { useCanvasState } from '@/features/canvas/model/context';
+import { useCanvasStore } from '@/features/canvas/model/store';
+
+import type { Node } from '@/entities/node/model/types';
+
 export default function Page() {
-    // const nodes = useCanvasStore.use.nodes();
+    const nodes = useCanvasStore.use.nodes();
+    const { viewMode } = useCanvasState();
     return (
         <div
             className="flex h-screen w-screen overflow-hidden"
@@ -14,10 +20,16 @@ export default function Page() {
             <div className="relative h-full flex-1">
                 {/* <Header /> */}
                 <Canvas>
-                    <rect x={0} y={0} width={100} height={100} fill="red" />
-                    {/*     {Object.values(nodes).map((node) => ( */}
-                    {/*         <ResourceNode key={node.id} node={node} /> */}
-                    {/*     ))} */}
+                    {Object.values(nodes).map((node: Node) => (
+                        <g key={node.id}>
+                            {viewMode === '3d' && (
+                                <node.svg3D size={node.size} />
+                            )}
+                            {viewMode === '2d' && (
+                                <node.svg2D size={node.size} />
+                            )}
+                        </g>
+                    ))}
                 </Canvas>
             </div>
         </div>

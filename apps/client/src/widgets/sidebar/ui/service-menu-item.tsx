@@ -1,6 +1,13 @@
 import { ChevronRight } from 'lucide-react';
+import { nanoid } from 'nanoid';
+
+import { useCanvasStore } from '@/features/canvas/model/store';
 
 import type { ResourceCategory } from '@/entities/resource/model/constants';
+import { Resource } from '@/entities/resource/model/service';
+import type { ResourceType } from '@/entities/resource/model/types';
+import { ServerSvg2D } from '@/entities/resource/ui/server/svg-2d';
+import { ServerSvg3D } from '@/entities/resource/ui/server/svg-3d';
 
 import { Button } from '@/shared/shadcn/ui/button';
 import {
@@ -23,12 +30,31 @@ interface ServeiceMenuItemProps {
 export const ServiceMenuItem = (props: ServeiceMenuItemProps) => {
     const { category } = props;
 
-    // const { addNode } = useCanvasStore.use.nodeActions();
+    const { addNode } = useCanvasStore.use.nodeActions();
 
-    // const handleCreateResourceNode = (type: ResourceType) => {
-    //     const resourceNode = createResourceNode(type as any);
-    //     addNode(resourceNode);
-    // };
+    const handleAddNode = (type: ResourceType) => {
+        const resource = Resource.create(type);
+        const node = {
+            id: nanoid(),
+            position: {
+                col: 0,
+                row: 0,
+            },
+            size: {
+                rows: 1,
+                cols: 1,
+                depth: 0.5,
+            },
+            groupIds: [],
+            svg2D: ServerSvg2D,
+            svg3D: ServerSvg3D,
+            properties: {
+                ...resource.properties,
+            },
+        };
+
+        addNode(node);
+    };
 
     return (
         <Collapsible
@@ -52,7 +78,9 @@ export const ServiceMenuItem = (props: ServeiceMenuItemProps) => {
                                     <Button
                                         variant="ghost"
                                         className="w-full justify-start"
-                                        onClick={() => {}}
+                                        onClick={() =>
+                                            handleAddNode(resource.type)
+                                        }
                                     >
                                         {resource.title}
                                     </Button>

@@ -1,6 +1,6 @@
 import type { ResourceSVGProps } from '../../model/types';
 
-export const Svg2D = (props: ResourceSVGProps) => {
+export const ServerSvg2D = (props: ResourceSVGProps) => {
     const { size, ...svgProps } = props;
 
     return (

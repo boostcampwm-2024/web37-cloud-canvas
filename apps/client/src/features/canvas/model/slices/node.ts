@@ -2,8 +2,6 @@ import type { StateCreator } from 'zustand';
 
 import type { Node } from '@/entities/node/model/types';
 
-import type { CanvasSlice } from './canvas';
-
 export interface NodeSlice {
     nodes: Record<string, Node>;
     nodeActions: {
@@ -12,7 +10,7 @@ export interface NodeSlice {
 }
 
 export const createNodeSlice: StateCreator<
-    CanvasSlice & NodeSlice,
+    NodeSlice & any,
     [['zustand/immer', never]],
     [['zustand/immer', never]],
     NodeSlice

@@ -5,10 +5,12 @@ import type { GridPosition, GridSize } from '@/shared/canvas/types';
 export interface Node {
     id: string;
     position: GridPosition;
-    size: {
-        '2d': GridSize;
-        '3d': GridSize;
-    };
+    size:
+        | {
+              '2d': GridSize;
+              '3d': GridSize;
+          }
+        | GridSize;
     // connectors: ViewModeMap<Array<Connector>>;
     groupIds: string[];
     svg2D: ComponentType<any>;
