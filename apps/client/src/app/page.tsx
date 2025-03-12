@@ -5,6 +5,7 @@ import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
 import { useCanvasState } from '@/features/canvas/model/context';
 import { useCanvasStore } from '@/features/canvas/model/store';
+import { NodeRenderer } from '@/features/canvas/ui/node-renderer';
 
 import type { Node } from '@/entities/node/model/types';
 
@@ -21,14 +22,12 @@ export default function Page() {
                 {/* <Header /> */}
                 <Canvas>
                     {Object.values(nodes).map((node: Node) => (
-                        <g key={node.id}>
-                            {viewMode === '3d' && (
-                                <node.svg3D size={node.size} />
-                            )}
-                            {viewMode === '2d' && (
-                                <node.svg2D size={node.size} />
-                            )}
-                        </g>
+                        <NodeRenderer
+                            key={node.id}
+                            node={node}
+                            viewMode={viewMode}
+                            size={node.size}
+                        />
                     ))}
                 </Canvas>
             </div>
