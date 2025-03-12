@@ -1,6 +1,7 @@
 'use client';
 
 import { Canvas } from '@/widgets/canvas/ui/canvas';
+import { Header } from '@/widgets/header/ui/header';
 import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
 import { useCanvasState } from '@/features/canvas/model/context';
@@ -19,7 +20,7 @@ export default function Page() {
         >
             <Sidebar />
             <div className="relative h-full flex-1">
-                {/* <Header /> */}
+                <Header />
                 <Canvas>
                     {Object.values(nodes).map((node: Node) => (
                         <NodeRenderer
