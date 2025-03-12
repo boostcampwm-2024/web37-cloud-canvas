@@ -3,7 +3,7 @@
 import _ from 'lodash';
 import React from 'react';
 
-import { useZoom } from '@/features/canvas/hooks/use-zoom';
+import { useZoom } from '@/features/canvas/hooks/use-zoom-pan';
 import { useCanvasState } from '@/features/canvas/model/context';
 
 import { GridBackground } from './grid-background';
@@ -22,7 +22,9 @@ export const Canvas = (props: CanvasProps) => {
     const { children, className } = props;
     const { canvasRef, viewbox } = useCanvasState();
 
-    const { zoomIn, zoomOut } = useZoom(canvasRef.current);
+    const { zoomIn, zoomOut, startPan, movePan, stopPan } = useZoom(
+        canvasRef.current,
+    );
 
     const isInitialized = viewbox.width !== 0 && viewbox.height !== 0;
 
@@ -42,6 +44,20 @@ export const Canvas = (props: CanvasProps) => {
         }, 500);
     };
 
+    const handleStartPan = (e: React.MouseEvent) => {
+        applyCursorStyle('body', 'grab');
+        startPan({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleMovePan = (e: React.MouseEvent) => {
+        movePan({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleStopPan = () => {
+        stopPan();
+        applyCursorStyle('body', 'default');
+    };
+
     return (
         <svg
             id="canvas"
@@ -53,6 +69,9 @@ export const Canvas = (props: CanvasProps) => {
             preserveAspectRatio="xMidYMid meet"
             className={className}
             onWheel={handleZoom}
+            onMouseDown={handleStartPan}
+            onMouseMove={handleMovePan}
+            onMouseUp={handleStopPan}
         >
             <GridBackground />
             {isInitialized && children}
