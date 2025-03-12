@@ -24,10 +24,10 @@ export const RESOURCE_CATEGRIES: Array<ResourceCategory> = [
     //         { type: 'kubernetes', title: 'Kubernetes' },
     //     ],
     // },
-    // {
-    //     title: 'Storage',
-    //     resources: [{ type: 'object-storage', title: 'Object Storage' }],
-    // },
+    {
+        title: 'Storage',
+        resources: [{ type: 'object-storage', title: 'Object Storage' }],
+    },
     // {
     //     title: 'Database',
     //     resources: [

@@ -4,7 +4,7 @@ import { Polygon } from '@/shared/canvas/ui/polygon';
 
 import type { ResourceSVGProps } from '../../model/types';
 
-export const ServerSvg3D = (props: ResourceSVGProps) => {
+export const ServerSVG3D = (props: ResourceSVGProps) => {
     const { size, className, ...svgProps } = props;
 
     const { top, left, right } = generateBlockFaces(size as Required<GridSize>);

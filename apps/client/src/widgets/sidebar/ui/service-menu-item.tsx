@@ -6,8 +6,8 @@ import { useCanvasStore } from '@/features/canvas/model/store';
 import type { ResourceCategory } from '@/entities/resource/model/constants';
 import { ResourceNode } from '@/entities/resource/model/service';
 import type { ResourceType } from '@/entities/resource/model/types';
-import { ServerSvg2D } from '@/entities/resource/ui/server/svg-2d';
-import { ServerSvg3D } from '@/entities/resource/ui/server/svg-3d';
+import { ServerSVG2D } from '@/entities/resource/ui/server/svg-2d';
+import { ServerSVG3D } from '@/entities/resource/ui/server/svg-3d';
 
 import { Button } from '@/shared/shadcn/ui/button';
 import {

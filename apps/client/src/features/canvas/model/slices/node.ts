@@ -16,7 +16,7 @@ export interface NodeSlice {
 }
 
 const sortNode = (nodes: Record<string, Node>) => {
-    const sortedNodes = _.sortBy(nodes, ['point.row', 'point.col']);
+    const sortedNodes = _.sortBy(nodes, ['position.row', 'position.col']);
 
     return Object.fromEntries(sortedNodes.map((node) => [node.id, node]));
 };
