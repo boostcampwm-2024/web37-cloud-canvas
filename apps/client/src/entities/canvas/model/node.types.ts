@@ -4,19 +4,20 @@ import type { GridPosition, GridSize } from '@/shared/canvas/types';
 
 import type { ViewMode } from './canvas.types';
 
+export interface Connector {
+    direction: 'left' | 'top' | 'right' | 'bottom';
+    position: GridPosition;
+}
 export interface Node {
     id: string;
     position: GridPosition;
     size:
         | {
-              [mode in ViewMode]: GridSize;
+              [mode in ViewMode]: GridSize; //INFO: 현재 depth는 box형태인 부분에서만 사용하고 있음
           }
         | GridSize;
     connectors: {
-        [mode in ViewMode]: {
-            direction: 'left' | 'top' | 'right' | 'bottom';
-            position: GridPosition;
-        };
+        [mode in ViewMode]: Connector[];
     };
     groupIds: string[];
     svg2D: ComponentType<any>;

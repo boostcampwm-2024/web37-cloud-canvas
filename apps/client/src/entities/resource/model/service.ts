@@ -96,7 +96,7 @@ export class ResourceNode {
                     size: {
                         rows: 1,
                         cols: 1,
-                        depth: 1.5,
+                        // depth: 1.5,
                     },
                     groupIds: [],
                     svg2D: dynamic(
@@ -114,8 +114,43 @@ export class ResourceNode {
                         { ssr: false },
                     ),
                     connectors: {
-                        '2d': [],
-                        '3d': [],
+                        '2d': [
+                            {
+                                direction: 'left',
+                                position: { col: 0, row: 0.5 },
+                            },
+                            {
+                                direction: 'top',
+                                position: { col: 0.5, row: 0 },
+                            },
+                            {
+                                direction: 'right',
+                                position: { col: 1, row: 0.5 },
+                            },
+                            {
+                                direction: 'bottom',
+                                position: { col: 0.5, row: 1 },
+                            },
+                        ],
+                        '3d': [
+                            {
+                                direction: 'left',
+                                position: { row: 0.5, col: 0 },
+                            },
+
+                            {
+                                direction: 'top',
+                                position: { row: 0, col: 0.5 },
+                            },
+                            {
+                                direction: 'right',
+                                position: { row: 0.5, col: 0.7 },
+                            },
+                            {
+                                direction: 'bottom',
+                                position: { row: 0.7, col: 0.5 },
+                            },
+                        ],
                     },
                     properties: {
                         type: 'object-storage',
