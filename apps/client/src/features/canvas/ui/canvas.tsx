@@ -3,8 +3,8 @@
 import _ from 'lodash';
 import React from 'react';
 
-import { useZoom } from '@/features/canvas/hooks/use-zoom-pan';
-import { useCanvasState } from '@/features/canvas/model/context';
+import { useZoom } from '../hooks/use-zoom-pan';
+import { useCanvasState } from '../model/context';
 
 import { GridBackground } from './grid-background';
 
@@ -19,9 +19,7 @@ export const applyCursorStyle = (selector: string, style: string) => {
 };
 
 export const Canvas = (props: CanvasProps) => {
-    const { children, className } = props;
     const { canvasRef, viewbox } = useCanvasState();
-
     const { zoomIn, zoomOut, startPan, movePan, stopPan } = useZoom(
         canvasRef.current,
     );

@@ -1,11 +1,11 @@
 'use client';
 
-import { Canvas } from '@/widgets/canvas/ui/canvas';
 import { Header } from '@/widgets/header/ui/header';
 import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
 import { useCanvasState } from '@/features/canvas/model/context';
 import { useCanvasStore } from '@/features/canvas/model/store';
+import { Canvas } from '@/features/canvas/ui/canvas';
 import { NodeController } from '@/features/canvas/ui/node-controller';
 import { NodeRenderer } from '@/features/canvas/ui/node-renderer';
 

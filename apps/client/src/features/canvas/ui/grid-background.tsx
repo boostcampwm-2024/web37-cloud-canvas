@@ -1,12 +1,12 @@
 import { memo } from 'react';
 
-import { useCanvasState } from '@/features/canvas/model/context';
-
 import {
+    GRID_HEIGHT_3D,
     GRID_SIZE_2D,
     GRID_WIDTH_3D,
-    GRID_HEIGHT_3D,
 } from '@/shared/canvas/constants';
+
+import { useCanvasState } from '../model/context';
 
 interface GridBackgroundProps {
     gridColor?: string;
