@@ -19,6 +19,8 @@ export const applyCursorStyle = (selector: string, style: string) => {
 };
 
 export const Canvas = (props: CanvasProps) => {
+    const { children, className } = props;
+
     const { canvasRef, viewbox } = useCanvasState();
     const { zoomIn, zoomOut, startPan, movePan, stopPan } = useZoom(
         canvasRef.current,
