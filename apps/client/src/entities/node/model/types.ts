@@ -11,7 +11,16 @@ export interface Node {
               '3d': GridSize;
           }
         | GridSize;
-    // connectors: ViewModeMap<Array<Connector>>;
+    connectors: {
+        '2d': Array<{
+            direction: 'left' | 'top' | 'right' | 'bottom';
+            position: GridPosition;
+        }>;
+        '3d': Array<{
+            direction: 'left' | 'top' | 'right' | 'bottom';
+            position: GridPosition;
+        }>;
+    };
     groupIds: string[];
     svg2D: ComponentType<any>;
     svg3D: ComponentType<any>;

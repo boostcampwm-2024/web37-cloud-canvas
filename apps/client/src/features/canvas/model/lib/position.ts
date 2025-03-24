@@ -13,19 +13,22 @@ export const snapPoint = (
     viewMode: ViewMode,
     denominator = 4,
 ) => {
-    const gridPoint = coordToGridPoint(position, viewMode);
+    const gridPoint = coordToGridPosition(position, viewMode);
     const snappedSize = 1 / denominator;
 
     const snappedCol = Math.round(gridPoint.col / snappedSize) * snappedSize;
     const snappedRow = Math.round(gridPoint.row / snappedSize) * snappedSize;
 
     return {
-        coord: gridToCoordPoint({ col: snappedCol, row: snappedRow }, viewMode),
+        coord: gridToCoordPosition(
+            { col: snappedCol, row: snappedRow },
+            viewMode,
+        ),
         grid: { col: snappedCol, row: snappedRow },
     };
 };
 
-export const gridToCoordPoint = (
+export const gridToCoordPosition = (
     position: GridPosition,
     viewMode: ViewMode,
 ) => {
@@ -34,7 +37,7 @@ export const gridToCoordPoint = (
         : gridTo2DCoordPosition(position);
 };
 
-export const coordToGridPoint = (
+export const coordToGridPosition = (
     position: CoordPosition,
     viewMode: ViewMode,
 ) => {

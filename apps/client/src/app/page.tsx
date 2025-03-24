@@ -31,7 +31,6 @@ export default function Page() {
                             key={node.id}
                             node={node}
                             viewMode={viewMode}
-                            size={node.size}
                         />
                     ))}
 

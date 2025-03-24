@@ -7,16 +7,15 @@ import { isSingleSize } from '@/shared/canvas/lib/size';
 
 import { useDragNode } from '../hooks/use-drag-node';
 import { useCanvasState } from '../model/context';
-import { gridToCoordPoint } from '../model/lib/position';
+import { gridToCoordPosition } from '../model/lib/position';
 
 interface NodeRendererProps {
     node: Node;
     viewMode: ViewMode;
-    size: Node['size'];
 }
 
 export const NodeRenderer = (props: NodeRendererProps) => {
-    const { node, viewMode, size } = props;
+    const { node, viewMode } = props;
     const { canvasRef } = useCanvasState();
 
     const { startDrag, moveDrag, stopDrag } = useDragNode(
@@ -27,7 +26,9 @@ export const NodeRenderer = (props: NodeRendererProps) => {
     const Svg2D = node.svg2D;
     const Svg3D = node.svg3D;
 
-    const sizeByViewMode = isSingleSize(size) ? size : size[viewMode];
+    const sizeByViewMode = isSingleSize(node.size)
+        ? node.size
+        : node.size[viewMode];
 
     const handleMouseDown = (event: React.MouseEvent) => {
         event.stopPropagation();
@@ -52,8 +53,16 @@ export const NodeRenderer = (props: NodeRendererProps) => {
         canvasRef.current?.addEventListener('mouseleave', handleMouseUp);
     };
 
-    const coordPoint = gridToCoordPoint(node.position, viewMode);
+    const coordPoint = gridToCoordPosition(node.position, viewMode);
     const transform = `translate(${coordPoint.x}, ${coordPoint.y})`;
+
+    const connectorsPositions = node.connectors[viewMode].map((c) => {
+        const position = gridToCoordPosition(c.position, viewMode);
+        return {
+            ...c,
+            position,
+        };
+    });
 
     return (
         <g transform={transform} onMouseDown={handleMouseDown}>
@@ -67,6 +76,9 @@ export const NodeRenderer = (props: NodeRendererProps) => {
                     <Svg2D size={sizeByViewMode} />
                 </Suspense>
             )}
+            {connectorsPositions.map((c, i) => (
+                <circle key={i} cx={c.position.x} cy={c.position.y} r="5" />
+            ))}
         </g>
     );
 };

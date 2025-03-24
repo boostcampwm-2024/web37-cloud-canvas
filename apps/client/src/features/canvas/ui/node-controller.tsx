@@ -5,7 +5,7 @@ import { GRID_SIZE_2D, GRID_WIDTH_3D } from '@/shared/canvas/constants';
 import { isSingleSize } from '@/shared/canvas/lib/size';
 
 import { useCanvasState } from '../model/context';
-import { gridToCoordPoint } from '../model/lib/position';
+import { gridToCoordPosition } from '../model/lib/position';
 import { useCanvasStore } from '../model/store';
 
 import { ActionButton } from './action-button';
@@ -42,7 +42,7 @@ export const NodeController = (props: NodeController) => {
                 ? GRID_SIZE_2D * size2D.cols
                 : GRID_WIDTH_3D * size3D.cols;
 
-        const pixels = gridToCoordPoint(node.position, viewMode);
+        const pixels = gridToCoordPosition(node.position, viewMode);
 
         //INFO: block 형태는 그리는 기준점이 달라 필터처리
         const margin = viewMode === '3d' ? width / 2 : width;

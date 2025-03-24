@@ -1,10 +1,12 @@
 import { nanoid } from 'nanoid';
 import dynamic from 'next/dynamic';
 
+import type { Node } from '@/entities/node/model/types';
+
 import type { ResourceType } from './types';
 
 export class ResourceNode {
-    static create(type: ResourceType) {
+    static create(type: ResourceType): Node {
         switch (type) {
             case 'server': {
                 return {
@@ -33,6 +35,45 @@ export class ResourceNode {
                             ),
                         { ssr: false },
                     ),
+                    connectors: {
+                        '2d': [
+                            {
+                                direction: 'left',
+                                position: { col: 0, row: 0.5 },
+                            },
+                            {
+                                direction: 'top',
+                                position: { col: 0.5, row: 0 },
+                            },
+                            {
+                                direction: 'right',
+                                position: { col: 1, row: 0.5 },
+                            },
+                            {
+                                direction: 'bottom',
+                                position: { col: 0.5, row: 1 },
+                            },
+                        ],
+                        '3d': [
+                            {
+                                direction: 'left',
+                                position: { row: 0.5, col: -0.5 },
+                            },
+
+                            {
+                                direction: 'top',
+                                position: { row: -0.5, col: 0.5 },
+                            },
+                            {
+                                direction: 'right',
+                                position: { row: 0.5, col: 1.0 },
+                            },
+                            {
+                                direction: 'bottom',
+                                position: { row: 1, col: 0.5 },
+                            },
+                        ],
+                    },
                     properties: {
                         type: 'server',
                         networks: {
@@ -72,6 +113,10 @@ export class ResourceNode {
                             ),
                         { ssr: false },
                     ),
+                    connectors: {
+                        '2d': [],
+                        '3d': [],
+                    },
                     properties: {
                         type: 'object-storage',
                         networks: {
