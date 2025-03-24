@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import type { ViewMode } from '@/entities/canvas/model/types';
 import type { Node } from '@/entities/node/model/types';
 
-import type { GridSize } from '@/shared/canvas/types';
+import { isSingleSize } from '@/shared/canvas/lib/size';
 
 import { useDragNode } from '../hooks/use-drag-node';
 import { useCanvasState } from '../model/context';
@@ -14,12 +14,6 @@ interface NodeRendererProps {
     viewMode: ViewMode;
     size: Node['size'];
 }
-
-const isSingleSize = (
-    size: GridSize | { '2d': GridSize; '3d': GridSize },
-): size is GridSize => {
-    return !('2d' in size && '3d' in size);
-};
 
 export const NodeRenderer = (props: NodeRendererProps) => {
     const { node, viewMode, size } = props;
@@ -34,6 +28,7 @@ export const NodeRenderer = (props: NodeRendererProps) => {
     const Svg3D = node.svg3D;
 
     const sizeByViewMode = isSingleSize(size) ? size : size[viewMode];
+
     const handleMouseDown = (event: React.MouseEvent) => {
         event.stopPropagation();
         startDrag({ x: event.clientX, y: event.clientY });
@@ -59,6 +54,7 @@ export const NodeRenderer = (props: NodeRendererProps) => {
 
     const coordPoint = gridToCoordPoint(node.position, viewMode);
     const transform = `translate(${coordPoint.x}, ${coordPoint.y})`;
+
     return (
         <g transform={transform} onMouseDown={handleMouseDown}>
             {viewMode === '3d' && Svg3D && (

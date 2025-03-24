@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { useRef } from 'react';
 
 import { screenToSvgPosition } from '@/shared/canvas/lib/svg';
@@ -10,7 +9,7 @@ import { useCanvasStore } from '../model/store';
 
 export const useDragNode = (canvasEl: SVGSVGElement | null, nodeId: string) => {
     const prevPointRef = useRef<CoordPosition | null>(null);
-    const { select, deselect } = useCanvasStore.use.selectionActions();
+    const { select } = useCanvasStore.use.selectionActions();
     const { moveNode } = useCanvasStore.use.nodeActions();
     const { viewMode } = useCanvasState();
 
@@ -40,7 +39,6 @@ export const useDragNode = (canvasEl: SVGSVGElement | null, nodeId: string) => {
 
     const stopDrag = () => {
         prevPointRef.current = null;
-        deselect();
     };
 
     return {

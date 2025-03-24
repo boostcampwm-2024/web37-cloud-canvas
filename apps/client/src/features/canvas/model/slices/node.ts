@@ -10,6 +10,7 @@ import type { SelectionSlice } from './selection';
 export interface NodeSlice {
     nodes: Record<string, Node>;
     nodeActions: {
+        getNode: (nodeId: string) => Node | undefined;
         addNode: (node: Node) => void;
         moveNode: (nodeId: string, offset: GridPosition) => void;
     };
@@ -26,9 +27,10 @@ export const createNodeSlice: StateCreator<
     [['zustand/immer', never]],
     [['zustand/immer', never]],
     NodeSlice
-> = (set) => ({
+> = (set, get) => ({
     nodes: {},
     nodeActions: {
+        getNode: (nodeId) => get().nodes[nodeId],
         addNode: (node) =>
             set((state) => {
                 state.nodes[node.id] = node;

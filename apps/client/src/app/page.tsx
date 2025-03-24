@@ -6,13 +6,17 @@ import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 
 import { useCanvasState } from '@/features/canvas/model/context';
 import { useCanvasStore } from '@/features/canvas/model/store';
+import { NodeController } from '@/features/canvas/ui/node-controller';
 import { NodeRenderer } from '@/features/canvas/ui/node-renderer';
 
 import type { Node } from '@/entities/node/model/types';
 
 export default function Page() {
     const nodes = useCanvasStore.use.nodes();
+    const selectedId = useCanvasStore.use.selectedId();
     const { viewMode } = useCanvasState();
+
+    console.log(selectedId);
     return (
         <div
             className="flex h-screen w-screen overflow-hidden"
@@ -30,6 +34,8 @@ export default function Page() {
                             size={node.size}
                         />
                     ))}
+
+                    {selectedId && <NodeController selectedId={selectedId} />}
                 </Canvas>
             </div>
         </div>
