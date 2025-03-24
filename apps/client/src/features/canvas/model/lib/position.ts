@@ -1,4 +1,4 @@
-import type { ViewMode } from '@/entities/canvas/model/types';
+import type { ViewMode } from '@/entities/canvas/model/canvas.types';
 
 import {
     coordTo2DGridPosition,

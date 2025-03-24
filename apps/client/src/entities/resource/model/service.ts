@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import dynamic from 'next/dynamic';
 
-import type { Node } from '@/entities/node/model/types';
+import type { Node } from '@/entities/canvas/model/node.types';
 
 import type { ResourceType } from './types';
 

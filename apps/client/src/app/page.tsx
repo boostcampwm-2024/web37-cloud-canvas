@@ -9,7 +9,7 @@ import { Canvas } from '@/features/canvas/ui/canvas';
 import { NodeController } from '@/features/canvas/ui/node-controller';
 import { NodeRenderer } from '@/features/canvas/ui/node-renderer';
 
-import type { Node } from '@/entities/node/model/types';
+import type { Node } from '@/entities/canvas/model/node.types';
 
 export default function Page() {
     const nodes = useCanvasStore.use.nodes();

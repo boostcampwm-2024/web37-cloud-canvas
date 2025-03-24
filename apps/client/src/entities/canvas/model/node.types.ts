@@ -2,24 +2,21 @@ import type { ComponentType } from 'react';
 
 import type { GridPosition, GridSize } from '@/shared/canvas/types';
 
+import type { ViewMode } from './canvas.types';
+
 export interface Node {
     id: string;
     position: GridPosition;
     size:
         | {
-              '2d': GridSize;
-              '3d': GridSize;
+              [mode in ViewMode]: GridSize;
           }
         | GridSize;
     connectors: {
-        '2d': Array<{
+        [mode in ViewMode]: {
             direction: 'left' | 'top' | 'right' | 'bottom';
             position: GridPosition;
-        }>;
-        '3d': Array<{
-            direction: 'left' | 'top' | 'right' | 'bottom';
-            position: GridPosition;
-        }>;
+        };
     };
     groupIds: string[];
     svg2D: ComponentType<any>;

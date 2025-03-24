@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import type { StateCreator } from 'zustand';
 
-import type { Node } from '@/entities/node/model/types';
+import type { Node } from '@/entities/canvas/model/node.types';
 
 import type { GridPosition } from '@/shared/canvas/types';
 
