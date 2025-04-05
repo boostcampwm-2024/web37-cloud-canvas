@@ -6,6 +6,7 @@ import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 import { useCanvasState } from '@/features/canvas/model/context';
 import { useCanvasStore } from '@/features/canvas/model/store';
 import { Canvas } from '@/features/canvas/ui/canvas';
+import { DraftEdgeRenderer } from '@/features/canvas/ui/draft-edge-renderer';
 import { EdgeRenderer } from '@/features/canvas/ui/edge-renderer';
 import { NodeController } from '@/features/canvas/ui/node-controller';
 import { NodeRenderer } from '@/features/canvas/ui/node-renderer';
@@ -16,6 +17,7 @@ import type { Node } from '@/entities/canvas/model/node.types';
 export default function Page() {
     const nodes = useCanvasStore.use.nodes();
     const edges = useCanvasStore.use.edges();
+    const draftEdge = useCanvasStore.use.draftEdge();
     const selectedId = useCanvasStore.use.selectedId();
     const { viewMode } = useCanvasState();
 
@@ -43,6 +45,13 @@ export default function Page() {
                             viewMode={viewMode}
                         />
                     ))}
+
+                    {draftEdge && (
+                        <DraftEdgeRenderer
+                            draftEdge={draftEdge}
+                            viewMode={viewMode}
+                        />
+                    )}
                     {selectedId && <NodeController selectedId={selectedId} />}
                 </Canvas>
             </div>

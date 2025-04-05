@@ -6,3 +6,9 @@ export interface Edge {
     targetNodeId: string;
     bezierPositions: Array<GridPosition>;
 }
+
+export interface DraftEdge {
+    sourceNodeId: string;
+    targetNodeId?: string;
+    endPosition: GridPosition;
+}

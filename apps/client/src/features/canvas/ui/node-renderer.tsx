@@ -34,8 +34,8 @@ export const NodeRenderer = (props: NodeRendererProps) => {
         event.stopPropagation();
         startDrag({ x: event.clientX, y: event.clientY });
 
-        const handleMouseMove = (e: MouseEvent) => {
-            moveDrag({ x: e.clientX, y: e.clientY });
+        const handleMouseMove = (event: MouseEvent) => {
+            moveDrag({ x: event.clientX, y: event.clientY });
         };
 
         const handleMouseUp = () => {
@@ -65,7 +65,12 @@ export const NodeRenderer = (props: NodeRendererProps) => {
     });
 
     return (
-        <g transform={transform} onMouseDown={handleMouseDown}>
+        <g
+            id={node.id}
+            transform={transform}
+            onMouseDown={handleMouseDown}
+            data-type="node"
+        >
             {viewMode === '3d' && Svg3D && (
                 <Suspense fallback={null}>
                     <Svg3D size={sizeByViewMode} />

@@ -1,15 +1,27 @@
-import _ from 'lodash';
+import { nanoid } from 'nanoid';
 import type { StateCreator } from 'zustand';
 
-import type { Edge } from '@/entities/canvas/model/edge.types';
+import type { DraftEdge, Edge } from '@/entities/canvas/model/edge.types';
+
+import type { GridPosition } from '@/shared/canvas/types';
 
 import type { NodeSlice } from './node';
 import type { SelectionSlice } from './selection';
 
 export interface EdgeSlice {
+    draftEdge: DraftEdge | null;
     edges: Record<string, Edge>;
     edgeActions: {
-        addEdge: (edge: Edge) => void;
+        startDraftEdge: (
+            sourceNodeId: string,
+            endPosition: GridPosition,
+        ) => void;
+        progressDraftEdge: (
+            endPosition: GridPosition,
+            targetId?: string,
+        ) => void;
+        finalizeDraftEdge: () => void;
+        addEdge: (edge: Partial<Edge>) => void;
         removeEdge: (edgeId: string) => void;
     };
 }
@@ -20,11 +32,58 @@ export const createEdgeSlice: StateCreator<
     [['zustand/immer', never]],
     EdgeSlice
 > = (set) => ({
+    draftEdge: null,
     edges: {},
     edgeActions: {
+        startDraftEdge: (sourceNodeId, endPosition) =>
+            set(() => {
+                return {
+                    draftEdge: {
+                        sourceNodeId,
+                        endPosition,
+                    },
+                };
+            }),
+        progressDraftEdge: (endPosition, targetNodeId) =>
+            set((state) => {
+                return {
+                    draftEdge: state.draftEdge
+                        ? {
+                              ...state.draftEdge,
+                              targetNodeId,
+                              endPosition,
+                          }
+                        : null,
+                };
+            }),
+        finalizeDraftEdge: () =>
+            set((state) => {
+                const { draftEdge } = state;
+                if (!draftEdge) return state;
+
+                if (draftEdge.sourceNodeId !== draftEdge.targetNodeId) {
+                    state.edgeActions.addEdge({
+                        sourceNodeId: draftEdge.sourceNodeId,
+                        targetNodeId: draftEdge.targetNodeId,
+                    });
+                }
+
+                return {
+                    draftEdge: null,
+                };
+            }),
         addEdge: (edge) =>
             set((state) => {
-                state.edges[edge.id] = edge;
+                const id = nanoid();
+                return {
+                    edges: {
+                        ...state.edges,
+                        [id]: {
+                            ...edge,
+                            bezierPositions: [],
+                        },
+                    },
+                };
             }),
         removeEdge: (edgeId) =>
             set((state) => {
