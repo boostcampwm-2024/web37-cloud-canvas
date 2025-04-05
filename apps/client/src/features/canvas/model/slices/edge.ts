@@ -3,6 +3,7 @@ import type { StateCreator } from 'zustand';
 
 import type { Edge } from '@/entities/canvas/model/edge.types';
 
+import type { NodeSlice } from './node';
 import type { SelectionSlice } from './selection';
 
 export interface EdgeSlice {
@@ -14,7 +15,7 @@ export interface EdgeSlice {
 }
 
 export const createEdgeSlice: StateCreator<
-    EdgeSlice & SelectionSlice,
+    EdgeSlice & NodeSlice & SelectionSlice,
     [['zustand/immer', never]],
     [['zustand/immer', never]],
     EdgeSlice

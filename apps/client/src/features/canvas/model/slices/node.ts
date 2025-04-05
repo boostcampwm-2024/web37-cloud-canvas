@@ -5,6 +5,7 @@ import type { Node } from '@/entities/canvas/model/node.types';
 
 import type { GridPosition } from '@/shared/canvas/types';
 
+import type { EdgeSlice } from './edge';
 import type { SelectionSlice } from './selection';
 
 export interface NodeSlice {
@@ -23,7 +24,7 @@ const sortNode = (nodes: Record<string, Node>) => {
 };
 
 export const createNodeSlice: StateCreator<
-    NodeSlice & SelectionSlice,
+    NodeSlice & EdgeSlice & SelectionSlice,
     [['zustand/immer', never]],
     [['zustand/immer', never]],
     NodeSlice

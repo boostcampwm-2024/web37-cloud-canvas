@@ -22,3 +22,8 @@ export const GRID_WIDTH_3D = Math.round(
 export const GRID_HEIGHT_3D = Math.round(
     2 * GRID_SIZE_2D * ISO_TRANSFORM_Y_FACTOR,
 ); // 74
+
+export const IsoMatrixDOM =
+    typeof window === 'undefined'
+        ? null
+        : new DOMMatrixReadOnly(ISO_TRANSFORM_MATRIX);
