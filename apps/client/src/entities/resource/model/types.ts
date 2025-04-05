@@ -7,3 +7,11 @@ export type ResourceType = 'server' | 'object-storage' | string;
 export type ResourceSVGProps = {
     size: GridSize;
 } & SVGProps<SVGSVGElement>;
+
+export interface ResourceCategory {
+    title: string;
+    resources: Array<{
+        title: string;
+        type: ResourceType;
+    }>;
+}

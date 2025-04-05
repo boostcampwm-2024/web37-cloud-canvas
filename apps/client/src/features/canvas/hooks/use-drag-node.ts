@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 
+import { snapPosition } from '@/shared/canvas/lib/position';
 import { screenToSvgPosition } from '@/shared/canvas/lib/svg';
 import type { CoordPosition } from '@/shared/canvas/types';
 
 import { useCanvasState } from '../model/context';
-import { snapPoint } from '../model/lib/position';
 import { useCanvasStore } from '../model/store';
 
 export const useDragNode = (canvasEl: SVGSVGElement | null, nodeId: string) => {
@@ -28,7 +28,7 @@ export const useDragNode = (canvasEl: SVGSVGElement | null, nodeId: string) => {
             y: svgPosition.y - prevPointRef.current.y,
         };
 
-        const snappedPoint = snapPoint(offset, viewMode);
+        const snappedPoint = snapPosition(offset, viewMode);
         moveNode(nodeId, snappedPoint.grid);
 
         prevPointRef.current = {

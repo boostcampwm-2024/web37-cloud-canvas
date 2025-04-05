@@ -1,12 +1,4 @@
-import type { ResourceType } from './types';
-
-export interface ResourceCategory {
-    title: string;
-    resources: Array<{
-        title: string;
-        type: ResourceType;
-    }>;
-}
+import type { ResourceCategory } from '../model/types';
 
 export const RESOURCE_CATEGRIES: Array<ResourceCategory> = [
     {

@@ -1,8 +1,6 @@
 import type { ComponentType } from 'react';
 
-import type { GridPosition, GridSize } from '@/shared/canvas/types';
-
-import type { ViewMode } from './canvas.types';
+import type { GridPosition, GridSize, ViewMode } from '@/shared/canvas/types';
 
 export interface Connector {
     direction: 'left' | 'top' | 'right' | 'bottom';

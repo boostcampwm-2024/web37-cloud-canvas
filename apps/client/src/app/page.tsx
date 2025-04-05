@@ -16,7 +16,6 @@ export default function Page() {
     const selectedId = useCanvasStore.use.selectedId();
     const { viewMode } = useCanvasState();
 
-    console.log(selectedId);
     return (
         <div
             className="flex h-screen w-screen overflow-hidden"

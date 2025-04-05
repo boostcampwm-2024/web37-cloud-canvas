@@ -1,4 +1,4 @@
-import { RESOURCE_CATEGRIES } from '@/entities/resource/model/constants';
+import { RESOURCE_CATEGRIES } from '@/entities/resource/constants';
 
 import {
     Sidebar as ShadcnSidebar,

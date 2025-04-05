@@ -1,13 +1,13 @@
 import { Suspense } from 'react';
 
-import type { ViewMode } from '@/entities/canvas/model/canvas.types';
 import type { Node } from '@/entities/canvas/model/node.types';
 
+import { gridToCoordPosition } from '@/shared/canvas/lib/position';
 import { isSingleSize } from '@/shared/canvas/lib/size';
+import type { ViewMode } from '@/shared/canvas/types';
 
 import { useDragNode } from '../hooks/use-drag-node';
 import { useCanvasState } from '../model/context';
-import { gridToCoordPosition } from '../model/lib/position';
 
 interface NodeRendererProps {
     node: Node;

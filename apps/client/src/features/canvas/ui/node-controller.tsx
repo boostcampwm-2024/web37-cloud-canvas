@@ -2,10 +2,10 @@ import { Link, Trash2Icon } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { GRID_SIZE_2D, GRID_WIDTH_3D } from '@/shared/canvas/constants';
+import { gridToCoordPosition } from '@/shared/canvas/lib/position';
 import { isSingleSize } from '@/shared/canvas/lib/size';
 
 import { useCanvasState } from '../model/context';
-import { gridToCoordPosition } from '../model/lib/position';
 import { useCanvasStore } from '../model/store';
 
 import { ActionButton } from './action-button';

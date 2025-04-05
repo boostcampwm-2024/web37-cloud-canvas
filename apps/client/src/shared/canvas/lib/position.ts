@@ -1,5 +1,5 @@
 import { GRID_HEIGHT_3D, GRID_SIZE_2D, GRID_WIDTH_3D } from '../constants';
-import type { CoordPosition, GridPosition } from '../types';
+import type { CoordPosition, GridPosition, ViewMode } from '../types';
 
 export const gridTo3DCoordPosition = (position: GridPosition) => {
     const { col, row } = position;
@@ -37,4 +37,42 @@ export const coordTo2DGridPosition = (position: CoordPosition) => {
         col: x / GRID_SIZE_2D,
         row: y / GRID_SIZE_2D,
     };
+};
+
+export const snapPosition = (
+    position: CoordPosition,
+    viewMode: ViewMode,
+    denominator = 4,
+) => {
+    const gridPoint = coordToGridPosition(position, viewMode);
+    const snappedSize = 1 / denominator;
+
+    const snappedCol = Math.round(gridPoint.col / snappedSize) * snappedSize;
+    const snappedRow = Math.round(gridPoint.row / snappedSize) * snappedSize;
+
+    return {
+        coord: gridToCoordPosition(
+            { col: snappedCol, row: snappedRow },
+            viewMode,
+        ),
+        grid: { col: snappedCol, row: snappedRow },
+    };
+};
+
+export const gridToCoordPosition = (
+    position: GridPosition,
+    viewMode: ViewMode,
+) => {
+    return viewMode === '3d'
+        ? gridTo3DCoordPosition(position)
+        : gridTo2DCoordPosition(position);
+};
+
+export const coordToGridPosition = (
+    position: CoordPosition,
+    viewMode: ViewMode,
+) => {
+    return viewMode === '3d'
+        ? coordTo3DGridPosition(position)
+        : coordTo2DGridPosition(position);
 };

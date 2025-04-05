@@ -1,12 +1,10 @@
 import { nanoid } from 'nanoid';
 import dynamic from 'next/dynamic';
 
-import type { Node } from '@/entities/canvas/model/node.types';
-
 import type { ResourceType } from './types';
 
 export class ResourceNode {
-    static create(type: ResourceType): Node {
+    static create(type: ResourceType) {
         switch (type) {
             case 'server': {
                 return {
