@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import dynamic from 'next/dynamic';
 
 import type { ResourceType } from './types';
@@ -8,7 +7,6 @@ export class ResourceNode {
         switch (type) {
             case 'server': {
                 return {
-                    id: nanoid(),
                     position: {
                         col: 0,
                         row: 0,
@@ -86,7 +84,6 @@ export class ResourceNode {
             }
             case 'object-storage': {
                 return {
-                    id: nanoid(),
                     position: {
                         col: 0,
                         row: 0,

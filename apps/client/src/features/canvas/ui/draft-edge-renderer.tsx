@@ -1,11 +1,11 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import type { DraftEdge } from '@/entities/canvas/model/edge.types';
 
 import { IsoMatrixDOM } from '@/shared/canvas/constants';
-import { gridToCoordPosition } from '@/shared/canvas/lib/position';
-import type { GridPosition, ViewMode } from '@/shared/canvas/types';
+import type { ViewMode } from '@/shared/canvas/types';
 
+import { convertGridToViewCoordinates } from '../lib/edge';
 import { getNeaerestConnector } from '../lib/node';
 import { useCanvasStore } from '../model/store';
 
@@ -17,27 +17,6 @@ interface DraftEdgeRendererProps {
 export const DraftEdgeRenderer = (props: DraftEdgeRendererProps) => {
     const { draftEdge, viewMode } = props;
     const { getNode } = useCanvasStore.use.nodeActions();
-
-    const transformPosition = useCallback(
-        (position: GridPosition) => {
-            const coordPoint = gridToCoordPosition(position, viewMode);
-
-            if (viewMode !== '3d') {
-                return coordPoint;
-            }
-
-            const domPoint = new DOMPoint(coordPoint.x, coordPoint.y);
-            const transformedPoint = domPoint.matrixTransform(
-                IsoMatrixDOM?.inverse(),
-            );
-
-            return {
-                x: transformedPoint.x,
-                y: transformedPoint.y,
-            };
-        },
-        [viewMode],
-    );
 
     const sourcePosition = useMemo(() => {
         const sourceNode = getNode(draftEdge.sourceNodeId);
@@ -54,8 +33,8 @@ export const DraftEdgeRenderer = (props: DraftEdgeRendererProps) => {
             row: nearestConnector.position.row + sourceNode.position.row,
         };
 
-        return transformPosition(gridPosition);
-    }, [draftEdge, viewMode, getNode, transformPosition]);
+        return convertGridToViewCoordinates(gridPosition, viewMode);
+    }, [draftEdge, viewMode, getNode]);
 
     const targetPosition = useMemo(() => {
         if (draftEdge.targetNodeId) {
@@ -73,13 +52,15 @@ export const DraftEdgeRenderer = (props: DraftEdgeRendererProps) => {
                 row: nearestConnector.position.row + targetNode.position.row,
             };
 
-            return transformPosition(gridPosition);
+            return convertGridToViewCoordinates(gridPosition, viewMode);
         } else {
-            return transformPosition(draftEdge.endPosition);
+            return convertGridToViewCoordinates(
+                draftEdge.endPosition,
+                viewMode,
+            );
         }
-    }, [draftEdge, viewMode, getNode, transformPosition]);
+    }, [draftEdge, viewMode, getNode]);
 
-    console.log(sourcePosition, targetPosition);
     const transform = viewMode === '3d' ? IsoMatrixDOM?.toString() : undefined;
     return (
         <g transform={transform} data-type="draft-edge">

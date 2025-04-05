@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { nanoid } from 'nanoid';
 import type { StateCreator } from 'zustand';
 
 import type { Node } from '@/entities/canvas/model/node.types';
@@ -12,7 +13,7 @@ export interface NodeSlice {
     nodes: Record<string, Node>;
     nodeActions: {
         getNode: (nodeId: string) => Node | undefined;
-        addNode: (node: Node) => void;
+        addNode: (node: Omit<Node, 'id'>) => void;
         moveNode: (nodeId: string, offset: GridPosition) => void;
     };
 }
@@ -34,7 +35,11 @@ export const createNodeSlice: StateCreator<
         getNode: (nodeId) => get().nodes[nodeId],
         addNode: (node) =>
             set((state) => {
-                state.nodes[node.id] = node;
+                const id = nanoid();
+                state.nodes[id] = {
+                    ...node,
+                    id,
+                };
             }),
         moveNode: (nodeId, offset) =>
             set((state) => {

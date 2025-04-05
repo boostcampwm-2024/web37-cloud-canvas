@@ -1,11 +1,12 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import type { Edge } from '@/entities/canvas/model/edge.types';
 
 import { IsoMatrixDOM } from '@/shared/canvas/constants';
-import { gridToCoordPosition } from '@/shared/canvas/lib/position';
-import type { GridPosition, ViewMode } from '@/shared/canvas/types';
+import type { ViewMode } from '@/shared/canvas/types';
 
+import { convertGridToViewCoordinates } from '../lib/edge';
+import { getNeaerestConnector } from '../lib/node';
 import { useCanvasStore } from '../model/store';
 
 interface EdgeRendererProps {
@@ -21,27 +22,6 @@ export const EdgeRenderer = (props: EdgeRendererProps) => {
     const sourceNode = getNode(edge.sourceNodeId);
     const targetNode = getNode(edge.targetNodeId);
 
-    const transformPosition = useCallback(
-        (position: GridPosition) => {
-            const coordPoint = gridToCoordPosition(position, viewMode);
-
-            if (viewMode !== '3d') {
-                return coordPoint;
-            }
-
-            const domPoint = new DOMPoint(coordPoint.x, coordPoint.y);
-            const transformedPoint = domPoint.matrixTransform(
-                IsoMatrixDOM?.inverse(),
-            );
-
-            return {
-                x: transformedPoint.x,
-                y: transformedPoint.y,
-            };
-        },
-        [viewMode],
-    );
-
     const handleClick = (event: React.MouseEvent, idx: number) => {
         onSelect?.();
         if (event.shiftKey) {
@@ -52,17 +32,42 @@ export const EdgeRenderer = (props: EdgeRendererProps) => {
     const positions = useMemo(() => {
         if (!sourceNode || !targetNode) return [];
 
+        const sourceNeaerestConnector = getNeaerestConnector(
+            sourceNode,
+            edge.bezierPositions.at(0) ?? targetNode.position,
+            viewMode,
+        );
+        const sourceGridPosition = {
+            col: sourceNeaerestConnector.position.col + sourceNode.position.col,
+            row: sourceNeaerestConnector.position.row + sourceNode.position.row,
+        };
+
+        const targetNeaerestConnector = getNeaerestConnector(
+            targetNode,
+            edge.bezierPositions.at(-1) ?? sourceNode.position,
+            viewMode,
+        );
+
+        const targetGridPosition = {
+            col: targetNeaerestConnector.position.col + targetNode.position.col,
+            row: targetNeaerestConnector.position.row + targetNode.position.row,
+        };
+
         const gridPositions = [
-            sourceNode.position,
+            sourceGridPosition,
             ...edge.bezierPositions,
-            targetNode.position,
+            targetGridPosition,
         ];
 
-        return gridPositions.map((point) => transformPosition(point));
-    }, [sourceNode, targetNode, edge, transformPosition]);
+        return gridPositions.map((point) =>
+            convertGridToViewCoordinates(point, viewMode),
+        );
+    }, [edge, sourceNode, targetNode, viewMode]);
+
+    const transform = viewMode === '3d' ? IsoMatrixDOM?.toString() : undefined;
 
     return (
-        <g transform={IsoMatrixDOM?.toString()}>
+        <g transform={transform}>
             <defs>
                 <marker
                     id="arrow"

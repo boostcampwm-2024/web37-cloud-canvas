@@ -1,13 +1,12 @@
 import { ChevronRight } from 'lucide-react';
-import { nanoid } from 'nanoid';
 
 import { useCanvasStore } from '@/features/canvas/model/store';
 
-import type { ResourceCategory } from '@/entities/resource/model/constants';
 import { ResourceNode } from '@/entities/resource/model/service';
-import type { ResourceType } from '@/entities/resource/model/types';
-import { ServerSVG2D } from '@/entities/resource/ui/server/svg-2d';
-import { ServerSVG3D } from '@/entities/resource/ui/server/svg-3d';
+import type {
+    ResourceCategory,
+    ResourceType,
+} from '@/entities/resource/model/types';
 
 import { Button } from '@/shared/shadcn/ui/button';
 import {

@@ -21,7 +21,7 @@ export interface EdgeSlice {
             targetId?: string,
         ) => void;
         finalizeDraftEdge: () => void;
-        addEdge: (edge: Partial<Edge>) => void;
+        addEdge: (edge: Omit<Edge, 'id' | 'bezierPositions'>) => void;
         removeEdge: (edgeId: string) => void;
     };
 }
@@ -61,7 +61,10 @@ export const createEdgeSlice: StateCreator<
                 const { draftEdge } = state;
                 if (!draftEdge) return state;
 
-                if (draftEdge.sourceNodeId !== draftEdge.targetNodeId) {
+                if (
+                    draftEdge.targetNodeId &&
+                    draftEdge.sourceNodeId !== draftEdge.targetNodeId
+                ) {
                     state.edgeActions.addEdge({
                         sourceNodeId: draftEdge.sourceNodeId,
                         targetNodeId: draftEdge.targetNodeId,
@@ -75,14 +78,10 @@ export const createEdgeSlice: StateCreator<
         addEdge: (edge) =>
             set((state) => {
                 const id = nanoid();
-                return {
-                    edges: {
-                        ...state.edges,
-                        [id]: {
-                            ...edge,
-                            bezierPositions: [],
-                        },
-                    },
+                state.edges[id] = {
+                    ...edge,
+                    id,
+                    bezierPositions: [],
                 };
             }),
         removeEdge: (edgeId) =>
