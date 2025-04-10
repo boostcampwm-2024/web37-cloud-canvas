@@ -2,8 +2,8 @@ import { ChevronRight } from 'lucide-react';
 
 import { useCanvasStore } from '@/features/canvas/model/store';
 
-import { REGION_ID } from '@/entities/resource/config/network';
-import { ResourceNode } from '@/entities/resource/model/service';
+import { REGION_ID } from '@/entities/resource/config/constants';
+import { ResourceNode } from '@/entities/resource/model/factory';
 import type {
     ResourceCategory,
     ResourceType,

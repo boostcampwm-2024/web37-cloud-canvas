@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid';
+
 import type { ResourceCategory } from '../model/types';
 
 export const RESOURCE_CATEGRIES: Array<ResourceCategory> = [
@@ -31,3 +33,8 @@ export const RESOURCE_CATEGRIES: Array<ResourceCategory> = [
     //     ],
     // },
 ];
+
+export const REGION_ID = {
+    kr: `kr-${nanoid()}`,
+    jp: `jp-${nanoid()}`,
+};
