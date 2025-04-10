@@ -5,6 +5,7 @@ import type { DraftEdge, Edge } from '@/entities/canvas/model/edge.types';
 
 import type { GridPosition } from '@/shared/canvas/types';
 
+import type { GroupSlice } from './group';
 import type { NodeSlice } from './node';
 import type { SelectionSlice } from './selection';
 
@@ -27,7 +28,7 @@ export interface EdgeSlice {
 }
 
 export const createEdgeSlice: StateCreator<
-    EdgeSlice & NodeSlice & SelectionSlice,
+    EdgeSlice & NodeSlice & SelectionSlice & GroupSlice,
     [['zustand/immer', never]],
     [['zustand/immer', never]],
     EdgeSlice

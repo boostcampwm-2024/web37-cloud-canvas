@@ -1,6 +1,7 @@
 import type { StateCreator } from 'zustand';
 
 import type { EdgeSlice } from './edge';
+import type { GroupSlice } from './group';
 import type { NodeSlice } from './node';
 
 export interface SelectionSlice {
@@ -12,7 +13,7 @@ export interface SelectionSlice {
 }
 
 export const createSelectionSlice: StateCreator<
-    SelectionSlice & NodeSlice & EdgeSlice,
+    SelectionSlice & NodeSlice & EdgeSlice & GroupSlice,
     [['zustand/immer', never]],
     [['zustand/immer', never]],
     SelectionSlice

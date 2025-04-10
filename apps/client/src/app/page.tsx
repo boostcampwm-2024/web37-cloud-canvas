@@ -8,6 +8,7 @@ import { useCanvasStore } from '@/features/canvas/model/store';
 import { Canvas } from '@/features/canvas/ui/canvas';
 import { DraftEdgeRenderer } from '@/features/canvas/ui/draft-edge-renderer';
 import { EdgeRenderer } from '@/features/canvas/ui/edge-renderer';
+import { Group } from '@/features/canvas/ui/group';
 import { NodeController } from '@/features/canvas/ui/node-controller';
 import { NodeRenderer } from '@/features/canvas/ui/node-renderer';
 
@@ -17,6 +18,7 @@ import type { Node } from '@/entities/canvas/model/node.types';
 export default function Page() {
     const nodes = useCanvasStore.use.nodes();
     const edges = useCanvasStore.use.edges();
+    const groups = useCanvasStore.use.groups();
     const draftEdge = useCanvasStore.use.draftEdge();
     const selectedId = useCanvasStore.use.selectedId();
     const { viewMode } = useCanvasState();
@@ -42,6 +44,14 @@ export default function Page() {
                         <EdgeRenderer
                             key={edge.id}
                             edge={edge}
+                            viewMode={viewMode}
+                        />
+                    ))}
+
+                    {Object.values(groups).map((group) => (
+                        <Group
+                            key={group.id}
+                            group={group}
                             viewMode={viewMode}
                         />
                     ))}

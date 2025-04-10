@@ -32,7 +32,6 @@ export const useConnectEdge = (
 
         const svgPosition = screenToSvgPosition(canvasEl, mousePosition);
         const gridPosition = coordToGridPosition(svgPosition, viewMode);
-
         progressDraftEdge(gridPosition, targetNodeEl?.id);
     };
 
