@@ -31,14 +31,25 @@ export const ServiceMenuItem = (props: ServeiceMenuItemProps) => {
     const { category } = props;
 
     const { addNode } = useCanvasStore.use.nodeActions();
-    const { addChildNodeToGroup } = useCanvasStore.use.groupActions();
+    const { isExistGroup, addGroup, addChildNodeToGroup } =
+        useCanvasStore.use.groupActions();
 
     const handleAddNode = (type: ResourceType) => {
         const node = ResourceNode.create(type);
 
         node.properties.networks.region = REGION_ID.kr;
         const nodeId = addNode(node);
-        addChildNodeToGroup(REGION_ID.kr, nodeId);
+        if (!isExistGroup(REGION_ID.kr)) {
+            addGroup({
+                id: REGION_ID.kr,
+                childNodeIds: [nodeId],
+                properties: {
+                    title: 'Korea',
+                },
+            });
+        } else {
+            addChildNodeToGroup(REGION_ID.kr, nodeId);
+        }
     };
 
     return (

@@ -12,6 +12,7 @@ export interface GroupSlice {
     groupActions: {
         addGroup: (group: Omit<Group, 'id'> & { id?: string }) => string;
         addChildNodeToGroup: (groupId: string, childNodeId: string) => void;
+        isExistGroup: (groupId: string) => boolean;
     };
 }
 
@@ -35,17 +36,11 @@ export const createGroupSlice: StateCreator<
         },
         addChildNodeToGroup: (groupId, childId) =>
             set((state) => {
-                console.log(state.groups, childId);
                 const group = state.groups[groupId];
-                if (!group) {
-                    get().groupActions.addGroup({
-                        id: groupId,
-                        childNodeIds: [childId],
-                        properties: {},
-                    });
-                }
+                if (!group) return;
 
                 group.childNodeIds.push(childId);
             }),
+        isExistGroup: (groupId) => get().groups[groupId] !== undefined,
     },
 });
