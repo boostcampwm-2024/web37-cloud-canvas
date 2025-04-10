@@ -7,13 +7,13 @@ import { useCanvasState } from '@/features/canvas/model/context';
 import { useCanvasStore } from '@/features/canvas/model/store';
 import { Canvas } from '@/features/canvas/ui/canvas';
 import { DraftEdgeRenderer } from '@/features/canvas/ui/draft-edge-renderer';
-import { EdgeRenderer } from '@/features/canvas/ui/edge-renderer';
+import { Edge } from '@/features/canvas/ui/edge';
 import { Group } from '@/features/canvas/ui/group';
+import { Node } from '@/features/canvas/ui/node';
 import { NodeController } from '@/features/canvas/ui/node-controller';
-import { NodeRenderer } from '@/features/canvas/ui/node-renderer';
 
-import type { Edge } from '@/entities/canvas/model/edge.types';
-import type { Node } from '@/entities/canvas/model/node.types';
+import type { Edge as EdgeType } from '@/entities/canvas/model/edge.types';
+import type { Node as NodeType } from '@/entities/canvas/model/node.types';
 
 export default function Page() {
     const nodes = useCanvasStore.use.nodes();
@@ -32,20 +32,12 @@ export default function Page() {
             <div className="relative h-full flex-1">
                 <Header />
                 <Canvas>
-                    {Object.values(nodes).map((node: Node) => (
-                        <NodeRenderer
-                            key={node.id}
-                            node={node}
-                            viewMode={viewMode}
-                        />
+                    {Object.values(nodes).map((node: NodeType) => (
+                        <Node key={node.id} node={node} viewMode={viewMode} />
                     ))}
 
-                    {Object.values(edges).map((edge: Edge) => (
-                        <EdgeRenderer
-                            key={edge.id}
-                            edge={edge}
-                            viewMode={viewMode}
-                        />
+                    {Object.values(edges).map((edge: EdgeType) => (
+                        <Edge key={edge.id} edge={edge} viewMode={viewMode} />
                     ))}
 
                     {Object.values(groups).map((group) => (

@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import type { Node } from '@/entities/canvas/model/node.types';
+import type { Node as NodeType } from '@/entities/canvas/model/node.types';
 
 import { gridToCoordPosition } from '@/shared/canvas/lib/position';
 import { isSingleSize } from '@/shared/canvas/lib/size';
@@ -9,12 +9,12 @@ import type { ViewMode } from '@/shared/canvas/types';
 import { useDragNode } from '../hooks/use-drag-node';
 import { useCanvasState } from '../model/context';
 
-interface NodeRendererProps {
-    node: Node;
+interface NodeProps {
+    node: NodeType;
     viewMode: ViewMode;
 }
 
-export const NodeRenderer = (props: NodeRendererProps) => {
+export const Node = (props: NodeProps) => {
     const { node, viewMode } = props;
     const { canvasRef } = useCanvasState();
 

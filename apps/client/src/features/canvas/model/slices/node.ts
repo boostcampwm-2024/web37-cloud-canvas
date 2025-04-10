@@ -14,7 +14,8 @@ export interface NodeSlice {
     nodes: Record<string, Node>;
     nodeActions: {
         getNode: (nodeId: string) => Node | undefined;
-        addNode: (node: Omit<Node, 'id'>) => void;
+        getNodes: (nodeIds: string[]) => Node[];
+        addNode: (node: Omit<Node, 'id'>) => string;
         moveNode: (nodeId: string, offset: GridPosition) => void;
     };
 }
@@ -34,14 +35,17 @@ export const createNodeSlice: StateCreator<
     nodes: {},
     nodeActions: {
         getNode: (nodeId) => get().nodes[nodeId],
-        addNode: (node) =>
+        getNodes: (nodeIds) => nodeIds.map((nodeId) => get().nodes[nodeId]),
+        addNode: (node) => {
+            const id = nanoid();
             set((state) => {
-                const id = nanoid();
                 state.nodes[id] = {
                     ...node,
                     id,
                 };
-            }),
+            });
+            return id;
+        },
         moveNode: (nodeId, offset) =>
             set((state) => {
                 const node = state.nodes[nodeId];

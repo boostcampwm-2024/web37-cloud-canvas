@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import type { Edge } from '@/entities/canvas/model/edge.types';
+import type { Edge as EdgeType } from '@/entities/canvas/model/edge.types';
 
 import { IsoMatrixDOM } from '@/shared/canvas/constants';
 import type { ViewMode } from '@/shared/canvas/types';
@@ -9,14 +9,14 @@ import { convertGridToViewCoordinates } from '../lib/edge';
 import { getNeaerestConnector } from '../lib/node';
 import { useCanvasStore } from '../model/store';
 
-interface EdgeRendererProps {
-    edge: Edge;
+interface EdgeProps {
+    edge: EdgeType;
     viewMode: ViewMode;
     onSelect?: () => void;
     onSplit?: (event: React.MouseEvent, idx: number) => void;
 }
 
-export const EdgeRenderer = (props: EdgeRendererProps) => {
+export const Edge = (props: EdgeProps) => {
     const { edge, viewMode, onSelect, onSplit } = props;
     const { getNode } = useCanvasStore.use.nodeActions();
     const sourceNode = getNode(edge.sourceNodeId);

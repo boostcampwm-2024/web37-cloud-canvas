@@ -2,6 +2,7 @@ import { ChevronRight } from 'lucide-react';
 
 import { useCanvasStore } from '@/features/canvas/model/store';
 
+import { REGION_ID } from '@/entities/resource/config/network';
 import { ResourceNode } from '@/entities/resource/model/service';
 import type {
     ResourceCategory,
@@ -30,11 +31,14 @@ export const ServiceMenuItem = (props: ServeiceMenuItemProps) => {
     const { category } = props;
 
     const { addNode } = useCanvasStore.use.nodeActions();
+    const { addChildNodeToGroup } = useCanvasStore.use.groupActions();
 
     const handleAddNode = (type: ResourceType) => {
         const node = ResourceNode.create(type);
 
-        addNode(node);
+        node.properties.networks.region = REGION_ID.kr;
+        const nodeId = addNode(node);
+        addChildNodeToGroup(REGION_ID.kr, nodeId);
     };
 
     return (

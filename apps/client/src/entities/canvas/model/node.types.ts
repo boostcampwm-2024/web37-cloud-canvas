@@ -3,7 +3,7 @@ import type { ComponentType } from 'react';
 import type { GridPosition, GridSize, ViewMode } from '@/shared/canvas/types';
 
 export interface Connector {
-    direction: 'left' | 'top' | 'right' | 'bottom';
+    direction: 'left' | 'top' | 'right' | 'bottom' | string;
     position: GridPosition;
 }
 export interface Node {
