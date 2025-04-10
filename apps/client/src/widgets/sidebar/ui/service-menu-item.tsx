@@ -9,6 +9,7 @@ import type {
     ResourceType,
 } from '@/entities/resource/model/types';
 
+import { getRandomPastelColor } from '@/shared/canvas/lib/color';
 import { Button } from '@/shared/shadcn/ui/button';
 import {
     Collapsible,
@@ -45,6 +46,7 @@ export const ServiceMenuItem = (props: ServeiceMenuItemProps) => {
                 childNodeIds: [nodeId],
                 properties: {
                     title: 'Korea',
+                    borderColor: getRandomPastelColor(),
                 },
             });
         } else {

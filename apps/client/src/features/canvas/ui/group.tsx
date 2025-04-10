@@ -23,10 +23,10 @@ export const Group = (props: GroupProps) => {
 
     const transform = viewMode === '3d' ? IsoMatrixDOM?.toString() : undefined;
 
+    const childNodes = getNodes(group.childNodeIds);
     const bounds = useMemo(() => {
-        const childNodes = getNodes(group.childNodeIds);
         return getGridBounds(childNodes, viewMode, 1);
-    }, [getNodes, group.childNodeIds, viewMode]);
+    }, [childNodes, viewMode]);
 
     //INFO: transform을 통해서 변경되는 svg는 3d도 동일하게 2d 포지션
     const position = gridToCoordPosition(
@@ -55,8 +55,8 @@ export const Group = (props: GroupProps) => {
                     y={position.y - textBox.height}
                     width={textBox.width}
                     height={textBox.height}
-                    fill="white"
-                    stroke="green"
+                    stroke={group.properties.borderColor}
+                    fill="none"
                     strokeWidth="3"
                 />
                 <text
@@ -75,7 +75,7 @@ export const Group = (props: GroupProps) => {
                 width={bounds.cols * GRID_SIZE_2D}
                 height={bounds.rows * GRID_SIZE_2D}
                 fill="none"
-                stroke="green"
+                stroke={group.properties.borderColor}
                 strokeWidth="3"
             />
         </g>
