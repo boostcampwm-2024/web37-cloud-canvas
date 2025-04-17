@@ -26,7 +26,7 @@ export default function Page() {
     const edges = useCanvasStore.use.edges();
     const groups = useCanvasStore.use.groups();
     const draftEdge = useCanvasStore.use.draftEdge();
-    const selectedId = useCanvasStore.use.selectedId();
+    const selectedNodeId = useCanvasStore.use.selectedNodeId();
     const { viewMode } = useCanvasState();
 
     return (
@@ -60,7 +60,9 @@ export default function Page() {
                             viewMode={viewMode}
                         />
                     )}
-                    {selectedId && <NodeController selectedId={selectedId} />}
+                    {selectedNodeId && (
+                        <NodeController selectedNodeId={selectedNodeId} />
+                    )}
                 </Canvas>
             </div>
         </div>

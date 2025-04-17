@@ -6,7 +6,9 @@ import { GRID_SIZE_2D, IsoMatrixDOM } from '@/shared/canvas/constants';
 import { gridToCoordPosition } from '@/shared/canvas/lib/position';
 import type { ViewMode } from '@/shared/canvas/types';
 
+import { useDragGroup } from '../hooks/use-drag-group';
 import { getGridBounds } from '../lib/group';
+import { useCanvasState } from '../model/context';
 import { useCanvasStore } from '../model/store';
 
 interface GroupProps {
@@ -20,6 +22,12 @@ const FONT_SIZE = 30;
 export const Group = (props: GroupProps) => {
     const { group, viewMode } = props;
     const { getNodes } = useCanvasStore.use.nodeActions();
+
+    const { canvasRef } = useCanvasState();
+    const { startDrag, moveDrag, stopDrag } = useDragGroup(
+        canvasRef.current,
+        group.id,
+    );
 
     const transform = viewMode === '3d' ? IsoMatrixDOM?.toString() : undefined;
 
@@ -37,6 +45,29 @@ export const Group = (props: GroupProps) => {
     const textRef = useRef<SVGTextElement>(null);
     const [textBox, setTextBox] = useState({ width: 0, height: 0 });
 
+    const handleMouseDown = (event: React.MouseEvent) => {
+        event.stopPropagation();
+        startDrag({ x: event.clientX, y: event.clientY });
+
+        const handleMouseMove = (event: MouseEvent) => {
+            moveDrag({ x: event.clientX, y: event.clientY });
+        };
+
+        const handleMouseUp = () => {
+            stopDrag();
+            canvasRef.current?.removeEventListener(
+                'mousemove',
+                handleMouseMove,
+            );
+            canvasRef.current?.removeEventListener('mouseup', handleMouseUp);
+            canvasRef.current?.removeEventListener('mouseleave', handleMouseUp);
+        };
+
+        canvasRef.current?.addEventListener('mousemove', handleMouseMove);
+        canvasRef.current?.addEventListener('mouseup', handleMouseUp);
+        canvasRef.current?.addEventListener('mouseleave', handleMouseUp);
+    };
+
     useEffect(() => {
         if (textRef.current) {
             const bbox = textRef.current.getBBox();
@@ -48,7 +79,12 @@ export const Group = (props: GroupProps) => {
     }, [group.properties.title]);
 
     return (
-        <g id={group.id} transform={transform}>
+        <g
+            id={group.id}
+            transform={transform}
+            onMouseDown={handleMouseDown}
+            data-type="group"
+        >
             <g>
                 <rect
                     x={position.x}
@@ -65,6 +101,9 @@ export const Group = (props: GroupProps) => {
                     y={position.y - textBox.height / 2}
                     dominantBaseline="middle"
                     fontSize={FONT_SIZE}
+                    style={{
+                        userSelect: 'none',
+                    }}
                 >
                     {group.properties.title}
                 </text>

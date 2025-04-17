@@ -11,7 +11,7 @@ import {
     useMemo,
 } from 'react';
 
-import type { Viewbox, ViewMode } from '@/entities/canvas/model/canvas.types';
+import type { Viewbox, ViewMode } from '@/shared/canvas/types';
 
 interface CanvasStateContextProps {
     canvasRef: RefObject<SVGSVGElement | null>;

@@ -14,11 +14,11 @@ import { ActionButton } from './action-button';
 const GAP = 30;
 
 interface NodeController {
-    selectedId: string;
+    selectedNodeId: string;
 }
 
 export const NodeController = (props: NodeController) => {
-    const { selectedId } = props;
+    const { selectedNodeId } = props;
     const { canvasRef } = useCanvasState();
 
     const { viewMode, zoomFactor } = useCanvasState();
@@ -28,7 +28,7 @@ export const NodeController = (props: NodeController) => {
     const { startConnectEdge, progressConnectEdge, finalizeConnectEdge } =
         useConnectEdge(canvasRef.current, viewMode);
 
-    const node = getNode(selectedId)!;
+    const node = getNode(selectedNodeId)!;
     const ratio = zoomFactor < 1 ? 1 : zoomFactor;
 
     const handleRemoveNodeAction = () => {
@@ -37,7 +37,7 @@ export const NodeController = (props: NodeController) => {
 
     const handleStartConnectAction = (event: React.MouseEvent) => {
         const mousePosition = { x: event.clientX, y: event.clientY };
-        startConnectEdge(selectedId, mousePosition);
+        startConnectEdge(selectedNodeId, mousePosition);
         deselect();
 
         const handleMouseMove = (event: MouseEvent) => {
