@@ -24,6 +24,7 @@ export interface EdgeSlice {
         finalizeDraftEdge: () => void;
         addEdge: (edge: Omit<Edge, 'id' | 'bezierPositions'>) => void;
         removeEdge: (edgeId: string) => void;
+        splitEdge: (id: string, idx: number, beizerPoint: GridPosition) => void;
     };
 }
 
@@ -66,15 +67,16 @@ export const createEdgeSlice: StateCreator<
                     draftEdge.targetNodeId &&
                     draftEdge.sourceNodeId !== draftEdge.targetNodeId
                 ) {
-                    state.edgeActions.addEdge({
+                    const id = nanoid();
+                    state.edges[id] = {
+                        id,
+                        bezierPoint: [],
                         sourceNodeId: draftEdge.sourceNodeId,
                         targetNodeId: draftEdge.targetNodeId,
-                    });
+                    };
                 }
 
-                return {
-                    draftEdge: null,
-                };
+                state.draftEdge = null;
             }),
         addEdge: (edge) =>
             set((state) => {
@@ -82,12 +84,23 @@ export const createEdgeSlice: StateCreator<
                 state.edges[id] = {
                     ...edge,
                     id,
-                    bezierPositions: [],
+                    bezierPoint: [],
                 };
             }),
         removeEdge: (edgeId) =>
             set((state) => {
                 delete state.edges[edgeId];
+            }),
+        splitEdge: (id, idx, beizerPoint) =>
+            set((state) => {
+                const edge = state.edges[id];
+                if (!edge) return state;
+
+                edge.bezierPoint = edge.bezierPoint.toSpliced(
+                    idx,
+                    0,
+                    beizerPoint,
+                );
             }),
     },
 });

@@ -3,29 +3,43 @@ import { useMemo } from 'react';
 import type { Edge as EdgeType } from '@/entities/canvas/model/edge.types';
 
 import { IsoMatrixDOM } from '@/shared/canvas/constants';
+import { coordToGridPosition } from '@/shared/canvas/lib/position';
+import { screenToSvgPosition } from '@/shared/canvas/lib/svg';
 import type { ViewMode } from '@/shared/canvas/types';
 
 import { convertGridToViewCoordinates } from '../lib/edge';
 import { getNeaerestConnector } from '../lib/node';
+import { useCanvasState } from '../model/context';
 import { useCanvasStore } from '../model/store';
+
+import { BezierPoint } from './bezier-point';
 
 interface EdgeProps {
     edge: EdgeType;
     viewMode: ViewMode;
     onSelect?: () => void;
-    onSplit?: (event: React.MouseEvent, idx: number) => void;
 }
 
 export const Edge = (props: EdgeProps) => {
-    const { edge, viewMode, onSelect, onSplit } = props;
+    const { edge, viewMode, onSelect } = props;
+
+    const { canvasRef } = useCanvasState();
     const { getNode } = useCanvasStore.use.nodeActions();
+    const { splitEdge } = useCanvasStore.use.edgeActions();
     const sourceNode = getNode(edge.sourceNodeId);
     const targetNode = getNode(edge.targetNodeId);
 
     const handleClick = (event: React.MouseEvent, idx: number) => {
         onSelect?.();
         if (event.shiftKey) {
-            onSplit?.(event, idx);
+            if (!canvasRef.current) return;
+            const { clientX, clientY } = event;
+            const svgPosition = screenToSvgPosition(canvasRef.current, {
+                x: clientX,
+                y: clientY,
+            });
+            const gridPosition = coordToGridPosition(svgPosition, viewMode);
+            splitEdge(edge.id, idx, gridPosition);
         }
     };
 
@@ -34,7 +48,7 @@ export const Edge = (props: EdgeProps) => {
 
         const sourceNeaerestConnector = getNeaerestConnector(
             sourceNode,
-            edge.bezierPositions.at(0) ?? targetNode.position,
+            edge.bezierPoint.at(0) ?? targetNode.position,
             viewMode,
         );
         const sourceGridPosition = {
@@ -44,7 +58,7 @@ export const Edge = (props: EdgeProps) => {
 
         const targetNeaerestConnector = getNeaerestConnector(
             targetNode,
-            edge.bezierPositions.at(-1) ?? sourceNode.position,
+            edge.bezierPoint.at(-1) ?? sourceNode.position,
             viewMode,
         );
 
@@ -55,7 +69,7 @@ export const Edge = (props: EdgeProps) => {
 
         const gridPositions = [
             sourceGridPosition,
-            ...edge.bezierPositions,
+            ...edge.bezierPoint,
             targetGridPosition,
         ];
 
@@ -100,6 +114,14 @@ export const Edge = (props: EdgeProps) => {
                     />
                 );
             })}
+
+            {edge.bezierPoint.map((position, idx) => (
+                <BezierPoint
+                    key={`${edge.id}-${idx}`}
+                    position={position}
+                    viewMode={viewMode}
+                />
+            ))}
         </g>
     );
 };
