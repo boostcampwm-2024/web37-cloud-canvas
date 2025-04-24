@@ -6,7 +6,7 @@ import { Sidebar } from '@/widgets/sidebar/ui/sidebar';
 import { useCanvasState } from '@/features/canvas/model/context';
 import { useCanvasStore } from '@/features/canvas/model/store';
 import { Canvas } from '@/features/canvas/ui/canvas';
-import { DraftEdgeRenderer } from '@/features/canvas/ui/draft-edge-renderer';
+import { DraftEdge } from '@/features/canvas/ui/draft-edge';
 import { Edge } from '@/features/canvas/ui/edge';
 import { Group } from '@/features/canvas/ui/group';
 import { Node } from '@/features/canvas/ui/node';
@@ -55,10 +55,7 @@ export default function Page() {
                     ))}
 
                     {draftEdge && (
-                        <DraftEdgeRenderer
-                            draftEdge={draftEdge}
-                            viewMode={viewMode}
-                        />
+                        <DraftEdge draftEdge={draftEdge} viewMode={viewMode} />
                     )}
                     {selectedNodeId && (
                         <NodeController selectedNodeId={selectedNodeId} />

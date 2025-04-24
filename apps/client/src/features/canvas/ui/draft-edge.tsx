@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import type { DraftEdge } from '@/entities/canvas/model/edge.types';
+import type { DraftEdge as DraftEdgeType } from '@/entities/canvas/model/edge.types';
 
 import { IsoMatrixDOM } from '@/shared/canvas/constants';
 import type { ViewMode } from '@/shared/canvas/types';
@@ -9,12 +9,12 @@ import { convertGridToViewCoordinates } from '../lib/edge';
 import { getNeaerestConnector } from '../lib/node';
 import { useCanvasStore } from '../model/store';
 
-interface DraftEdgeRendererProps {
-    draftEdge: DraftEdge;
+interface DraftEdgeProps {
+    draftEdge: DraftEdgeType;
     viewMode: ViewMode;
 }
 
-export const DraftEdgeRenderer = (props: DraftEdgeRendererProps) => {
+export const DraftEdge = (props: DraftEdgeProps) => {
     const { draftEdge, viewMode } = props;
     const { getNode } = useCanvasStore.use.nodeActions();
 
