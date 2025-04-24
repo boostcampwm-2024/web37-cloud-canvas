@@ -24,7 +24,7 @@ export const NodeController = (props: NodeController) => {
     const { viewMode, zoomFactor } = useCanvasState();
 
     const { deselect } = useCanvasStore.use.selectionActions();
-    const { getNode } = useCanvasStore.use.nodeActions();
+    const { getNode, removeNode } = useCanvasStore.use.nodeActions();
     const { startConnectEdge, progressConnectEdge, finalizeConnectEdge } =
         useConnectEdge(canvasRef.current, viewMode);
 
@@ -32,6 +32,7 @@ export const NodeController = (props: NodeController) => {
     const ratio = zoomFactor < 1 ? 1 : zoomFactor;
 
     const handleRemoveNodeAction = () => {
+        removeNode(selectedNodeId);
         deselect();
     };
 

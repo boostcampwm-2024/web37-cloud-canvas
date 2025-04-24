@@ -17,6 +17,7 @@ export interface NodeSlice {
         getNodes: (nodeIds: string[]) => Node[];
         addNode: (node: Omit<Node, 'id'>) => string;
         moveNode: (nodeId: string, offset: GridPosition) => void;
+        removeNode: (nodeId: string) => void;
     };
 }
 
@@ -55,6 +56,20 @@ export const createNodeSlice: StateCreator<
                 node.position.row += offset.row;
 
                 state.nodes = sortNode(state.nodes);
+            }),
+        removeNode: (nodeId) =>
+            set((state) => {
+                const node = state.nodes[nodeId];
+                const group = state.groups[node.groupId];
+                group.childNodeIds = group.childNodeIds.filter(
+                    (childNodeId) => childNodeId !== nodeId,
+                );
+
+                if (group.childNodeIds.length === 0) {
+                    delete state.groups[node.groupId];
+                }
+
+                delete state.nodes[nodeId];
             }),
     },
 });

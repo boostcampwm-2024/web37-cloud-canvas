@@ -39,7 +39,10 @@ export const ServiceMenuItem = (props: ServeiceMenuItemProps) => {
         const node = ResourceNode.create(type);
 
         node.properties.networks.region = REGION_ID.kr;
-        const nodeId = addNode(node);
+        const nodeId = addNode({
+            ...node,
+            groupId: REGION_ID.kr,
+        });
         if (!isExistGroup(REGION_ID.kr)) {
             addGroup({
                 id: REGION_ID.kr,

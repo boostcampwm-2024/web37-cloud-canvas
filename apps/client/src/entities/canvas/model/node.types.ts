@@ -17,7 +17,7 @@ export interface Node {
     connectors: {
         [mode in ViewMode]: Connector[];
     };
-    groupIds: string[];
+    groupId: string;
     svg2D: ComponentType<any>;
     svg3D: ComponentType<any>;
     properties: { [key: string]: any };

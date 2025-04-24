@@ -16,6 +16,7 @@ export interface GroupSlice {
         addChildNodeToGroup: (groupId: string, childNodeId: string) => void;
         isExistGroup: (groupId: string) => boolean;
         moveGroup: (groupId: string, offset: GridPosition) => void;
+        removeGroup: (groupId: string) => void;
     };
 }
 
@@ -57,6 +58,12 @@ export const createGroupSlice: StateCreator<
                     node.position.col += offset.col;
                     node.position.row += offset.row;
                 });
+            }),
+        removeGroup: (groupId) =>
+            set((state) => {
+                const group = state.groups[groupId];
+                if (group.childNodeIds.length > 0) return;
+                delete state.groups[groupId];
             }),
     },
 });

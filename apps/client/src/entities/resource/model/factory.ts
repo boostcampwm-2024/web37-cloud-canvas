@@ -16,7 +16,7 @@ export class ResourceNode {
                         cols: 1,
                         depth: 0.5,
                     },
-                    groupIds: [],
+                    groupId: '',
                     svg2D: dynamic(
                         () =>
                             import('../ui/server/svg-2d').then(
@@ -93,7 +93,7 @@ export class ResourceNode {
                         cols: 1,
                         // depth: 1.5,
                     },
-                    groupIds: [],
+                    groupId: '',
                     svg2D: dynamic(
                         () =>
                             import('../ui/object-storage/svg-2d').then(
