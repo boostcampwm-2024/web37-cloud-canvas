@@ -51,12 +51,29 @@ export const createGroupSlice: StateCreator<
                 const group = state.groups[groupId];
                 if (!group) return state;
 
+                const edgeSet = new Set<string>();
                 group.childNodeIds.forEach((nodeId) => {
                     const node = state.nodes[nodeId];
                     if (!node) return;
 
                     node.position.col += offset.col;
                     node.position.row += offset.row;
+
+                    Object.values(state.edges).forEach((edge) => {
+                        if (
+                            edge.sourceNodeId === nodeId ||
+                            edge.targetNodeId === nodeId
+                        ) {
+                            edgeSet.add(edge.id);
+                        }
+                    });
+                });
+
+                edgeSet.forEach((edgeId) => {
+                    state.edges[edgeId].bezierPoint.forEach((point) => {
+                        point.col += offset.col;
+                        point.row += offset.row;
+                    });
                 });
             }),
         removeGroup: (groupId) =>
