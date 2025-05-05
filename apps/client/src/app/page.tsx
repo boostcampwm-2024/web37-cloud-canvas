@@ -27,6 +27,7 @@ export default function Page() {
     const selectedNodeId = useCanvasStore.use.selectedNodeId();
     const { viewMode } = useCanvasState();
 
+    console.log(edges);
     return (
         <div
             className="flex h-screen w-screen overflow-hidden"

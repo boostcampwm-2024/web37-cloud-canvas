@@ -70,6 +70,17 @@ export const createNodeSlice: StateCreator<
                 }
 
                 delete state.nodes[nodeId];
+
+                const edges = Object.values(state.edges).filter((edge) => {
+                    return (
+                        edge.sourceNodeId === nodeId ||
+                        edge.targetNodeId === nodeId
+                    );
+                });
+
+                edges.forEach((edge) => {
+                    delete state.edges[edge.id];
+                });
             }),
     },
 });
