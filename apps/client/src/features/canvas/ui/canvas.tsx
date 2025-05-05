@@ -5,6 +5,7 @@ import React from 'react';
 
 import { useZoom } from '../hooks/use-zoom-pan';
 import { useCanvasState } from '../model/context';
+import { useCanvasStore } from '../model/store';
 
 import { GridBackground } from './grid-background';
 
@@ -25,6 +26,8 @@ export const Canvas = (props: CanvasProps) => {
     const { zoomIn, zoomOut, startPan, movePan, stopPan } = useZoom(
         canvasRef.current,
     );
+
+    const { deselect } = useCanvasStore.use.selectionActions();
 
     const isInitialized = viewbox.width !== 0 && viewbox.height !== 0;
 
@@ -58,6 +61,10 @@ export const Canvas = (props: CanvasProps) => {
         applyCursorStyle('body', 'default');
     };
 
+    const handleMouseDown = (e: React.MouseEvent) => {
+        handleStartPan(e);
+        deselect();
+    };
     return (
         <svg
             id="canvas"
@@ -69,7 +76,7 @@ export const Canvas = (props: CanvasProps) => {
             preserveAspectRatio="xMidYMid meet"
             className={className}
             onWheel={handleZoom}
-            onMouseDown={handleStartPan}
+            onMouseDown={handleMouseDown}
             onMouseMove={handleMovePan}
             onMouseUp={handleStopPan}
         >
