@@ -4,7 +4,7 @@ export interface Edge {
     id: string;
     sourceNodeId: string;
     targetNodeId: string;
-    bezierPositions: Array<GridPosition>;
+    bezierPoint: Array<GridPosition>;
 }
 
 export interface DraftEdge {

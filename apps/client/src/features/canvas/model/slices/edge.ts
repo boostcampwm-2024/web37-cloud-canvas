@@ -25,6 +25,11 @@ export interface EdgeSlice {
         addEdge: (edge: Omit<Edge, 'id' | 'bezierPositions'>) => void;
         removeEdge: (edgeId: string) => void;
         splitEdge: (id: string, idx: number, beizerPoint: GridPosition) => void;
+        moveBezierPoint: (
+            edgeId: string,
+            idx: number,
+            position: GridPosition,
+        ) => void;
     };
 }
 
@@ -101,6 +106,19 @@ export const createEdgeSlice: StateCreator<
                     0,
                     beizerPoint,
                 );
+            }),
+        moveBezierPoint: (edgeId, idx, offset) =>
+            set((state) => {
+                const edge = state.edges[edgeId];
+                if (!edge) return state;
+
+                const bezierPoint = edge.bezierPoint[idx];
+
+                bezierPoint.col = offset.col;
+                bezierPoint.row = offset.row;
+                //
+                // bezierPoint.col += offset.col;
+                // bezierPoint.row += offset.row;
             }),
     },
 });

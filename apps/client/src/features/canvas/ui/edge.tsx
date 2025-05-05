@@ -118,6 +118,8 @@ export const Edge = (props: EdgeProps) => {
             {edge.bezierPoint.map((position, idx) => (
                 <BezierPoint
                     key={`${edge.id}-${idx}`}
+                    edgeId={edge.id}
+                    idx={idx}
                     position={position}
                     viewMode={viewMode}
                 />

@@ -16,9 +16,7 @@ import type { Edge as EdgeType } from '@/entities/canvas/model/edge.types';
 import type { Node as NodeType } from '@/entities/canvas/model/node.types';
 
 //TODO:
-//- remove node
 //- remove edge
-//- split edge
 //- move bezier point
 //- node drop zone
 export default function Page() {
